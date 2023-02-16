@@ -5,6 +5,9 @@ import 'package:book_river/src/ui/screens/book/listBookCategory.dart';
 import 'package:book_river/src/ui/screens/book/ratingBook.dart';
 import 'package:book_river/src/ui/screens/book/ratingsBook.dart';
 import 'package:book_river/src/ui/screens/book/searchBook.dart';
+import 'package:book_river/src/ui/screens/shelves/addShelves.dart';
+import 'package:book_river/src/ui/screens/shelves/detailShelves.dart';
+import 'package:book_river/src/ui/screens/shelves/editShelves.dart';
 import 'package:flutter/material.dart';
 import '../../ui/screens/book/profileOtherUser.dart';
 import '../../ui/screens/inicioScreens/logIn.dart';
@@ -69,6 +72,21 @@ class AppRouter {
       case NavigatorRoutes.searchBook:
         return MaterialPageRoute(builder: (context){
           return const SearchBook();
+        });
+
+      case NavigatorRoutes.addShelves:
+        return MaterialPageRoute(builder: (context){
+          return const AddNewShelve();
+        });
+
+      case NavigatorRoutes.detailShelves:
+        return MaterialPageRoute(builder: (context){
+          return const DetailShelves();
+        });
+
+      case NavigatorRoutes.editShelves:
+        return MaterialPageRoute(builder: (context){
+          return const EditShelves();
         });
 
       //Ejemplo con argumentos y sin argumentos

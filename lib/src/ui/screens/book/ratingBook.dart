@@ -92,17 +92,20 @@ class _RatingBookState extends State<RatingBook> {
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
                   height: 100,
-                  child: TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    expands: true,
-                    maxLines: null,
-                    maxLength: 300,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 10.0),
-                      border: OutlineInputBorder(),
-                      hintText: 'Escriu aqui la teva ressenya',
-                      labelText: 'Ressenya',
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 15.0, bottom: 8, left: 8, right: 8),
+                    child: TextFormField(
+                      keyboardType: TextInputType.multiline,
+                      expands: true,
+                      maxLines: null,
+                      textAlignVertical: TextAlignVertical.top,
+                      decoration: const InputDecoration(
+                        //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                        border: OutlineInputBorder(),
+                        hintText: 'Escriu aqui la teva ressenya',
+                        labelText: 'Ressenya',
+                      ),
                     ),
                   ),
                 ),

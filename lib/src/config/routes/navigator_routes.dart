@@ -23,4 +23,10 @@ class NavigatorRoutes {
 
   static const String searchBook ="/search_book";
 
+  static const String addShelves ="/add_shelves";
+
+  static const String detailShelves ="/detail_shelves";
+
+  static const String editShelves ="/edit_shelves";
+
 }

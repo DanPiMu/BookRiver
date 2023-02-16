@@ -1,6 +1,7 @@
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:book_river/src/config/routes/navigator_routes.dart';
 import 'package:book_river/src/provider/navigation_notifier.dart';
+import 'package:book_river/src/ui/screens/principalScreens/profile.dart';
 import 'package:book_river/src/ui/screens/principalScreens/shelves.dart';
 import 'package:book_river/src/ui/screens/principalScreens/startingScreen.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class MainHolder extends StatelessWidget {
       appBar: _customAppBar(context),
 
       body:_buildBody(navigationProvider.selectedOption),
-      bottomNavigationBar: CustomNavigationBar(),
+      bottomNavigationBar: const CustomNavigationBar(),
     );
   }
 }
@@ -41,6 +42,7 @@ _customAppBar(BuildContext context){
     ),
     actions: [
       IconButton(onPressed: (){
+
         Navigator.pushNamed(context, NavigatorRoutes.searchBook);
       }, icon: Icon(Icons.search, color: AppColors.secondary,))
     ],
@@ -54,7 +56,8 @@ Widget _buildBody(NavigationOption selectedOption) {
       return const StartingScreen();
     case NavigationOption.Prestatgeries:
       return const ShelvesScreen();
-
+    case NavigationOption.Perfil:
+      return const ProfileScreen();
     default:
       return Container();
   }
