@@ -50,7 +50,7 @@ _customAppBar(BuildContext context){
 Widget _buildBody(NavigationOption selectedOption) {
   switch( selectedOption){
     case NavigationOption.Inici:
-      return StartingScreen();
+      return const StartingScreen();
     default:
       return Container();
   }
