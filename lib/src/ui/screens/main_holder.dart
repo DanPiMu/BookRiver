@@ -1,6 +1,7 @@
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:book_river/src/config/routes/navigator_routes.dart';
 import 'package:book_river/src/provider/navigation_notifier.dart';
+import 'package:book_river/src/ui/screens/principalScreens/shelves.dart';
 import 'package:book_river/src/ui/screens/principalScreens/startingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -51,6 +52,9 @@ Widget _buildBody(NavigationOption selectedOption) {
   switch( selectedOption){
     case NavigationOption.Inici:
       return const StartingScreen();
+    case NavigationOption.Prestatgeries:
+      return const ShelvesScreen();
+
     default:
       return Container();
   }
