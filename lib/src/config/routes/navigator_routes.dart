@@ -29,4 +29,12 @@ class NavigatorRoutes {
 
   static const String editShelves ="/edit_shelves";
 
+  static const String userRatings ="/user_ratings";
+
+  static const String userSettings ="/user_settings";
+
+  static const String editProfileScreen="/edit_profile_screen";
+
+  static const String editPasswordScreen="/edit_password_screen";
+
 }

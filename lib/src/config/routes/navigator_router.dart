@@ -8,6 +8,10 @@ import 'package:book_river/src/ui/screens/book/searchBook.dart';
 import 'package:book_river/src/ui/screens/shelves/addShelves.dart';
 import 'package:book_river/src/ui/screens/shelves/detailShelves.dart';
 import 'package:book_river/src/ui/screens/shelves/editShelves.dart';
+import 'package:book_river/src/ui/screens/user/editPasswordScreen.dart';
+import 'package:book_river/src/ui/screens/user/editProfile.dart';
+import 'package:book_river/src/ui/screens/user/userConfig.dart';
+import 'package:book_river/src/ui/screens/user/userRatings.dart';
 import 'package:flutter/material.dart';
 import '../../ui/screens/book/profileOtherUser.dart';
 import '../../ui/screens/inicioScreens/logIn.dart';
@@ -88,6 +92,25 @@ class AppRouter {
         return MaterialPageRoute(builder: (context){
           return const EditShelves();
         });
+
+      case NavigatorRoutes.userRatings:
+        return MaterialPageRoute(builder: (context){
+          return const UserRatings();
+        });
+
+      case NavigatorRoutes.userSettings:
+        return MaterialPageRoute(builder: (context){
+          return const UserSettingsScreen();
+        });
+      case NavigatorRoutes.editProfileScreen:
+        return MaterialPageRoute(builder: (context){
+          return const EditProfileScreen();
+        });
+      case NavigatorRoutes.editPasswordScreen:
+        return MaterialPageRoute(builder: (context){
+          return const EditPasswordScreen();
+        });
+
 
       //Ejemplo con argumentos y sin argumentos
       ///
