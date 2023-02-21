@@ -1,9 +1,8 @@
-import 'package:book_river/src/config/app_colors.dart';
-import 'package:book_river/src/config/routes/navigator_routes.dart';
 import 'package:book_river/src/provider/navigation_notifier.dart';
-import 'package:book_river/src/ui/screens/principalScreens/profile.dart';
-import 'package:book_river/src/ui/screens/principalScreens/shelves.dart';
-import 'package:book_river/src/ui/screens/principalScreens/startingScreen.dart';
+import 'package:book_river/src/ui/screens/principalScreens/cart_screen.dart';
+import 'package:book_river/src/ui/screens/principalScreens/profile_screen.dart';
+import 'package:book_river/src/ui/screens/principalScreens/shelves_screen.dart';
+import 'package:book_river/src/ui/screens/principalScreens/starting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,36 +16,10 @@ class MainHolder extends StatelessWidget {
   Widget build(BuildContext context) {
     final navigationProvider = Provider.of<NavigationNotifier>(context);
     return Scaffold(
-      appBar: _customAppBar(context),
-
       body:_buildBody(navigationProvider.selectedOption),
       bottomNavigationBar: const CustomNavigationBar(),
     );
   }
-}
-_customAppBar(BuildContext context){
-  return AppBar(
-    automaticallyImplyLeading: false,
-    title: Container(
-      child: Row(
-        children: [
-          Image.asset(
-            "assets/images/AppbarText.png",
-            fit: BoxFit.cover,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
-    ),
-    actions: [
-      IconButton(onPressed: (){
-
-        Navigator.pushNamed(context, NavigatorRoutes.searchBook);
-      }, icon: Icon(Icons.search, color: AppColors.secondary,))
-    ],
-  );
 }
 
 ///Aqui añadimos las pantallas que necesiten NavBar
@@ -58,6 +31,8 @@ Widget _buildBody(NavigationOption selectedOption) {
       return const ShelvesScreen();
     case NavigationOption.Perfil:
       return const ProfileScreen();
+    case NavigationOption.Cistella:
+      return const CartScreen();
     default:
       return Container();
   }

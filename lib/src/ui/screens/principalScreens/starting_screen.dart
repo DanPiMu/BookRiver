@@ -1,9 +1,9 @@
 import 'package:book_river/src/config/routes/navigator_routes.dart';
-import 'package:book_river/src/model/category.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../model/book.dart';
+import '../../../config/app_colors.dart';
+import '../../../model/pruebas+/book_prueba.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({Key? key}) : super(key: key);
@@ -13,8 +13,8 @@ class StartingScreen extends StatefulWidget {
 }
 
 class _StartingScreenState extends State<StartingScreen> {
-  List<Book> bookList = [
-    Book(
+  List<BookPrueba> bookList = [
+    BookPrueba(
         1,
         [
           "assets/images/portada.jpeg",
@@ -27,7 +27,7 @@ class _StartingScreenState extends State<StartingScreen> {
         "a",
         1,
         1.0),
-    Book(
+    BookPrueba(
         2,
         [
           "assets/images/portada.jpeg",
@@ -40,7 +40,7 @@ class _StartingScreenState extends State<StartingScreen> {
         "a",
         1,
         1.0),
-    Book(
+    BookPrueba(
         3,
         [
           "assets/images/portada.jpeg",
@@ -53,7 +53,7 @@ class _StartingScreenState extends State<StartingScreen> {
         "a",
         1,
         1.0),
-    Book(
+    BookPrueba(
         4,
         [
           "assets/images/portada.jpeg",
@@ -66,7 +66,7 @@ class _StartingScreenState extends State<StartingScreen> {
         "a",
         1,
         1.0),
-    Book(
+    BookPrueba(
         5,
         [
           "assets/images/portada.jpeg",
@@ -79,7 +79,7 @@ class _StartingScreenState extends State<StartingScreen> {
         "Accion",
         1,
         1.0),
-    Book(
+    BookPrueba(
         6,
         [
           "assets/images/portada.jpeg",
@@ -92,7 +92,7 @@ class _StartingScreenState extends State<StartingScreen> {
         "Accion",
         1,
         1.0),
-    Book(
+    BookPrueba(
         7,
         [
           "assets/images/portada.jpeg",
@@ -150,21 +150,23 @@ class _StartingScreenState extends State<StartingScreen> {
   }
 
   Widget _content() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('Novetats'),
-          _novetatsList(),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text('Categories'),
-          _carouselCategories(),
-        ],
+    return Scaffold(
+        appBar: _customAppBar(context),
+        body:Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Novetats'),
+            _novetatsList(),
+            const SizedBox(
+              height: 10,
+            ),
+            const Text('Categories'),
+            _carouselCategories(),
+          ],
       ),
-    );
+        ));
   }
 
   _novetatsList() {
@@ -233,7 +235,7 @@ class _StartingScreenState extends State<StartingScreen> {
   }
 }
 
-_categoryItem(Book bookByCategorie) {
+_categoryItem(BookPrueba bookByCategorie) {
   return Card(
     child: Row(
       children: <Widget>[
@@ -260,7 +262,32 @@ _categoryItem(Book bookByCategorie) {
   );
 }
 
-_bookItem(Book book, BuildContext context) {
+_customAppBar(BuildContext context){
+  return AppBar(
+    automaticallyImplyLeading: false,
+    title: Container(
+      child: Row(
+        children: [
+          Image.asset(
+            "assets/images/AppbarText.png",
+            fit: BoxFit.cover,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+        ],
+      ),
+    ),
+    actions: [
+      IconButton(onPressed: (){
+
+        Navigator.pushNamed(context, NavigatorRoutes.searchBook);
+      }, icon: Icon(Icons.search, color: AppColors.secondary,))
+    ],
+  );
+}
+
+_bookItem(BookPrueba book, BuildContext context) {
   return GestureDetector(
       onTap: () {
         print(book);

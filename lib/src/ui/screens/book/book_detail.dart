@@ -1,14 +1,16 @@
-import 'package:book_river/src/model/book.dart';
+import 'package:book_river/src/model/pruebas+/book_prueba.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 import '../../../config/routes/navigator_routes.dart';
+import '../../../provider/navigation_notifier.dart';
 
 class BookDetail extends StatefulWidget {
-  BookDetail({Key? key, required Book this.book}) : super(key: key);
+  BookDetail({Key? key, required BookPrueba this.book}) : super(key: key);
 
-  Book book;
+  BookPrueba book;
 
   @override
   State<BookDetail> createState() => _BookDetailState();
@@ -261,7 +263,12 @@ class _BookDetailState extends State<BookDetail> {
         floatingActionButton: Align(
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+
+              Provider.of<NavigationNotifier>(context, listen: false)
+                  .addToCart(widget.book);
+              //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
+            },
             child: Text('A la cistella · ${widget.book.price}€'),
           ),
         ));

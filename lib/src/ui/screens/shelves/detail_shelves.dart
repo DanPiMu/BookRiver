@@ -3,7 +3,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../config/app_colors.dart';
 import '../../../config/routes/navigator_routes.dart';
-import '../../../model/book.dart';
+import '../../../model/pruebas+/book_prueba.dart';
 
 class DetailShelves extends StatefulWidget {
   const DetailShelves({Key? key}) : super(key: key);
@@ -14,8 +14,8 @@ class DetailShelves extends StatefulWidget {
 
 class _DetailShelvesState extends State<DetailShelves> {
   bool isPublic = false;
-  List<Book> books = [
-    Book(
+  List<BookPrueba> books = [
+    BookPrueba(
         1,
         [
           "assets/images/portada.jpeg",
@@ -28,7 +28,7 @@ class _DetailShelvesState extends State<DetailShelves> {
         "a",
         5,
         5.0),
-    Book(
+    BookPrueba(
         2,
         [
           "assets/images/portada.jpeg",
@@ -41,7 +41,7 @@ class _DetailShelvesState extends State<DetailShelves> {
         "a",
         4,
         4.0),
-    Book(
+    BookPrueba(
         3,
         [
           "assets/images/portada.jpeg",
@@ -54,7 +54,7 @@ class _DetailShelvesState extends State<DetailShelves> {
         "a",
         6,
         1.0),
-    Book(
+    BookPrueba(
         4,
         [
           "assets/images/portada.jpeg",
@@ -67,7 +67,7 @@ class _DetailShelvesState extends State<DetailShelves> {
         "a",
         1,
         2.0),
-    Book(
+    BookPrueba(
         5,
         [
           "assets/images/portada.jpeg",
@@ -80,7 +80,7 @@ class _DetailShelvesState extends State<DetailShelves> {
         "Accion",
         2,
         1.0),
-    Book(
+    BookPrueba(
         6,
         [
           "assets/images/portada.jpeg",
@@ -93,7 +93,7 @@ class _DetailShelvesState extends State<DetailShelves> {
         "Accion",
         3,
         3.0),
-    Book(
+    BookPrueba(
         7,
         [
           "assets/images/portada.jpeg",

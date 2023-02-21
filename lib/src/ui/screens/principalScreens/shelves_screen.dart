@@ -14,6 +14,7 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _customAppBar(context),
         body: Padding(
           padding: const EdgeInsets.all(13.0),
           child: GridView.builder(
@@ -64,5 +65,23 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
               color: AppColors.secondary,
             ),
             elevation: 1));
+  }
+  _customAppBar(BuildContext context){
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: Container(
+        child: Row(
+          children: [
+            Image.asset(
+              "assets/images/AppbarText.png",
+              fit: BoxFit.cover,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -50,7 +50,8 @@
   "mail" : "Email",
   "gender": "Sexo",
 
-
+"//": "AUTH",
+  "login": "Iniciar sesión",
 
   "rc_1": "Ha ocurrido un error inesperado, por favor, inténtalo de nuevo más tarde.",
   "rc_3": "Ha ocurrido un error, la conexión no es segura, por favor, contacta con el administrador.",

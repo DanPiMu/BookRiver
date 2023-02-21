@@ -55,31 +55,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                /*InkWell(
-                  onTap: () {
-                    showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime.now(),
-                    ).then((date) {
-                      setState(() {
-                        _selectedDate = date;
-                      });
-                    });
-                  },
-                  child: InputDecorator(
-                    decoration: InputDecoration(
-                      labelText: 'Fecha de nacimiento',
-                      border: OutlineInputBorder(),
-                      errorText:
-                          _selectedDate == null ? 'Seleccione una fecha' : null,
-                    ),
-                    child: Text(_selectedDate == null
-                        ? 'Seleccione una fecha'
-                        : DateFormat('dd/MM/yyyy').format(_selectedDate!)),
-                  ),
-                ),*/
                 InkWell(
                   onTap: () {
                     showDatePicker(
@@ -138,7 +113,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Container(
                     padding: const EdgeInsets.only(left: 0, top: 40.0),
                     child: ElevatedButton(
-                      child: const Text('Submit'),
+                      child: const Text('Desa els canvis'),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();

@@ -53,7 +53,11 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   /// Afegim els idiomes supported
   @override
   bool isSupported(Locale locale) {
-    return ["es", "en", "ca"].contains(locale.languageCode);
+    return [
+      //"es",
+      "en",
+      //"ca"
+    ].contains(locale.languageCode);
   }
 
   @override

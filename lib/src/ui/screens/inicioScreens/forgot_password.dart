@@ -82,14 +82,11 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                     child: Form(
                         key: _formKey,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black
-                                )
-                              ),
+                            const SizedBox(
+                              width: 250,
                               child: const Text('Ajúda’ns a recuperar la teva contrassenya', style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,

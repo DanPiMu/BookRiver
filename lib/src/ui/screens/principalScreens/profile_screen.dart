@@ -14,6 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _customAppBar(context),
       body: Column(
         children: [
           Padding(
@@ -87,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         floatingActionButton: FloatingActionButton.extended(
             backgroundColor: AppColors.secondary,
             onPressed: () {
-              Navigator.pushNamed(context, NavigatorRoutes.userSettings);
+              Navigator.pushNamed(context, NavigatorRoutes.userRatings);
             },
             label: Text(
               'Valoracions',
@@ -99,6 +100,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: Colors.white,
             ),
             elevation: 1));
+  }
+  _customAppBar(BuildContext context){
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: Container(
+        child: Row(
+          children: [
+            Image.asset(
+              "assets/images/AppbarText.png",
+              fit: BoxFit.cover,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        IconButton(onPressed: (){
 
+          Navigator.pushNamed(context, NavigatorRoutes.userSettings);
+        }, icon: Icon(Icons.settings, color: AppColors.secondary,))
+      ],
+    );
   }
 }

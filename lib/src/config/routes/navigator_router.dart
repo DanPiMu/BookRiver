@@ -1,22 +1,22 @@
 
-import 'package:book_river/src/model/book.dart';
-import 'package:book_river/src/ui/screens/book/bookDetail.dart';
-import 'package:book_river/src/ui/screens/book/listBookCategory.dart';
-import 'package:book_river/src/ui/screens/book/ratingBook.dart';
-import 'package:book_river/src/ui/screens/book/ratingsBook.dart';
-import 'package:book_river/src/ui/screens/book/searchBook.dart';
-import 'package:book_river/src/ui/screens/shelves/addShelves.dart';
-import 'package:book_river/src/ui/screens/shelves/detailShelves.dart';
-import 'package:book_river/src/ui/screens/shelves/editShelves.dart';
-import 'package:book_river/src/ui/screens/user/editPasswordScreen.dart';
-import 'package:book_river/src/ui/screens/user/editProfile.dart';
-import 'package:book_river/src/ui/screens/user/userConfig.dart';
-import 'package:book_river/src/ui/screens/user/userRatings.dart';
+import 'package:book_river/src/model/pruebas+/book_prueba.dart';
+import 'package:book_river/src/ui/screens/book/book_detail.dart';
+import 'package:book_river/src/ui/screens/book/list_book_category.dart';
+import 'package:book_river/src/ui/screens/book/rating_book.dart';
+import 'package:book_river/src/ui/screens/book/ratings_book.dart';
+import 'package:book_river/src/ui/screens/book/search_book.dart';
+import 'package:book_river/src/ui/screens/shelves/add_shelves.dart';
+import 'package:book_river/src/ui/screens/shelves/detail_shelves.dart';
+import 'package:book_river/src/ui/screens/shelves/edit_shelves.dart';
+import 'package:book_river/src/ui/screens/user/edit_password.dart';
+import 'package:book_river/src/ui/screens/user/edit_profile.dart';
+import 'package:book_river/src/ui/screens/user/user_config.dart';
+import 'package:book_river/src/ui/screens/user/user_ratings.dart';
 import 'package:flutter/material.dart';
-import '../../ui/screens/book/profileOtherUser.dart';
-import '../../ui/screens/inicioScreens/logIn.dart';
-import '../../ui/screens/inicioScreens/recuperarContraseñaScreen.dart';
-import '../../ui/screens/inicioScreens/singnIn.dart';
+import '../../ui/screens/book/profile_other_user.dart';
+import '../../ui/screens/inicioScreens/login.dart';
+import '../../ui/screens/inicioScreens/register.dart';
+import '../../ui/screens/inicioScreens/forgot_password.dart';
 import '../../ui/screens/main_holder.dart';
 import 'navigator_routes.dart';
 
@@ -28,13 +28,13 @@ class AppRouter {
       case NavigatorRoutes.signIn:
         return MaterialPageRoute(
           builder: (context) {
-            return const SignIn();
+            return const LogIn();
           },
         );
       case NavigatorRoutes.logIn:
         return MaterialPageRoute(
           builder: (context) {
-            return const LoginScreen();
+            return const RegisterScreen();
           },
         );
       case NavigatorRoutes.passwordRecovery:
@@ -46,7 +46,7 @@ class AppRouter {
           return const MainHolder();
         });
       case NavigatorRoutes.bookDetails:
-      Book book = settings.arguments as Book;
+      BookPrueba book = settings.arguments as BookPrueba;
         return MaterialPageRoute(builder: (context){
           return BookDetail(
             book : book,

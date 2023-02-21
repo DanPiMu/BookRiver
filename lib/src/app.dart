@@ -1,4 +1,5 @@
 /// TODO: Modificar rutes
+import 'package:book_river/src/config/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'config/app_styles.dart';
 import 'config/routes/navigator_router.dart';
@@ -22,16 +23,16 @@ class _BookRiver extends State<BookRiver> {
       onGenerateRoute: AppRouter.generateRoute,
 
 
-      /*localizationsDelegates: [
+        /*localizationsDelegates: [
         AppLocalizationsDelegate(),
         FallbackCupertinoLocalisationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        //GlobalMaterialLocalizations.delegate,
+        //GlobalWidgetsLocalizations.delegate
       ],*/
       supportedLocales: [
         const Locale('en'),
-        const Locale('es'),
-        const Locale('ca'),
+        //const Locale('es'),
+        //const Locale('ca'),
       ],
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../config/app_colors.dart';
-import '../../../model/book.dart';
+import '../../../model/pruebas+/book_prueba.dart';
 
 class ListBookCategory extends StatefulWidget {
   const ListBookCategory({Key? key}) : super(key: key);
@@ -14,8 +14,8 @@ class ListBookCategory extends StatefulWidget {
 class _ListBookCategoryState extends State<ListBookCategory> {
   //Importamos la categoria seleccionada
   String category = 'Infantil';
-  List<Book> books = [
-    Book(
+  List<BookPrueba> books = [
+    BookPrueba(
         1,
         [
           "assets/images/portada.jpeg",
@@ -28,7 +28,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         "a",
         5,
         5.0),
-    Book(
+    BookPrueba(
         2,
         [
           "assets/images/portada.jpeg",
@@ -41,7 +41,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         "a",
         4,
         4.0),
-    Book(
+    BookPrueba(
         3,
         [
           "assets/images/portada.jpeg",
@@ -54,7 +54,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         "a",
         6,
         1.0),
-    Book(
+    BookPrueba(
         4,
         [
           "assets/images/portada.jpeg",
@@ -67,7 +67,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         "a",
         1,
         2.0),
-    Book(
+    BookPrueba(
         5,
         [
           "assets/images/portada.jpeg",
@@ -80,7 +80,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         "Accion",
         2,
         1.0),
-    Book(
+    BookPrueba(
         6,
         [
           "assets/images/portada.jpeg",
@@ -93,7 +93,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         "Accion",
         3,
         3.0),
-    Book(
+    BookPrueba(
         7,
         [
           "assets/images/portada.jpeg",
@@ -119,7 +119,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
 
   @override
   Widget build(BuildContext context) {
-    List<Book> sortedBooks;
+    List<BookPrueba> sortedBooks;
     if (_selectedOption == 'Preu ascendent') {
       sortedBooks = books..sort((a, b) => a.price.compareTo(b.price));
     } else if (_selectedOption == 'Preu descendent') {

@@ -1,18 +1,18 @@
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../../config/app_localizations.dart';
 import '../../../config/routes/navigator_routes.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class LogIn extends StatefulWidget {
+  const LogIn({Key? key}) : super(key: key);
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<LogIn> createState() => _LogInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _LogInState extends State<LogIn> {
   final _formKey = GlobalKey<FormState>();
-  bool _obscureText = true;
 
   late String _password;
 
@@ -101,7 +101,7 @@ class _SignInState extends State<SignIn> {
                 onPressed: () {
                   Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
                 },
-                child: const Text('Iniciar sessió')),
+                child:  Text('Iniciar sesion')),
 
             ///Boton de Resgistrar
             TextButton(

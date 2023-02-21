@@ -1,3 +1,4 @@
+import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../config/routes/navigator_routes.dart';
@@ -32,7 +33,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Editar perfil'),
-                  Icon(Icons.arrow_forward_ios)
+                  Icon(Icons.arrow_forward_ios, color: AppColors.secondary,)
                 ],
               ),
             )
@@ -50,7 +51,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Canviar contrasenya'),
-                  Icon(Icons.arrow_forward_ios)
+                  Icon(Icons.arrow_forward_ios, color: AppColors.secondary)
                 ],
               ),
             )
