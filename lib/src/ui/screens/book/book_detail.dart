@@ -1,3 +1,4 @@
+import 'package:book_river/src/config/app_colors.dart';
 import 'package:book_river/src/model/pruebas+/book_prueba.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -38,214 +39,220 @@ class _BookDetailState extends State<BookDetail> {
     double percentage = rating / 5;
     return _content(percentage, rating);
   }
+
   _content(double percentage, double rating) {
     return Scaffold(
         body: CustomScrollView(slivers: [
           SliverAppBar(
-          collapsedHeight: 70,
-          pinned: true,
-          snap: false,
-          floating: false,
-          expandedHeight: 500.0,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Column(
-                children: [
-                  Text(
-                    widget.book.title,
-                    style: TextStyle(color: Colors.black),
+            backgroundColor: Colors.transparent,
+            collapsedHeight: 70,
+            surfaceTintColor: Colors.white,
+            pinned: true,
+            snap: false,
+            floating: false,
+            expandedHeight: 500.0,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                decoration: const BoxDecoration(
+                  color: const Color.fromARGB(255, 255, 244, 242),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
                   ),
-                  Text('${widget.book.author} · ${widget.book.price}€',
-                      style: TextStyle(color: Colors.black))
-                ],
-              ),
-            ),
-            centerTitle: true,
-            background: Container(
-              decoration: const BoxDecoration(
-                color: Colors.cyanAccent,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
                 ),
-              ),
-              child: Column(
-                children: [
-                  ///TopBar
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                          padding:
-                          const EdgeInsets.only(right: 15.0, top: 25),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, NavigatorRoutes.ratingsBook);
-                              //me voy a la otra pagina, para ver las valoraciones del libro actual
-                            },
-                            child: CircularPercentIndicator(
-                              radius: 30.0,
-                              lineWidth: 9.0,
-                              percent: percentage,
-                              center: Text(
-                                "$rating/5",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12.0,
-                                ),
+                child: Column(
+                  children: [
+                    ///TopBar
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 50,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top:20.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.book.title,
+                                style: TextStyle(color: Colors.black),
                               ),
-                              progressColor: Colors.yellow,
-                            ),
-                          )),
-                    ],
-                  ),
-
-                  ///Carousel de las imagenes
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: 300,
-                      aspectRatio: 2.0,
-                      enlargeCenterPage: true,
+                              Text(
+                                  '${widget.book.author} · ${widget.book.price}€',
+                                  style: TextStyle(color: Colors.black))
+                            ],
+                          ),
+                        ),
+                        Padding(
+                            padding:
+                                const EdgeInsets.only(right: 5.0, top: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, NavigatorRoutes.ratingsBook);
+                                //me voy a la otra pagina, para ver las valoraciones del libro actual
+                              },
+                              child: CircularPercentIndicator(
+                                radius: 25.0,
+                                lineWidth: 5.0,
+                                percent: percentage,
+                                center: Text(
+                                  "$rating",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12.0,
+                                  ),
+                                ),
+                                progressColor: Colors.yellow,
+                              ),
+                            )),
+                      ],
                     ),
-                    items: imgC.map((imgUrl) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin:
-                              const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: Image.asset(imgUrl));
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
 
-                  ///Icons Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: [
-                          RawMaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                _isButtonPressedLlegit =
-                                !_isButtonPressedLlegit;
-                              });
-                            },
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            child: Icon(
-                              Icons.bookmark_added,
-                              color: _isButtonPressedLlegit
-                                  ? Colors.blue
-                                  : Colors.cyanAccent,
-                              size: 35.0,
-                            ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(
-                              side: BorderSide(
+                    ///Carousel de las imagenes
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        height: 300,
+                        aspectRatio: 2.0,
+                        enlargeCenterPage: true,
+                      ),
+                      items: imgC.map((imgUrl) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: Image.asset(imgUrl));
+                          },
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+
+                    ///Icons Row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            RawMaterialButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isButtonPressedLlegit =
+                                      !_isButtonPressedLlegit;
+                                });
+                              },
+                              elevation: 2.0,
+                              fillColor: Colors.white,
+                              child: Icon(
+                                Icons.bookmark_added,
                                 color: _isButtonPressedLlegit
                                     ? Colors.blue
                                     : Colors.cyanAccent,
+                                size: 35.0,
+                              ),
+                              padding: EdgeInsets.all(15.0),
+                              shape: CircleBorder(
+                                side: BorderSide(
+                                  color: _isButtonPressedLlegit
+                                      ? Colors.blue
+                                      : Colors.cyanAccent,
+                                ),
                               ),
                             ),
-                          ),
-                          Text('Llegit')
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          RawMaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                _isButtonPressedVullLlegir =
-                                !_isButtonPressedVullLlegir;
-                              });
-                            },
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            child: Icon(
-                              Icons.bookmark_add,
-                              color: _isButtonPressedVullLlegir
-                                  ? Colors.blue
-                                  : Colors.cyanAccent,
-                              size: 35.0,
-                            ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(
-                              side: BorderSide(
+                            Text('Llegit')
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            RawMaterialButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isButtonPressedVullLlegir =
+                                      !_isButtonPressedVullLlegir;
+                                });
+                              },
+                              elevation: 2.0,
+                              fillColor: Colors.white,
+                              child: Icon(
+                                Icons.bookmark_add,
                                 color: _isButtonPressedVullLlegir
                                     ? Colors.blue
                                     : Colors.cyanAccent,
+                                size: 35.0,
+                              ),
+                              padding: EdgeInsets.all(15.0),
+                              shape: CircleBorder(
+                                side: BorderSide(
+                                  color: _isButtonPressedVullLlegir
+                                      ? Colors.blue
+                                      : Colors.cyanAccent,
+                                ),
                               ),
                             ),
-                          ),
-                          Text('Vull llegir')
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          RawMaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                _isButtonPressedLlegint =
-                                !_isButtonPressedLlegint;
-                              });
-                            },
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            child: Icon(
-                              Icons.collections_bookmark,
-                              color: _isButtonPressedLlegint
-                                  ? Colors.blue
-                                  : Colors.cyanAccent,
-                              size: 35.0,
-                            ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(
-                              side: BorderSide(
+                            Text('Vull llegir')
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            RawMaterialButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isButtonPressedLlegint =
+                                      !_isButtonPressedLlegint;
+                                });
+                              },
+                              elevation: 2.0,
+                              fillColor: Colors.white,
+                              child: Icon(
+                                Icons.collections_bookmark,
                                 color: _isButtonPressedLlegint
                                     ? Colors.blue
                                     : Colors.cyanAccent,
+                                size: 35.0,
+                              ),
+                              padding: EdgeInsets.all(15.0),
+                              shape: CircleBorder(
+                                side: BorderSide(
+                                  color: _isButtonPressedLlegint
+                                      ? Colors.blue
+                                      : Colors.cyanAccent,
+                                ),
                               ),
                             ),
-                          ),
-                          Text('Llegint')
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          RawMaterialButton(
-                            onPressed: () {
-                              _showDialog();
-                            },
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            child: Icon(
-                              Icons.read_more,
-                              color: Colors.pinkAccent,
-                              size: 35.0,
+                            Text('Llegint')
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            RawMaterialButton(
+                              onPressed: () {
+                                _showDialog();
+                              },
+                              elevation: 2.0,
+                              fillColor: Colors.white,
+                              child: Icon(
+                                Icons.read_more,
+                                color: Colors.pinkAccent,
+                                size: 35.0,
+                              ),
+                              padding: EdgeInsets.all(15.0),
+                              shape: CircleBorder(),
                             ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(),
-                          ),
-                          Text('Més')
-                        ],
-                      )
-                    ],
-                  ),
-                ],
+                            Text('Més')
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        )
-          ,
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -264,7 +271,6 @@ class _BookDetailState extends State<BookDetail> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: () {
-
               Provider.of<NavigationNotifier>(context, listen: false)
                   .addToCart(widget.book);
               //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
@@ -273,6 +279,7 @@ class _BookDetailState extends State<BookDetail> {
           ),
         ));
   }
+
   void _showDialog() {
     showDialog(
       context: context,

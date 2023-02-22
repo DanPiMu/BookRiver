@@ -18,8 +18,8 @@ class _StartingScreenState extends State<StartingScreen> {
         1,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
-          "assets/images/portada2.jpg",
+          "assets/images/portada1.jpg",
+          "assets/images/portada2.jpeg",
         ],
         "Aventura 1",
         "MisCoyo",
@@ -31,7 +31,7 @@ class _StartingScreenState extends State<StartingScreen> {
         2,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Aventura 2",
@@ -44,7 +44,7 @@ class _StartingScreenState extends State<StartingScreen> {
         3,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Aventura 3",
@@ -57,7 +57,7 @@ class _StartingScreenState extends State<StartingScreen> {
         4,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Mi cuarto libro",
@@ -70,7 +70,7 @@ class _StartingScreenState extends State<StartingScreen> {
         5,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Granjero",
@@ -83,7 +83,7 @@ class _StartingScreenState extends State<StartingScreen> {
         6,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Panadero",
@@ -96,7 +96,7 @@ class _StartingScreenState extends State<StartingScreen> {
         7,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "El ingles se eneseña mal",
@@ -269,8 +269,7 @@ _customAppBar(BuildContext context){
       child: Row(
         children: [
           Image.asset(
-            "assets/images/AppbarText.png",
-            fit: BoxFit.cover,
+            "assets/images/BookRiver_logo_horizontal.png",height: 30, width: 150,
           ),
           SizedBox(
             width: 10,

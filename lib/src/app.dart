@@ -19,7 +19,7 @@ class _BookRiver extends State<BookRiver> {
       debugShowCheckedModeBanner: false,
       title: 'Sample App',
       theme: AppStyles.mainTheme,
-      initialRoute: NavigatorRoutes.signIn,
+      initialRoute: NavigatorRoutes.login,
       onGenerateRoute: AppRouter.generateRoute,
 
 

@@ -1,23 +1,24 @@
 
-import 'package:book_river/src/model/pruebas+/book_prueba.dart';
-import 'package:book_river/src/ui/screens/book/book_detail.dart';
-import 'package:book_river/src/ui/screens/book/list_book_category.dart';
 import 'package:book_river/src/ui/screens/book/rating_book.dart';
-import 'package:book_river/src/ui/screens/book/ratings_book.dart';
-import 'package:book_river/src/ui/screens/book/search_book.dart';
-import 'package:book_river/src/ui/screens/shelves/add_shelves.dart';
-import 'package:book_river/src/ui/screens/shelves/detail_shelves.dart';
-import 'package:book_river/src/ui/screens/shelves/edit_shelves.dart';
-import 'package:book_river/src/ui/screens/user/edit_password.dart';
-import 'package:book_river/src/ui/screens/user/edit_profile.dart';
-import 'package:book_river/src/ui/screens/user/user_config.dart';
-import 'package:book_river/src/ui/screens/user/user_ratings.dart';
 import 'package:flutter/material.dart';
+
+import '../../model/pruebas+/book_prueba.dart';
+import '../../ui/screens/book/book_detail.dart';
+import '../../ui/screens/book/list_book_category.dart';
 import '../../ui/screens/book/profile_other_user.dart';
+import '../../ui/screens/book/ratings_book.dart';
+import '../../ui/screens/book/search_book.dart';
+import '../../ui/screens/inicioScreens/forgot_password.dart';
 import '../../ui/screens/inicioScreens/login.dart';
 import '../../ui/screens/inicioScreens/register.dart';
-import '../../ui/screens/inicioScreens/forgot_password.dart';
 import '../../ui/screens/main_holder.dart';
+import '../../ui/screens/shelves/add_shelves.dart';
+import '../../ui/screens/shelves/detail_shelves.dart';
+import '../../ui/screens/shelves/edit_shelves.dart';
+import '../../ui/screens/user/edit_password.dart';
+import '../../ui/screens/user/edit_profile.dart';
+import '../../ui/screens/user/user_config.dart';
+import '../../ui/screens/user/user_ratings.dart';
 import 'navigator_routes.dart';
 
 /// Inclou la funció [generateRoute] que ens permetrà generar les rutes de
@@ -25,13 +26,15 @@ import 'navigator_routes.dart';
 class AppRouter {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case NavigatorRoutes.signIn:
+
+
+      case NavigatorRoutes.login:
         return MaterialPageRoute(
           builder: (context) {
             return const LogIn();
           },
         );
-      case NavigatorRoutes.logIn:
+      case NavigatorRoutes.register:
         return MaterialPageRoute(
           builder: (context) {
             return const RegisterScreen();

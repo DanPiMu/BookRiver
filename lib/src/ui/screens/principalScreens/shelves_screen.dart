@@ -73,8 +73,7 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
         child: Row(
           children: [
             Image.asset(
-              "assets/images/AppbarText.png",
-              fit: BoxFit.cover,
+              "assets/images/BookRiver_logo_horizontal.png",height: 30, width: 150,
             ),
             SizedBox(
               width: 10,

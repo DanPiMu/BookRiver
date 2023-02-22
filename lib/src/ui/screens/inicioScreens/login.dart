@@ -21,100 +21,79 @@ class _LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
-    return _content();
-  }
-
-  _content() {
-    return Stack(
-      ///Aqui esta el fondo freestyle que hice
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-        ),
-        Container(
-            alignment: Alignment.topCenter,
-            padding: const EdgeInsets.only(top: 70),
-            child: Image.asset('assets/images/FrametitleSingnIn.png')),
-        Container(
-            alignment: Alignment.topRight,
-            padding: const EdgeInsets.only(top: 100, right: 20),
-            child: Image.asset(
-              'assets/images/FrameCirculosEstrella.png',
-            )),
-        Container(
-            alignment: Alignment.topLeft,
-            //padding: EdgeInsets.only(top:110, right: 20),
-            child: Image.asset(
-              'assets/images/FrameEstrellaGalaxia.png',
-            )),
-        Container(
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.only(top: 190),
-          child: Image.asset('assets/images/TextoIniciarSesion.png'),
-        ),
-        Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.only(right: 20, bottom: 10),
-            child: Image.asset('assets/images/SeisEstrellitas.png')),
-        Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.only(bottom: 100),
-            child: Image.asset('assets/images/EstrellaGris.png')),
-        Container(
-            alignment: Alignment.bottomLeft,
-            padding: const EdgeInsets.only(bottom: 0),
-            child: Image.asset('assets/images/Agua.png')),
-        Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(top: 250, right: 100),
-            child: Image.asset('assets/images/SeisEstrellitas.png')),
-        Container(
-            alignment: Alignment.bottomCenter,
-            padding: const EdgeInsets.only(bottom: 36, right: 130),
-            child: Image.asset('assets/images/ImgR.png')),
-
-        ///Esta ya es la pantalla con los Widgets
-        _screen()
-      ],
-    );
+    return _screen();
   }
 
   _screen() {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Scaffold(
-        backgroundColor: const Color.fromRGBO(255, 255, 255, 0.0),
-        body: SingleChildScrollView(
-            child: Column(
-          children: [
-            ///Form y boton de Recuperar contraseña
-            _form(),
-            const SizedBox(
-              height: 167,
-            ),
+    return Stack(
+      children: [
+        Container(
+          color: Colors.white,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        ),
+        Image.asset(
+          "assets/images/fondo.png",
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
 
-            ///Boton de inciar
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-                },
-                child:  Text('Iniciar sesion')),
+              Padding(
+                padding: const EdgeInsets.only(top:40.0),
+                child: Image.asset('assets/images/BookRiver_logo.png', height: 160,width: 160,),
+              ),
 
-            ///Boton de Resgistrar
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, NavigatorRoutes.logIn);
-              },
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(AppColors.white)),
-              child: const Text('Registrat aqui'),
-            ),
-          ],
-        )),
-      ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Image.asset('assets/images/LoginText.png', ),
+              ),
+
+              ///Form y boton de Recuperar contraseña
+              _form(),
+              const SizedBox(
+                height: 167,
+              ),
+
+              ///Boton de inciar
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
+                  },
+                  child: Text('Iniciar sesion')),
+
+              ///Boton de Resgistrar
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+
+                  SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: Image.asset('assets/images/Frame 1.png'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, NavigatorRoutes.register);
+                    },
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.white)),
+                    child: const Text('Registrat aqui'),
+                  ),
+                ],
+              ),
+            ],
+          )),
+        )
+      ],
     );
   }
 
@@ -122,7 +101,7 @@ class _LogInState extends State<LogIn> {
     return Container(
       alignment: Alignment.center,
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 280),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 0),
         child: Form(
             key: _formKey,
             child: Column(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../config/app_colors.dart';
+import '../../../config/routes/navigator_routes.dart';
 import '../../../model/pruebas+/book_prueba.dart';
 
 class ListBookCategory extends StatefulWidget {
@@ -19,7 +20,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         1,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpg",
         ],
         "Aventura 1",
@@ -32,7 +33,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         2,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Aventura 2",
@@ -45,7 +46,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         3,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Aventura 3",
@@ -58,7 +59,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         4,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Mi cuarto libro",
@@ -71,7 +72,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         5,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Granjero",
@@ -84,7 +85,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         6,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "Panadero",
@@ -97,7 +98,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         7,
         [
           "assets/images/portada.jpeg",
-          "assets/images/portada1.jpeg",
+          "assets/images/portada1.jpg",
           "assets/images/portada2.jpeg"
         ],
         "El ingles se eneseña mal",
@@ -187,7 +188,13 @@ class _ListBookCategoryState extends State<ListBookCategory> {
             shrinkWrap: true,
             itemCount: sortedBooks.length,
             itemBuilder: (context, index) {
-              return ListTile(
+              return GestureDetector(
+                  onTap: () {
+                print(sortedBooks[index].title);
+                Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
+                    arguments: sortedBooks[index]);
+              },
+                child:ListTile(
                 leading: Image.asset(sortedBooks[index].img[1]),
                 title: Text(sortedBooks[index].title),
                 subtitle: Text('Precio: €${sortedBooks[index].price}'),
@@ -203,7 +210,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
                         color: AppColors.colorByCategoryTitle(category)),
                   ),
                   progressColor: AppColors.colorByCategoryTitle(category),
-                ),
+                ),)
               );
             },
           ),

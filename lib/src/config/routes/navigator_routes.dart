@@ -1,9 +1,9 @@
 class NavigatorRoutes {
   static const String root = "/";
 
-  static const String signIn = "/log_in";
+  static const String login = "/log_in";
 
-  static const String logIn = "/register";
+  static const String register = "/register";
 
   static const String passwordRecovery = "/password_recovery";
 

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../config/app_colors.dart';
-
 class PasswordRecoveryScreen extends StatefulWidget {
   const PasswordRecoveryScreen({Key? key}) : super(key: key);
 
@@ -17,124 +15,99 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
     return Stack(
       children: [
         Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-          ),
-        ),
-        Container(
-            alignment: Alignment.topCenter,
-            padding: const EdgeInsets.only(top: 70),
-            child: Image.asset('assets/images/FrametitleSingnIn.png')),
-        Container(
-            alignment: Alignment.topRight,
-            padding: const EdgeInsets.only(top: 100, right: 20),
-            child: Image.asset(
-              'assets/images/FrameCirculosEstrella.png',
-            )),
-        Container(
-            alignment: Alignment.topLeft,
-            //padding: EdgeInsets.only(top:110, right: 20),
-            child: Image.asset(
-              'assets/images/FrameEstrellaGalaxia.png',
-            )),
-        Container(
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.only(top: 190),
-          child: Image.asset('assets/images/RecuperarContraseñaText.png'),
-        ),
-        Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.only(right: 20, bottom: 10),
-            child: Image.asset('assets/images/SeisEstrellitas.png')),
-        Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.only(bottom: 100),
-            child: Image.asset('assets/images/EstrellaGris.png')),
-        Container(
-            alignment: Alignment.bottomLeft,
-            padding: const EdgeInsets.only(bottom: 0),
-            child: Image.asset('assets/images/Agua.png')),
-        Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.only(top: 250, right: 100),
-            child: Image.asset('assets/images/SeisEstrellitas.png')),
-
-        SizedBox(
+          color: Colors.white,
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: Scaffold(
-            appBar: AppBar(
-              iconTheme: const IconThemeData(
-                color: Colors.black, //change your color here
-              ),
-              backgroundColor: Colors.transparent,
-              //backgroundColor: Color(0x44000000),
-              elevation: 0,
-            ),
-            backgroundColor: const Color.fromRGBO(255, 255, 255, 0.0),
-            body:
-            SingleChildScrollView(child:Column(
-              children: [
-                ///Form
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 180),
-                    child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              width: 250,
-                              child: const Text('Ajúda’ns a recuperar la teva contrassenya', style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+        ),
+        Image.asset(
+          "assets/images/fondo.png",
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+        ),
 
-                              ),),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text('Introdueix el teu correu i t’enviarem les instruccions per a poder recuperar-la.',
-                            style: TextStyle(
-                              fontSize: 15
-                            ),),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            TextFormField(
-                              //controller: _emailController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                border: OutlineInputBorder(),
-                                hintText: 'Enter your Email',
-                                labelText: 'Email',
-                              ),
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter valid Email';
-                                }
-                                if (!RegExp(
-                                    r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
-                                    .hasMatch(value!)) {
-                                  return 'Enter a valid email address: xxxxx@xxxx.zzz';
-                                }
-                                return null;
-                              },
-                              //onSaved: ,
-                            ),
-                          ],
-                        )),
-                  ),
-                ),
-                const SizedBox(
-                  height: 150,
-                ),
-                ElevatedButton(onPressed: () {}, child: const Text('Enviar')),
-              ],
-            )),
+        Scaffold(
+          appBar: AppBar(
+            surfaceTintColor: Colors.white,
+            iconTheme: const IconThemeData(
+              color: Colors.black, //change your color here
+            ),
+            backgroundColor: Colors.transparent,
+            //backgroundColor: Color(0x44000000),
+            elevation: 0,
           ),
+          backgroundColor:  Colors.transparent,
+          body:
+          SingleChildScrollView(child:Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top:.0),
+                child: Image.asset('assets/images/BookRiver_logo.png', height: 130,width: 160,),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0.0),
+                child: Image.asset('assets/images/ForgotPasswrdText.png', ),
+              ),
+              ///Form
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top:20),
+                  child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            width: 250,
+                            child: const Text('Ajúda’ns a recuperar la teva contrassenya', style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+
+                            ),),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text('Introdueix el teu correu i t’enviarem les instruccions per a poder recuperar-la.',
+                          style: TextStyle(
+                            fontSize: 15
+                          ),),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            //controller: _emailController,
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter your Email',
+                              labelText: 'Email',
+                            ),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return 'Please enter valid Email';
+                              }
+                              if (!RegExp(
+                                  r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
+                                  .hasMatch(value!)) {
+                                return 'Enter a valid email address: xxxxx@xxxx.zzz';
+                              }
+                              return null;
+                            },
+                            //onSaved: ,
+                          ),
+                        ],
+                      )),
+                ),
+              ),
+              const SizedBox(
+                height: 170,
+              ),
+              ElevatedButton(onPressed: () {}, child: const Text('Enviar')),
+            ],
+          )),
         )
 
       ],

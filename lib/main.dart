@@ -26,12 +26,11 @@ Future<void> main() async {
   ]).then((_) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
-    /*runApp(MultiProvider(providers: [ChangeNotifierProvider<Cart>(create: (_)=>Cart())],
-  child: MyApp()),);*/
+
     runApp(
       MultiProvider(providers: [ChangeNotifierProvider<NavigationNotifier>(create: (_)=> NavigationNotifier())],
       child: const BookRiver(),)
-      //BookRiver()
+
     );
   });
 
