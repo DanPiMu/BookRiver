@@ -37,4 +37,6 @@ class NavigatorRoutes {
 
   static const String editPasswordScreen="/edit_password_screen";
 
+  static const String cartScreen ="/cart_screen";
+
 }

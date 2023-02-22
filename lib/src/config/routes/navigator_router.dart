@@ -12,6 +12,7 @@ import '../../ui/screens/inicioScreens/forgot_password.dart';
 import '../../ui/screens/inicioScreens/login.dart';
 import '../../ui/screens/inicioScreens/register.dart';
 import '../../ui/screens/main_holder.dart';
+import '../../ui/screens/principalScreens/cart_screen.dart';
 import '../../ui/screens/shelves/add_shelves.dart';
 import '../../ui/screens/shelves/detail_shelves.dart';
 import '../../ui/screens/shelves/edit_shelves.dart';
@@ -112,6 +113,11 @@ class AppRouter {
       case NavigatorRoutes.editPasswordScreen:
         return MaterialPageRoute(builder: (context){
           return const EditPasswordScreen();
+        });
+
+      case NavigatorRoutes.cartScreen:
+        return MaterialPageRoute(builder: (context){
+          return const CartScreen();
         });
 
 

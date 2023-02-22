@@ -71,18 +71,8 @@ class _CartScreenState extends State<CartScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  IconButton(
-                                    icon: Icon(Icons.add,
-                                        color: AppColors.tertiary),
-                                    onPressed: () {
-                                      Provider.of<NavigationNotifier>(
-                                          context,
-                                          listen: false)
-                                          .addUnitsToProduct(item, 1);
-                                      print('me añado');
-                                    },
-                                  ),
-                                  Text(item.units.toString()),
+
+
                                   IconButton(
                                     icon: Icon(Icons.remove,
                                         color: AppColors.tertiary),
@@ -92,6 +82,18 @@ class _CartScreenState extends State<CartScreen> {
                                           listen: false)
                                           .removeUnitsToProduct(item, 1);
                                       setState(() {});
+                                    },
+                                  ),
+                                  Text(item.units.toString()),
+                                  IconButton(
+                                    icon: Icon(Icons.add,
+                                        color: AppColors.tertiary),
+                                    onPressed: () {
+                                      Provider.of<NavigationNotifier>(
+                                          context,
+                                          listen: false)
+                                          .addUnitsToProduct(item, 1);
+                                      print('me añado');
                                     },
                                   ),
                                 ],
@@ -155,13 +157,13 @@ class _CartScreenState extends State<CartScreen> {
 
   _customAppBar(BuildContext context) {
     return AppBar(
+      surfaceTintColor: Colors.white,
       automaticallyImplyLeading: false,
       title: Container(
         child: Row(
           children: [
             Image.asset(
-              "assets/images/AppbarText.png",
-              fit: BoxFit.cover,
+              "assets/images/BookRiver_logo_horizontal.png",height: 30, width: 150,
             ),
             SizedBox(
               width: 10,

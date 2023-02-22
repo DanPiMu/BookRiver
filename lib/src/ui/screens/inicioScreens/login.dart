@@ -38,60 +38,69 @@ class _LogInState extends State<LogIn> {
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-
-              Padding(
-                padding: const EdgeInsets.only(top:40.0),
-                child: Image.asset('assets/images/BookRiver_logo.png', height: 160,width: 160,),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: Image.asset('assets/images/LoginText.png', ),
-              ),
-
-              ///Form y boton de Recuperar contraseña
-              _form(),
-              const SizedBox(
-                height: 167,
-              ),
-
-              ///Boton de inciar
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-                  },
-                  child: Text('Iniciar sesion')),
-
-              ///Boton de Resgistrar
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-
-                  SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: Image.asset('assets/images/Frame 1.png'),
+        GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SingleChildScrollView(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: Image.asset(
+                    'assets/images/BookRiver_logo.png',
+                    height: 160,
+                    width: 160,
                   ),
-                  TextButton(
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Image.asset(
+                    'assets/images/LoginText.png',
+                  ),
+                ),
+
+                ///Form y boton de Recuperar contraseña
+                _form(),
+                const SizedBox(
+                  height: 167,
+                ),
+
+                ///Boton de inciar
+                ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, NavigatorRoutes.register);
+                      Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
                     },
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.white)),
-                    child: const Text('Registrat aqui'),
-                  ),
-                ],
-              ),
-            ],
-          )),
+                    child: Text('Iniciar sesion')),
+
+                ///Boton de Resgistrar
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: Image.asset('assets/images/Frame 1.png'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, NavigatorRoutes.register);
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(AppColors.white)),
+                      child: const Text('Registrat aqui'),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+          ),
         )
       ],
     );

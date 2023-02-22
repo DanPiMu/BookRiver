@@ -142,6 +142,8 @@ class _BookDetailState extends State<BookDetail> {
                             RawMaterialButton(
                               onPressed: () {
                                 setState(() {
+                                   _isButtonPressedVullLlegir = false;
+                                   _isButtonPressedLlegint = false;
                                   _isButtonPressedLlegit =
                                       !_isButtonPressedLlegit;
                                 });
@@ -172,6 +174,9 @@ class _BookDetailState extends State<BookDetail> {
                             RawMaterialButton(
                               onPressed: () {
                                 setState(() {
+                                   _isButtonPressedLlegit = false;
+
+                                   _isButtonPressedLlegint = false;
                                   _isButtonPressedVullLlegir =
                                       !_isButtonPressedVullLlegir;
                                 });
@@ -202,6 +207,8 @@ class _BookDetailState extends State<BookDetail> {
                             RawMaterialButton(
                               onPressed: () {
                                 setState(() {
+                                   _isButtonPressedLlegit = false;
+                                   _isButtonPressedVullLlegir = false;
                                   _isButtonPressedLlegint =
                                       !_isButtonPressedLlegint;
                                 });
@@ -273,6 +280,21 @@ class _BookDetailState extends State<BookDetail> {
             onPressed: () {
               Provider.of<NavigationNotifier>(context, listen: false)
                   .addToCart(widget.book);
+              final snackBar = SnackBar(
+                content: const Text('Libro añadido!'),
+                action: SnackBarAction(
+                  label: 'Ir al carrito',
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, NavigatorRoutes.cartScreen);
+                  },
+                ),
+              );
+
+              // Find the ScaffoldMessenger in the widget tree
+              // and use it to show a SnackBar.
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
               //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
             },
             child: Text('A la cistella · ${widget.book.price}€'),
