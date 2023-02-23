@@ -1,8 +1,11 @@
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../api/api_exception.dart';
 import '../../../config/app_localizations.dart';
 import '../../../config/routes/navigator_routes.dart';
+import '../../../utils/user_helper_plantilla.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
@@ -14,7 +17,21 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   final _formKey = GlobalKey<FormState>();
 
-  late String _password;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  Future<bool> _savePreferences() async {
+    try{
+      bool aux = await UserHelper.login({
+        "email" :_emailController.text,
+        "password":_passwordController.text,
+      });
+      return aux;
+    } on ApiException catch(ae){
+      ae.printDetails();
+    }
+    return false;
+  }
 
   @override
   void initState() {}
@@ -72,8 +89,17 @@ class _LogInState extends State<LogIn> {
 
                 ///Boton de inciar
                 ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
+                    onPressed: () async {
+                      if(_formKey.currentState!.validate()){
+                        bool aux = await _savePreferences();
+                        if(aux){
+                          Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
+
+                        }else{
+                          print("no entro");
+                        }
+                      }
+                      //Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
                     },
                     child: Text('Iniciar sesion')),
 
@@ -117,7 +143,7 @@ class _LogInState extends State<LogIn> {
               //crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextFormField(
-                  //controller: _emailController,
+                  controller: _emailController,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
@@ -143,7 +169,7 @@ class _LogInState extends State<LogIn> {
                 TextFormField(
                   obscureText: true,
                   obscuringCharacter: "*",
-                  //controller: _emailController,
+                  controller: _passwordController,
                   decoration: const InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 15.0, horizontal: 10.0),
@@ -157,7 +183,7 @@ class _LogInState extends State<LogIn> {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter valid Password';
                     }
-                    if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
+                    if (!RegExp(r'^\d{8}$').hasMatch(value!)) {
                       return 'Enter a valid password with 9 characters';
                     }
                     return null;
@@ -175,8 +201,7 @@ class _LogInState extends State<LogIn> {
                         onPressed: () {},
                         child: TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, NavigatorRoutes.passwordRecovery);
+                              Navigator.pushNamed(context, NavigatorRoutes.passwordRecovery);
                             },
                             child: Text(
                               'Recuperar',

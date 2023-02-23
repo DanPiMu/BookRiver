@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:book_river/src/utils/user_helper_plantilla.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,17 +19,22 @@ class ApiClient {
   /// d'altres coses.
   final Dio _dio = Dio(BaseOptions(
     baseUrl: "https://mbookriver.apiabalit2.com/api/v1",
-    connectTimeout: 5000,
-    receiveTimeout: 3000,
+    connectTimeout: Duration(seconds: 5),
+    receiveTimeout: Duration(seconds: 5),
     receiveDataWhenStatusError: true,
   ));
 
+  /// Request SigIn
+  signIn(Map<String, dynamic> params) async {
 
-  /// TODO: Remove this request
-  Future<dynamic> testingRequest() async {
+    Map<String, dynamic> params1 = {
+      "data":jsonEncode(params)
+    };
+
     var _response = await _requestPOST(
       needsAuth: false,
-      path: routes[""],
+      path: routes["login"],
+      formData: params1,
     );
 
     // Obtenim ReturnCode
@@ -40,7 +46,6 @@ class ApiClient {
         if (_response["data"] != null) {
           return _response["data"];
         }
-
         return null;
       default:
         print("here default: $_rc");
@@ -48,18 +53,37 @@ class ApiClient {
     }
   }
 
-  /// Request registre
+  //register
+  register(Map<String, dynamic> params) async {
+
+    Map<String, dynamic> params1 = {
+      "data":jsonEncode(params)
+    };
+
+    var _response = await _requestPOST(
+      needsAuth: false,
+      path: routes["sign_in"],
+      formData: params1,
+    );
+
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch(_rc) {
+      case 0:
+        if (_response["data"] != null) {
 
 
+          return _response["data"];
+        }
 
-
-
-
-
-
-
-
-
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
 
 
 
@@ -148,7 +172,7 @@ class ApiClient {
         options: Options(
           headers: needsAuth != null
             ? {
-              HttpHeaders.authorizationHeader: "Bearer ${globals.user?.accessToken}",
+              HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
             }
             : null,
           contentType: Headers.jsonContentType,
@@ -214,7 +238,7 @@ class ApiClient {
         options: Options(
           headers: needsAuth != null
             ? {
-              HttpHeaders.authorizationHeader: "Bearer ${globals.user?.accessToken}",
+              HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
             }
             : null,
           contentType: Headers.jsonContentType,
@@ -266,7 +290,7 @@ class ApiClient {
         options: Options(
           headers: needsAuth != null
             ? {
-              HttpHeaders.authorizationHeader: "Bearer ${globals.user?.accessToken}",
+              HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
             }
             : null,
           contentType: Headers.jsonContentType,
@@ -318,7 +342,7 @@ class ApiClient {
         options: Options(
           headers: needsAuth != null
             ? {
-              HttpHeaders.authorizationHeader: "Bearer ${globals.user?.accessToken}",
+              HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
             }
             : null,
           contentType: Headers.jsonContentType,
@@ -398,7 +422,7 @@ class ApiClient {
     }
     return false;
   }
-  
+
   /// Retorna el missatge d'error en funció del [RC] (ReturnCode) indicat per
   /// paràmetres.
   String? getRCMessage(int? rc) {

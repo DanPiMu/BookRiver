@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:book_river/src/api/api_client.dart';
+import 'package:book_river/src/api/api_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/User.dart';
@@ -53,9 +55,41 @@ class UserHelper {
   }
 
   /// Request registre usuari
-  static Future<bool> signUp(Map<String, dynamic> params) async {
+  static Future<bool> register(Map<String, dynamic> params) async {
+    try{
+      dynamic _response = await ApiClient().register(params);
+      if(_response != null){
+        //final prefs = await SharedPreferences.getInstance();
+        await updateUserData(_response);
+        return true;
+      }
+      return false;
+
+    }on ApiException catch(ae){
+      ae.printDetails();
+    }
+        return false;
 
   }
+
+  static Future<bool> login(Map<String, dynamic> params) async {
+    try{
+      dynamic _response = await ApiClient().signIn(params);
+      if(_response != null){
+        //final prefs = await SharedPreferences.getInstance();
+        await updateUserData(_response);
+        return true;
+      }
+      return false;
+
+    }on ApiException catch(ae){
+      ae.printDetails();
+    }
+    return false;
+
+  }
+
+
 
   /// Actualitza el valor de [_user] i actualitza les dades locals de SharedPreferences
   /// de l'usuari que ha iniciat sessió.

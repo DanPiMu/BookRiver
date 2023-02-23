@@ -1,4 +1,10 @@
+import 'dart:ffi';
+
+import 'package:book_river/src/api/api_client.dart';
+import 'package:book_river/src/api/api_exception.dart';
+import 'package:book_river/src/utils/user_helper_plantilla.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../config/app_colors.dart';
 
@@ -10,11 +16,32 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  
+  
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+
+  Future<bool> _savePreferences() async {
+    try{
+      bool aux = await UserHelper.register({
+        "email" :_emailController.text,
+        "password":_passwordController.text,
+        "username" :_usernameController.text
+      });
+      return aux;
+    } on ApiException catch(ae){
+      ae.printDetails();
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Stack(
       children: [
         Container(
@@ -30,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         GestureDetector(
           onTap: () {
-            FocusScope.of(context).unfocus();
+            //FocusScope.of(context).unfocus();
           },
           child: Scaffold(
             appBar: AppBar(
@@ -39,7 +66,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 color: Colors.black, //change your color here
               ),
               backgroundColor: Colors.transparent,
-              //backgroundColor: Color(0x44000000),
               elevation: 0,
             ),
             backgroundColor: Colors.transparent,
@@ -73,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Column(
                           children: [
                             TextFormField(
-                              //controller: _emailController,
+                              controller: _emailController ,
                               decoration: const InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 10.0),
@@ -81,17 +107,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 hintText: 'Enter your Email',
                                 labelText: 'Email',
                               ),
-                              validator: (value) {
-                                if (value?.isEmpty ?? true) {
-                                  return 'Please enter valid Email';
-                                }
-                                if (!RegExp(
-                                        r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
-                                    .hasMatch(value!)) {
-                                  return 'Enter a valid email address: xxxxx@xxxx.zzz';
-                                }
-                                return null;
-                              },
+                               validator: (value) {
+                                 if (value?.isEmpty ?? true) {
+                                   return 'Please enter valid Email';
+                                 }
+                                 if (!RegExp(
+                                         r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
+                                     .hasMatch(value!)) {
+                                   return 'Enter a valid email address: xxxxx@xxxx.zzz';
+                                 }
+                                 return null;
+                               },
                               //onSaved: ,
                             ),
                             const SizedBox(
@@ -100,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             TextFormField(
                               obscureText: true,
                               obscuringCharacter: "*",
-                              //controller: _emailController,
+                              controller: _passwordController,
                               decoration: const InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 10.0),
@@ -125,6 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               height: 20,
                             ),
                             TextFormField(
+                              controller: _usernameController,
                               decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 10.0, horizontal: 10.0),
@@ -137,9 +164,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 if (value?.isEmpty ?? true) {
                                   return 'Please enter valid Email';
                                 }
-                                if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
+                                /*if (!RegExp(r'^\d{3}$').hasMatch(value!)) {
                                   return 'Enter a valid password with 9 characters';
-                                }
+                                }*/
                                 return null;
                               },
                               //onSaved: ,
@@ -180,7 +207,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(
                   height: 100,
                 ),
-                ElevatedButton(onPressed: () {}, child: const Text('Entrar')),
+                ElevatedButton(onPressed: ()async {
+                  if(_formKey.currentState!.validate()){
+                    bool aux = await _savePreferences();
+                    if(aux){
+                      print("dentro");
+                    }else{
+                      print("no entro");
+                    }
+                  }
+                }, child: const Text('Entrar')),
               ],
             )),
           ),

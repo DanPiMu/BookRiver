@@ -1,4 +1,5 @@
 final Map<String, String> routes = {
   "login": "/login",
-  "user":"/user"
+  "user":"/user",
+  "sign_in":"/register"
 };

@@ -9,10 +9,12 @@ class RequestProvider {
 
   ApiClient _apiClient = ApiClient();
 
+
+
   Future<dynamic> testingRequest() async {
 
     try{
-      return _apiClient.testingRequest();
+      return true;
     }on ApiException catch(ae){
       rethrow;
     }
