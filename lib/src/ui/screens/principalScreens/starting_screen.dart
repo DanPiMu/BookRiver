@@ -1,4 +1,6 @@
+import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/config/routes/navigator_routes.dart';
+import 'package:book_river/src/model/book.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,21 @@ class StartingScreen extends StatefulWidget {
 }
 
 class _StartingScreenState extends State<StartingScreen> {
+
+  List <dynamic>_booksNovetats = [];
+  List<Book> _booksNovetatsList =[];
+
+  Future<void> readResponseBooks()async{
+    final data = await RequestProvider().getBooks();
+    print('Aqui printamos data${data.toString()}');
+
+    List<dynamic> bookListData = data['data']['books'];
+    _booksNovetatsList = bookListData.map((bookData) => Book.fromJson(bookData)).toList();
+
+    print(_booksNovetatsList.length);
+
+  }
+
   List<BookPrueba> bookList = [
     BookPrueba(
         1,
@@ -145,13 +162,18 @@ class _StartingScreenState extends State<StartingScreen> {
   ];
 
   @override
+  void initState() {
+    readResponseBooks();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return _content();
   }
 
   Widget _content() {
     return Scaffold(
-        appBar: _customAppBar(context),
+        appBar: _customAppBar(context, readResponseBooks()),
         body:Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -173,9 +195,9 @@ class _StartingScreenState extends State<StartingScreen> {
     return Container(
         height: 280,
         child: ListView.builder(
-          itemCount: bookList.length,
+          itemCount: _booksNovetatsList.length,
           itemBuilder: (context, index) {
-            return _bookItem(bookList[index], context);
+            return _bookItem(_booksNovetatsList[index], context);
           },
           scrollDirection: Axis.horizontal,
         ));
@@ -235,34 +257,7 @@ class _StartingScreenState extends State<StartingScreen> {
   }
 }
 
-_categoryItem(BookPrueba bookByCategorie) {
-  return Card(
-    child: Row(
-      children: <Widget>[
-        SizedBox(
-          width: 80,
-          height: 80,
-          child: Image.asset(
-            'assets/images/portada.jpeg',
-            fit: BoxFit.cover,
-          ),
-        ),
-        Column(
-          children: [
-            Text(bookByCategorie.title),
-            Text(bookByCategorie.author),
-            Text(bookByCategorie.price.toString()),
-          ],
-        ),
-        Container(
-          child: Text(bookByCategorie.rating.toString()),
-        )
-      ],
-    ),
-  );
-}
-
-_customAppBar(BuildContext context){
+_customAppBar(BuildContext context, Future<void> readResponseBooks){
   return AppBar(
     automaticallyImplyLeading: false,
     title: Container(
@@ -280,13 +275,14 @@ _customAppBar(BuildContext context){
     actions: [
       IconButton(onPressed: (){
 
-        Navigator.pushNamed(context, NavigatorRoutes.searchBook);
+        readResponseBooks;
+        //Navigator.pushNamed(context, NavigatorRoutes.searchBook);
       }, icon: Icon(Icons.search, color: AppColors.secondary,))
     ],
   );
 }
 
-_bookItem(BookPrueba book, BuildContext context) {
+_bookItem(Book book, BuildContext context) {
   return GestureDetector(
       onTap: () {
         print(book);
@@ -313,20 +309,27 @@ _bookItem(BookPrueba book, BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  book.title,
+                  book.title!,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 Text(
-                  book.author,
+                  book.author!,
                   style: const TextStyle(fontSize: 14),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    /*child: image != null
+                  ? Image.file(image!, height: 100, width: 100)
+                  : Container(
+                      decoration: BoxDecoration(color: Colors.red[200]),
+                      width: 200,
+                      height: 200,
+                      child: Image.asset("assets/icons/pepe.jpeg")),*/
                     Text(
-                      book.category,
-                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                      book.categories![0].nameEs.toString()
+                      ,style: const TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     Text('${book.price.toString()}€')
                   ],

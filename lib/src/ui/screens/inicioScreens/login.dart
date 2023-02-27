@@ -183,7 +183,9 @@ class _LogInState extends State<LogIn> {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter valid Password';
                     }
-                    if (!RegExp(r'^\d{8}$').hasMatch(value!)) {
+                    //dani@dani.com
+                    //123456789
+                    if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
                       return 'Enter a valid password with 9 characters';
                     }
                     return null;

@@ -26,9 +26,8 @@ class ApiClient {
 
   /// Request SigIn
   signIn(Map<String, dynamic> params) async {
-
     Map<String, dynamic> params1 = {
-      "data":jsonEncode(params)
+      "data": jsonEncode(params)
     };
 
     var _response = await _requestPOST(
@@ -41,7 +40,7 @@ class ApiClient {
     var _rc = _response["rc"];
 
     // Gestionem les dades segons ReturnCode obtingut
-    switch(_rc) {
+    switch (_rc) {
       case 0:
         if (_response["data"] != null) {
           return _response["data"];
@@ -55,9 +54,8 @@ class ApiClient {
 
   //register
   register(Map<String, dynamic> params) async {
-
     Map<String, dynamic> params1 = {
-      "data":jsonEncode(params)
+      "data": jsonEncode(params)
     };
 
     var _response = await _requestPOST(
@@ -70,11 +68,9 @@ class ApiClient {
     var _rc = _response["rc"];
 
     // Gestionem les dades segons ReturnCode obtingut
-    switch(_rc) {
+    switch (_rc) {
       case 0:
         if (_response["data"] != null) {
-
-
           return _response["data"];
         }
 
@@ -85,8 +81,28 @@ class ApiClient {
     }
   }
 
+  //Books del home
+  booksHome() async {
+    var _response = await _requestGET(
+        needsAuth: true,
+        path: routes["home"]
+    );
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
 
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
 
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
 
 
   /// EXEMPLE
@@ -102,10 +118,8 @@ class ApiClient {
   ///
   ///
   /// Request d'exemple on es poden pujar múltiples imatges amb multipart.
-  Future<dynamic> exampleMultipartRequest(
-    Map<String, dynamic> params,
-    [List<File>? files]
-  ) async {
+  Future<dynamic> exampleMultipartRequest(Map<String, dynamic> params,
+      [List<File>? files]) async {
     /// MOLT IMPORTANT!!!
     /// Encodejar els paràmetres del camp data
     Map<String, dynamic> _params = {
@@ -116,7 +130,7 @@ class ApiClient {
     if (files != null) {
       List<MultipartFile> _files = [];
 
-      for(File image in files) {
+      for (File image in files) {
         _files.add(await MultipartFile.fromFile(
           image.path,
           filename: "${DateTime.now()}${image.path}.png",
@@ -140,7 +154,7 @@ class ApiClient {
     var _rc = _response["rc"];
 
     // Gestionem les dades segons ReturnCode obtingut
-    switch(_rc) {
+    switch (_rc) {
       case 0:
         if (_response["data"] != null) {
           return _response["data"];
@@ -171,10 +185,10 @@ class ApiClient {
         queryParameters: params,
         options: Options(
           headers: needsAuth != null
-            ? {
-              HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
-            }
-            : null,
+              ? {
+            HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
+          }
+              : null,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
         ),
@@ -193,12 +207,13 @@ class ApiClient {
       } else {
         // Si la request ha fallat, retornem [ApiException] en funció del valor
         // de  [_response.statusCode].
-        throw ApiException(getRCMessage(_response.statusCode), _response.statusCode);
+        throw ApiException(
+            getRCMessage(_response.statusCode), _response.statusCode);
       }
     } on DioError catch (e) {
       _printDioError(e);
       throw ApiException(getRCMessage(1), 1);
-    } catch(e) {
+    } catch (e) {
       throw ApiException(getRCMessage(1), 1);
     }
   }
@@ -232,15 +247,15 @@ class ApiClient {
       Response _response = await _dio.post(
         path ?? "",
         data: formData != null
-          ? FormData.fromMap(formData)
-          : null,
+            ? FormData.fromMap(formData)
+            : null,
         queryParameters: getParams ?? null,
         options: Options(
           headers: needsAuth != null
-            ? {
-              HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
-            }
-            : null,
+              ? {
+            HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
+          }
+              : null,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
         ),
@@ -259,14 +274,15 @@ class ApiClient {
       } else {
         // Si la request ha fallat, retornem [ApiException] en funció del valor
         // de  [_response.statusCode].
-        throw ApiException(getRCMessage(_response.statusCode), _response.statusCode);
+        throw ApiException(
+            getRCMessage(_response.statusCode), _response.statusCode);
       }
     } on DioError catch (e) {
       _printDioError(e);
       throw ApiException(getRCMessage(1), 1);
     } on FormatException catch (e) {
       print("::.. on errorino");
-    } catch(e) {
+    } catch (e) {
       print("::.. on errorinos : ${e}");
       throw ApiException(getRCMessage(1), 1);
     }
@@ -284,15 +300,15 @@ class ApiClient {
       Response _response = await _dio.patch(
         path ?? "",
         data: formData != null
-          ? FormData.fromMap(formData)
-          : null,
+            ? FormData.fromMap(formData)
+            : null,
         queryParameters: getParams ?? null,
         options: Options(
           headers: needsAuth != null
-            ? {
-              HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
-            }
-            : null,
+              ? {
+            HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
+          }
+              : null,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
         ),
@@ -311,14 +327,15 @@ class ApiClient {
       } else {
         // Si la request ha fallat, retornem [ApiException] en funció del valor
         // de  [_response.statusCode].
-        throw ApiException(getRCMessage(_response.statusCode), _response.statusCode);
+        throw ApiException(
+            getRCMessage(_response.statusCode), _response.statusCode);
       }
     } on DioError catch (e) {
       _printDioError(e);
       throw ApiException(getRCMessage(1), 1);
     } on FormatException catch (e) {
       print("::.. on errorino");
-    } catch(e) {
+    } catch (e) {
       print("::.. on errorinos : ${e}");
       throw ApiException(getRCMessage(1), 1);
     }
@@ -336,15 +353,15 @@ class ApiClient {
       Response _response = await _dio.delete(
         path ?? "",
         data: formData != null
-          ? FormData.fromMap(formData)
-          : null,
+            ? FormData.fromMap(formData)
+            : null,
         queryParameters: getParams ?? null,
         options: Options(
           headers: needsAuth != null
-            ? {
-              HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
-            }
-            : null,
+              ? {
+            HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
+          }
+              : null,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
         ),
@@ -363,14 +380,15 @@ class ApiClient {
       } else {
         // Si la request ha fallat, retornem [ApiException] en funció del valor
         // de  [_response.statusCode].
-        throw ApiException(getRCMessage(_response.statusCode), _response.statusCode);
+        throw ApiException(
+            getRCMessage(_response.statusCode), _response.statusCode);
       }
     } on DioError catch (e) {
       _printDioError(e);
       throw ApiException(getRCMessage(1), 1);
     } on FormatException catch (e) {
       print("::.. on errorino");
-    } catch(e) {
+    } catch (e) {
       print("::.. on errorinos : ${e}");
       throw ApiException(getRCMessage(1), 1);
     }
@@ -390,7 +408,6 @@ class ApiClient {
     }
 
     print(jsonEncode(r.data));
-
   }
 
   /// Debug purposes
@@ -402,16 +419,16 @@ class ApiClient {
     if (e.requestOptions.data != null) {
       //print(":.Params: ${e.requestOptions?.data}");
       print(":.Params: ${jsonEncode(
-        Map.fromIterable(
-          e.requestOptions.data?.fields,
-          key: (e) => e.key,
-          value: (e) => e.value
-        )
+          Map.fromIterable(
+              e.requestOptions.data?.fields,
+              key: (e) => e.key,
+              value: (e) => e.value
+          )
       )}");
     }
     print(jsonEncode(e.response?.data));
   }
-  
+
   /// Comprova el valor del StatusCode rebut en una response.
   /// En cas de [statusCode] entre valors 2xx --> response correcta.
   bool _checkResponseStatusCode(int? statusCode) {
@@ -431,8 +448,9 @@ class ApiClient {
 
     if (returnMessage != null) {
       return returnMessage;
-    }else{
+    } else {
       return returnCodes[1];
     }
   }
 }
+

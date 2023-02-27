@@ -86,7 +86,6 @@ class UserHelper {
       ae.printDetails();
     }
     return false;
-
   }
 
 
