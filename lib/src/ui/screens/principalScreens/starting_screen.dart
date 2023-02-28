@@ -3,8 +3,10 @@ import 'package:book_river/src/config/routes/navigator_routes.dart';
 import 'package:book_river/src/model/book.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../config/app_colors.dart';
+import '../../../model/categories.dart';
 import '../../../model/pruebas+/book_prueba.dart';
 
 class StartingScreen extends StatefulWidget {
@@ -16,20 +18,27 @@ class StartingScreen extends StatefulWidget {
 
 class _StartingScreenState extends State<StartingScreen> {
 
-  List <dynamic>_booksNovetats = [];
-  List<Book> _booksNovetatsList =[];
 
-  Future<void> readResponseBooks()async{
+  //Novetats
+  List<Book> _booksNovetatsList = [];
+  Future<void> readResponseBooks() async {
     final data = await RequestProvider().getBooks();
-    print('Aqui printamos data${data.toString()}');
 
     List<dynamic> bookListData = data['data']['books'];
-    _booksNovetatsList = bookListData.map((bookData) => Book.fromJson(bookData)).toList();
-
-    print(_booksNovetatsList.length);
-
+    _booksNovetatsList =
+        bookListData.map((bookData) => Book.fromJson(bookData)).toList();
   }
 
+  //Categories
+  List<Categories> _categoriesList =[];
+  Future<void> readResponseCategory()async
+  {
+    final data = await RequestProvider().getBooks();
+    List<dynamic> categoryListData =data['data']['categories'];
+    print('CATEGORIAAAAAASSASA $categoryListData');
+    _categoriesList =
+        categoryListData.map((categoryData) => Categories.fromJson(categoryData)).toList();
+  }
   List<BookPrueba> bookList = [
     BookPrueba(
         1,
@@ -164,8 +173,10 @@ class _StartingScreenState extends State<StartingScreen> {
   @override
   void initState() {
     readResponseBooks();
+    readResponseCategory();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return _content();
@@ -173,21 +184,21 @@ class _StartingScreenState extends State<StartingScreen> {
 
   Widget _content() {
     return Scaffold(
-        appBar: _customAppBar(context, readResponseBooks()),
-        body:Padding(
+        appBar: _customAppBar(context, _categoriesList),
+        body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Novetats'),
-            _novetatsList(),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text('Categories'),
-            _carouselCategories(),
-          ],
-      ),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Novetats'),
+              _novetatsList(),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text('Categories'),
+              _carouselCategories(),
+            ],
+          ),
         ));
   }
 
@@ -205,47 +216,69 @@ class _StartingScreenState extends State<StartingScreen> {
 
   _carouselCategories() {
     return CarouselSlider.builder(
-      itemCount: bookCategories.length,
+      itemCount: _categoriesList.length,
       itemBuilder: (BuildContext context, int index, int a) {
-        return GestureDetector(onTap: (){
-          Navigator.pushNamed(context, NavigatorRoutes.listBookCategory);
-        },
-        child:Card(
-          elevation: 5,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, NavigatorRoutes.listBookCategory);
+          },
+          child: Card(
+            elevation: 5,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  bookCategories[index]['name'],
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    _categoriesList[index].nameEs.toString(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
-              ),
-              //Text(bookCategories[index]['description']),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: bookCategories[index]['books'].length,
-                  itemBuilder: (BuildContext context, int bookIndex) {
-                    return ListTile(
-                      title: Text(bookCategories[index]['books'][bookIndex]),
-                    );
-                  },
+                //Text(bookCategories[index]['description']),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _categoriesList[index].books.length,
+                    itemBuilder: (BuildContext context, int bookIndex) {
+                      var bookRating = _categoriesList[index].books[bookIndex].avgRating!;
+                      return ListTile(
+                        leading: Image.network(_categoriesList[index].books[bookIndex].bookImgs![0].img.toString(),fit: BoxFit.cover,
+                            errorBuilder:
+                                (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              return Image.asset('assets/images/portada.jpeg');
+                            } ),
+                        title: Text(_categoriesList[index].books[bookIndex].title.toString()),
+                        subtitle: Text('Precio: €${_categoriesList[index].books[bookIndex].price.toString()}'),
+                        trailing: CircularPercentIndicator(
+                          radius: 20.0,
+                          lineWidth: 3.0,
+                          percent: bookRating /5,
+                          center: Text(
+                            bookRating.toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13.0,
+                                color: Colors.blue,//AppColors.colorByCategoryTitle(category)),
+                          ),),
+                          progressColor: Colors.red//AppColors.colorByCategoryTitle(category),
+                        ),
+                        );
+                        //Text(bookCategories[index]['books'][bookIndex]),
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ) ,);
-
+        );
       },
       options: CarouselOptions(
         height: 240,
@@ -257,14 +290,16 @@ class _StartingScreenState extends State<StartingScreen> {
   }
 }
 
-_customAppBar(BuildContext context, Future<void> readResponseBooks){
+_customAppBar(BuildContext context, List<Categories> booksNovetatsList) {
   return AppBar(
     automaticallyImplyLeading: false,
     title: Container(
       child: Row(
         children: [
           Image.asset(
-            "assets/images/BookRiver_logo_horizontal.png",height: 30, width: 150,
+            "assets/images/BookRiver_logo_horizontal.png",
+            height: 30,
+            width: 150,
           ),
           SizedBox(
             width: 10,
@@ -273,11 +308,18 @@ _customAppBar(BuildContext context, Future<void> readResponseBooks){
       ),
     ),
     actions: [
-      IconButton(onPressed: (){
-
-        readResponseBooks;
-        //Navigator.pushNamed(context, NavigatorRoutes.searchBook);
-      }, icon: Icon(Icons.search, color: AppColors.secondary,))
+      IconButton(
+          onPressed: () {
+            print(booksNovetatsList.length);
+            for (var books in booksNovetatsList) {
+                print('con id: ${books.id} y no nomnbre: ${books.nameEs}');
+            }
+            //Navigator.pushNamed(context, NavigatorRoutes.searchBook);
+          },
+          icon: Icon(
+            Icons.search,
+            color: AppColors.secondary,
+          ))
     ],
   );
 }
@@ -298,10 +340,12 @@ _bookItem(Book book, BuildContext context) {
               child: SizedBox(
                 width: 120,
                 height: 180,
-                child: Image.asset(
-                  'assets/images/portada.jpeg',
-                  fit: BoxFit.cover,
-                ),
+                child:
+                Image.network(book.caratula![0].img.toString(),fit: BoxFit.cover,
+                errorBuilder:
+                (BuildContext context, Object exception, StackTrace? stackTrace) {
+                  return Image.asset('assets/images/portada.jpeg');
+                } )
               ),
             ),
 
@@ -320,17 +364,16 @@ _bookItem(Book book, BuildContext context) {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    /*child: image != null
-                  ? Image.file(image!, height: 100, width: 100)
-                  : Container(
-                      decoration: BoxDecoration(color: Colors.red[200]),
-                      width: 200,
-                      height: 200,
-                      child: Image.asset("assets/icons/pepe.jpeg")),*/
-                    Text(
-                      book.categories![0].nameEs.toString()
-                      ,style: const TextStyle(color: Colors.grey, fontSize: 12),
-                    ),
+                    book.categories.isNotEmpty
+                        ? Text(
+                            book.categories[0].nameEs.toString(),
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 12),
+                          )
+                        : const Text(
+                            'No tiene categoria',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
                     Text('${book.price.toString()}€')
                   ],
                 )

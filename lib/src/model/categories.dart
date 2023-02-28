@@ -1,5 +1,7 @@
 import 'package:book_river/src/model/pivot.dart';
 
+import 'book.dart';
+
 class Categories {
   int? id;
   String? nameEs;
@@ -7,14 +9,16 @@ class Categories {
   String? createdAt;
   String? updatedAt;
   Pivot? pivot;
+  List<Book> books = [];
 
-  Categories(
-      {this.id,
-        this.nameEs,
-        this.nameEn,
-        this.createdAt,
-        this.updatedAt,
-        this.pivot});
+  Categories({
+    this.id,
+    this.nameEs,
+    this.nameEn,
+    this.createdAt,
+    this.updatedAt,
+    this.pivot,
+  });
 
   Categories.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -23,6 +27,12 @@ class Categories {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
+    if (json['books'] != null) {
+      books = <Book>[];
+      json['books'].forEach((v) {
+        books.add(new Book.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {

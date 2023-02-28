@@ -11,7 +11,7 @@ class Book {
   String? updatedAt;
   List<Caratula>? caratula;
   List<BookImgs>? bookImgs;
-  List<Categories>? categories;
+  List<Categories> categories = [];
 
 
   Book(
@@ -51,7 +51,7 @@ class Book {
     if (json['categories'] != null) {
       categories = <Categories>[];
       json['categories'].forEach((v) {
-        categories!.add(new Categories.fromJson(v));
+        categories.add(new Categories.fromJson(v));
       });
     }
   }
