@@ -26,9 +26,7 @@ class ApiClient {
 
   /// Request SigIn
   signIn(Map<String, dynamic> params) async {
-    Map<String, dynamic> params1 = {
-      "data": jsonEncode(params)
-    };
+    Map<String, dynamic> params1 = {"data": jsonEncode(params)};
 
     var _response = await _requestPOST(
       needsAuth: false,
@@ -54,9 +52,7 @@ class ApiClient {
 
   //register
   register(Map<String, dynamic> params) async {
-    Map<String, dynamic> params1 = {
-      "data": jsonEncode(params)
-    };
+    Map<String, dynamic> params1 = {"data": jsonEncode(params)};
 
     var _response = await _requestPOST(
       needsAuth: false,
@@ -83,10 +79,7 @@ class ApiClient {
 
   //Books del home
   booksHome() async {
-    var _response = await _requestGET(
-        needsAuth: true,
-        path: routes["home"]
-    );
+    var _response = await _requestGET(needsAuth: true, path: routes["home"]);
     // Obtenim ReturnCode
     var _rc = _response["rc"];
 
@@ -104,6 +97,24 @@ class ApiClient {
     }
   }
 
+  getBookById(int bookId) async {
+    var _response = await _requestPOST(
+        needsAuth: true, path: "${routes["bookDetail"]}/$bookId");
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
 
   /// EXEMPLE
   ///
@@ -186,8 +197,9 @@ class ApiClient {
         options: Options(
           headers: needsAuth != null
               ? {
-            HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
-          }
+                  HttpHeaders.authorizationHeader:
+                      "Bearer ${UserHelper.accessToken}",
+                }
               : null,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -246,15 +258,14 @@ class ApiClient {
       // Realitzem la request
       Response _response = await _dio.post(
         path ?? "",
-        data: formData != null
-            ? FormData.fromMap(formData)
-            : null,
+        data: formData != null ? FormData.fromMap(formData) : null,
         queryParameters: getParams ?? null,
         options: Options(
           headers: needsAuth != null
               ? {
-            HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
-          }
+                  HttpHeaders.authorizationHeader:
+                      "Bearer ${UserHelper.accessToken}",
+                }
               : null,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -299,15 +310,14 @@ class ApiClient {
       // Realitzem la request
       Response _response = await _dio.patch(
         path ?? "",
-        data: formData != null
-            ? FormData.fromMap(formData)
-            : null,
+        data: formData != null ? FormData.fromMap(formData) : null,
         queryParameters: getParams ?? null,
         options: Options(
           headers: needsAuth != null
               ? {
-            HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
-          }
+                  HttpHeaders.authorizationHeader:
+                      "Bearer ${UserHelper.accessToken}",
+                }
               : null,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -352,15 +362,14 @@ class ApiClient {
       // Realitzem la request
       Response _response = await _dio.delete(
         path ?? "",
-        data: formData != null
-            ? FormData.fromMap(formData)
-            : null,
+        data: formData != null ? FormData.fromMap(formData) : null,
         queryParameters: getParams ?? null,
         options: Options(
           headers: needsAuth != null
               ? {
-            HttpHeaders.authorizationHeader: "Bearer ${UserHelper.accessToken}",
-          }
+                  HttpHeaders.authorizationHeader:
+                      "Bearer ${UserHelper.accessToken}",
+                }
               : null,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -399,12 +408,8 @@ class ApiClient {
     print(":.URL: ${r.realUri}");
     if (r.requestOptions.data != null) {
       //print(":.Params: ${r.requestOptions?.data}");
-      print(":.Params: ${jsonEncode(
-          Map.fromIterable(
-              r.requestOptions.data?.fields,
-              key: (e) => e.key,
-              value: (e) => e.value)
-      )}");
+      print(
+          ":.Params: ${jsonEncode(Map.fromIterable(r.requestOptions.data?.fields, key: (e) => e.key, value: (e) => e.value))}");
     }
 
     print(jsonEncode(r.data));
@@ -418,13 +423,8 @@ class ApiClient {
     // Comprovem si la request té paràmetres, per fer print
     if (e.requestOptions.data != null) {
       //print(":.Params: ${e.requestOptions?.data}");
-      print(":.Params: ${jsonEncode(
-          Map.fromIterable(
-              e.requestOptions.data?.fields,
-              key: (e) => e.key,
-              value: (e) => e.value
-          )
-      )}");
+      print(
+          ":.Params: ${jsonEncode(Map.fromIterable(e.requestOptions.data?.fields, key: (e) => e.key, value: (e) => e.value))}");
     }
     print(jsonEncode(e.response?.data));
   }
@@ -453,4 +453,3 @@ class ApiClient {
     }
   }
 }
-

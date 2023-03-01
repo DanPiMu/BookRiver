@@ -28,6 +28,20 @@ class RequestProvider {
     }
   }
 
+  Future getBookById(int bookId) async {
+    try {
+      dynamic _response = await _apiClient.getBookById(bookId);
+      if (_response != null){
+
+        return _response;
+      }else{
+        print('algo ha salido mal');
+      }
+    }on ApiException catch(ae){
+      ae.printDetails();
+    }
+  }
+
 
 
   Future<dynamic> testingRequest() async {

@@ -18,7 +18,6 @@ class StartingScreen extends StatefulWidget {
 
 class _StartingScreenState extends State<StartingScreen> {
 
-
   //Novetats
   List<Book> _booksNovetatsList = [];
   Future<void> readResponseBooks() async {
@@ -35,11 +34,11 @@ class _StartingScreenState extends State<StartingScreen> {
   {
     final data = await RequestProvider().getBooks();
     List<dynamic> categoryListData =data['data']['categories'];
-    print('CATEGORIAAAAAASSASA $categoryListData');
     _categoriesList =
         categoryListData.map((categoryData) => Categories.fromJson(categoryData)).toList();
   }
-  List<BookPrueba> bookList = [
+
+  /*List<BookPrueba> bookList = [
     BookPrueba(
         1,
         [
@@ -131,9 +130,9 @@ class _StartingScreenState extends State<StartingScreen> {
         "a",
         1,
         1.0),
-  ];
+  ];*/
 
-  final List<Map<String, dynamic>> bookCategories = [
+ /* final List<Map<String, dynamic>> bookCategories = [
     {
       'name': 'Novelas',
       'books': [
@@ -168,7 +167,7 @@ class _StartingScreenState extends State<StartingScreen> {
       'imageUrl':
           'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4',
     },
-  ];
+  ];*/
 
   @override
   void initState() {

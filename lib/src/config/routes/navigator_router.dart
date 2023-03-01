@@ -1,7 +1,9 @@
 
 import 'package:book_river/src/ui/screens/book/rating_book.dart';
+import 'package:book_river/src/ui/screens/principalScreens/starting_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../model/book.dart';
 import '../../model/pruebas+/book_prueba.dart';
 import '../../ui/screens/book/book_detail.dart';
 import '../../ui/screens/book/list_book_category.dart';
@@ -49,11 +51,12 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) {
           return const MainHolder();
         });
+
       case NavigatorRoutes.bookDetails:
-      BookPrueba book = settings.arguments as BookPrueba;
+      Book bookId = settings.arguments as Book;
         return MaterialPageRoute(builder: (context){
           return BookDetail(
-            book : book,
+             bookId: bookId.id!
           );
         });
 

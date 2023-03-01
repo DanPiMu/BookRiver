@@ -1,17 +1,22 @@
-import 'package:book_river/src/config/app_colors.dart';
-import 'package:book_river/src/model/pruebas+/book_prueba.dart';
+import 'package:book_river/src/model/book.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
+import '../../../api/request_helper.dart';
 import '../../../config/routes/navigator_routes.dart';
+import '../../../model/pruebas+/book_prueba.dart';
 import '../../../provider/navigation_notifier.dart';
 
 class BookDetail extends StatefulWidget {
-  BookDetail({Key? key, required BookPrueba this.book}) : super(key: key);
+  BookDetail({
+    Key? key,
+    required int this.bookId,
+  }) : super(key: key);
 
-  BookPrueba book;
+  ///El id que pedimos que nos pasen de la pagina principal
+  int bookId;
 
   @override
   State<BookDetail> createState() => _BookDetailState();
@@ -20,24 +25,47 @@ class BookDetail extends StatefulWidget {
 class _BookDetailState extends State<BookDetail> {
   late List imgC;
 
+  bool _isLoading = true;
+
+  ///El objeto del libro detallado
+  late Book detailedBookById;
+
   int? _selectedOption;
 
   bool _isButtonPressedLlegit = false;
   bool _isButtonPressedVullLlegir = false;
   bool _isButtonPressedLlegint = false;
 
+  Future<void> _bookById() async {
+    final data = await RequestProvider().getBookById(widget.bookId);
+    detailedBookById = Book.fromJson(data[0]);
+    print(detailedBookById.title);
+    setState(() {
+      _isLoading = false;
+      carrouselPhotos();
+    });
+  }
+
+  carrouselPhotos() {
+    List<BookImgs>? img = detailedBookById.bookImgs;
+    imgC = img!.cast<String>();
+  }
+
   @override
   void initState() {
-    List img = widget.book.img;
-    imgC = img.cast<String>();
+    _bookById();
   }
 
   @override
   Widget build(BuildContext context) {
     //Porcentaje
-    double rating = widget.book.rating;
-    double percentage = rating / 5;
-    return _content(percentage, rating);
+    num? rating = detailedBookById.avgRating;
+    double percentage = rating! / 5;
+    return _isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : _content(percentage, rating.toDouble());
   }
 
   _content(double percentage, double rating) {
@@ -71,22 +99,21 @@ class _BookDetailState extends State<BookDetail> {
                           height: 50,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top:20.0),
+                          padding: const EdgeInsets.only(top: 20.0),
                           child: Column(
                             children: [
                               Text(
-                                widget.book.title,
+                                detailedBookById.title!,
                                 style: TextStyle(color: Colors.black),
                               ),
                               Text(
-                                  '${widget.book.author} · ${widget.book.price}€',
+                                  '${detailedBookById.author} · ${detailedBookById.price}€',
                                   style: TextStyle(color: Colors.black))
                             ],
                           ),
                         ),
                         Padding(
-                            padding:
-                                const EdgeInsets.only(right: 5.0, top: 20),
+                            padding: const EdgeInsets.only(right: 5.0, top: 20),
                             child: GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(
@@ -124,7 +151,7 @@ class _BookDetailState extends State<BookDetail> {
                                 width: MediaQuery.of(context).size.width,
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: Image.asset(imgUrl));
+                                child: Image.network(imgUrl));
                           },
                         );
                       }).toList(),
@@ -142,8 +169,8 @@ class _BookDetailState extends State<BookDetail> {
                             RawMaterialButton(
                               onPressed: () {
                                 setState(() {
-                                   _isButtonPressedVullLlegir = false;
-                                   _isButtonPressedLlegint = false;
+                                  _isButtonPressedVullLlegir = false;
+                                  _isButtonPressedLlegint = false;
                                   _isButtonPressedLlegit =
                                       !_isButtonPressedLlegit;
                                 });
@@ -174,9 +201,9 @@ class _BookDetailState extends State<BookDetail> {
                             RawMaterialButton(
                               onPressed: () {
                                 setState(() {
-                                   _isButtonPressedLlegit = false;
+                                  _isButtonPressedLlegit = false;
 
-                                   _isButtonPressedLlegint = false;
+                                  _isButtonPressedLlegint = false;
                                   _isButtonPressedVullLlegir =
                                       !_isButtonPressedVullLlegir;
                                 });
@@ -207,8 +234,8 @@ class _BookDetailState extends State<BookDetail> {
                             RawMaterialButton(
                               onPressed: () {
                                 setState(() {
-                                   _isButtonPressedLlegit = false;
-                                   _isButtonPressedVullLlegir = false;
+                                  _isButtonPressedLlegit = false;
+                                  _isButtonPressedVullLlegir = false;
                                   _isButtonPressedLlegint =
                                       !_isButtonPressedLlegint;
                                 });
@@ -278,15 +305,13 @@ class _BookDetailState extends State<BookDetail> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: () {
-              Provider.of<NavigationNotifier>(context, listen: false)
-                  .addToCart(widget.book);
+              //Provider.of<NavigationNotifier>(context, listen: false).addToCart(detailedBookById);
               final snackBar = SnackBar(
                 content: const Text('Libro añadido!'),
                 action: SnackBarAction(
                   label: 'Ir al carrito',
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, NavigatorRoutes.cartScreen);
+                    Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
                   },
                 ),
               );
@@ -297,7 +322,7 @@ class _BookDetailState extends State<BookDetail> {
 
               //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
             },
-            child: Text('A la cistella · ${widget.book.price}€'),
+            child: Text('A la cistella · ${detailedBookById.price}€'),
           ),
         ));
   }
