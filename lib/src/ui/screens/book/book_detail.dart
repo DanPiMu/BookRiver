@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../../../api/request_helper.dart';
 import '../../../config/routes/navigator_routes.dart';
-import '../../../model/pruebas+/book_prueba.dart';
-import '../../../provider/navigation_notifier.dart';
 
 class BookDetail extends StatefulWidget {
   BookDetail({
@@ -23,7 +21,6 @@ class BookDetail extends StatefulWidget {
 }
 
 class _BookDetailState extends State<BookDetail> {
-  late List imgC;
 
   bool _isLoading = true;
 
@@ -39,16 +36,9 @@ class _BookDetailState extends State<BookDetail> {
   Future<void> _bookById() async {
     final data = await RequestProvider().getBookById(widget.bookId);
     detailedBookById = Book.fromJson(data[0]);
-    print(detailedBookById.title);
     setState(() {
       _isLoading = false;
-      carrouselPhotos();
     });
-  }
-
-  carrouselPhotos() {
-    List<BookImgs>? img = detailedBookById.bookImgs;
-    imgC = img!.cast<String>();
   }
 
   @override
@@ -58,14 +48,14 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
-    //Porcentaje
+    if(_isLoading){
+     return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     num? rating = detailedBookById.avgRating;
     double percentage = rating! / 5;
-    return _isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : _content(percentage, rating.toDouble());
+    return _content(percentage, rating.toDouble());
   }
 
   _content(double percentage, double rating) {
@@ -78,7 +68,7 @@ class _BookDetailState extends State<BookDetail> {
             pinned: true,
             snap: false,
             floating: false,
-            expandedHeight: 500.0,
+            expandedHeight: 470.0,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: const BoxDecoration(
@@ -144,14 +134,19 @@ class _BookDetailState extends State<BookDetail> {
                         aspectRatio: 2.0,
                         enlargeCenterPage: true,
                       ),
-                      items: imgC.map((imgUrl) {
+                      items: detailedBookById.bookImgs?.map((imgUrl) {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
                                 width: MediaQuery.of(context).size.width,
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: Image.network(imgUrl));
+                                child:Image.network(imgUrl.img!,
+                            fit: BoxFit.cover, errorBuilder: (BuildContext context,
+                            Object exception, StackTrace? stackTrace) {
+                            return Image.asset('assets/images/portada.jpeg');
+                            }),);
+                                //imgUrl != null ? Image.network(imgUrl.img!): Image.asset('assets/images/portada.jpeg'));
                           },
                         );
                       }).toList(),

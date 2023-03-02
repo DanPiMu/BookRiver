@@ -7,7 +7,6 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../config/app_colors.dart';
 import '../../../model/categories.dart';
-import '../../../model/pruebas+/book_prueba.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({Key? key}) : super(key: key);
@@ -17,157 +16,37 @@ class StartingScreen extends StatefulWidget {
 }
 
 class _StartingScreenState extends State<StartingScreen> {
+  //bools loadings
+  bool novetatLoading = true;
+  bool categoryLoading = true;
 
   //Novetats
   List<Book> _booksNovetatsList = [];
+
   Future<void> readResponseBooks() async {
     final data = await RequestProvider().getBooks();
 
     List<dynamic> bookListData = data['data']['books'];
     _booksNovetatsList =
         bookListData.map((bookData) => Book.fromJson(bookData)).toList();
+    setState(() {
+      novetatLoading = false;
+    });
   }
 
   //Categories
-  List<Categories> _categoriesList =[];
-  Future<void> readResponseCategory()async
-  {
+  List<Categories> _categoriesList = [];
+
+  Future<void> readResponseCategory() async {
     final data = await RequestProvider().getBooks();
-    List<dynamic> categoryListData =data['data']['categories'];
-    _categoriesList =
-        categoryListData.map((categoryData) => Categories.fromJson(categoryData)).toList();
+    List<dynamic> categoryListData = data['data']['categories'];
+    _categoriesList = categoryListData
+        .map((categoryData) => Categories.fromJson(categoryData))
+        .toList();
+    setState(() {
+      categoryLoading = false;
+    });
   }
-
-  /*List<BookPrueba> bookList = [
-    BookPrueba(
-        1,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg",
-        ],
-        "Aventura 1",
-        "MisCoyo",
-        "Aventura",
-        "a",
-        1,
-        1.0),
-    BookPrueba(
-        2,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Aventura 2",
-        "Pepe",
-        "Aventura",
-        "a",
-        1,
-        1.0),
-    BookPrueba(
-        3,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Aventura 3",
-        "Antonio",
-        "Fantasia",
-        "a",
-        1,
-        1.0),
-    BookPrueba(
-        4,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Mi cuarto libro",
-        "Armando",
-        "Fantasia",
-        "a",
-        1,
-        1.0),
-    BookPrueba(
-        5,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Granjero",
-        "Julio",
-        "Accion",
-        "Accion",
-        1,
-        1.0),
-    BookPrueba(
-        6,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Panadero",
-        "Ayahuasca",
-        "Accion",
-        "Accion",
-        1,
-        1.0),
-    BookPrueba(
-        7,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "El ingles se eneseña mal",
-        "Martin",
-        "Misterio",
-        "a",
-        1,
-        1.0),
-  ];*/
-
- /* final List<Map<String, dynamic>> bookCategories = [
-    {
-      'name': 'Novelas',
-      'books': [
-        'Cien años de soledad',
-        'Matar a un ruiseñor',
-        'El Gran Gatsby'
-      ],
-      'description':
-          'Libros que cuentan una historia ficticia con personajes imaginarios.',
-      'imageUrl':
-          'https://images.unsplash.com/photo-1533777324535-a8a01db96b34',
-    },
-    {
-      'name': 'Ciencia Ficción',
-      'books': ['1984', 'Dune', 'Foundation'],
-      'description':
-          'Libros que describen un mundo imaginario que difiere de la realidad.',
-      'imageUrl': 'https://images.unsplash.com/photo-1544511916-0148ccdeb877',
-    },
-    {
-      'name': 'Terror',
-      'books': ['El Exorcista', 'Psycho', 'It'],
-      'description':
-          'Libros que describen eventos y situaciones que causan miedo, terror o sufrimiento.',
-      'imageUrl':
-          'https://images.unsplash.com/photo-1472289065668-ce650ac443d2',
-    },
-    {
-      'name': 'Comedia',
-      'books': ['La naranja mecánica', 'Loco y estupido amor', 'Superbad'],
-      'description': 'Libros que describen situaciones cómicas o graciosas.',
-      'imageUrl':
-          'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4',
-    },
-  ];*/
 
   @override
   void initState() {
@@ -178,7 +57,11 @@ class _StartingScreenState extends State<StartingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _content();
+    return novetatLoading && categoryLoading == false
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : _content();
   }
 
   Widget _content() {
@@ -219,7 +102,10 @@ class _StartingScreenState extends State<StartingScreen> {
       itemBuilder: (BuildContext context, int index, int a) {
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, NavigatorRoutes.listBookCategory);
+            print(_categoriesList[index].nameEs);
+            Navigator.pushNamed(context, NavigatorRoutes.listBookCategory,
+              arguments: _categoriesList[index]
+            );
           },
           child: Card(
             elevation: 5,
@@ -247,30 +133,44 @@ class _StartingScreenState extends State<StartingScreen> {
                   child: ListView.builder(
                     itemCount: _categoriesList[index].books.length,
                     itemBuilder: (BuildContext context, int bookIndex) {
-                      var bookRating = _categoriesList[index].books[bookIndex].avgRating!;
+                      var bookRating =
+                          _categoriesList[index].books[bookIndex].avgRating!;
                       return ListTile(
-                        leading: Image.network(_categoriesList[index].books[bookIndex].bookImgs![0].img.toString(),fit: BoxFit.cover,
-                            errorBuilder:
-                                (BuildContext context, Object exception, StackTrace? stackTrace) {
-                              return Image.asset('assets/images/portada.jpeg');
-                            } ),
-                        title: Text(_categoriesList[index].books[bookIndex].title.toString()),
-                        subtitle: Text('Precio: €${_categoriesList[index].books[bookIndex].price.toString()}'),
+                        leading: Image.network(
+                            _categoriesList[index]
+                                .books[bookIndex]
+                                .bookImgs![0]
+                                .img
+                                .toString(),
+                            fit: BoxFit.cover, errorBuilder:
+                                (BuildContext context, Object exception,
+                                    StackTrace? stackTrace) {
+                          return Image.asset('assets/images/portada.jpeg');
+                        }),
+                        title: Text(_categoriesList[index]
+                            .books[bookIndex]
+                            .title
+                            .toString()),
+                        subtitle: Text(
+                            'Precio: €${_categoriesList[index].books[bookIndex].price.toString()}'),
                         trailing: CircularPercentIndicator(
-                          radius: 20.0,
-                          lineWidth: 3.0,
-                          percent: bookRating /5,
-                          center: Text(
-                            bookRating.toString(),
-                            style: TextStyle(
+                            radius: 20.0,
+                            lineWidth: 3.0,
+                            percent: bookRating / 5,
+                            center: Text(
+                              bookRating.toString(),
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.0,
-                                color: Colors.blue,//AppColors.colorByCategoryTitle(category)),
-                          ),),
-                          progressColor: Colors.red//AppColors.colorByCategoryTitle(category),
-                        ),
-                        );
-                        //Text(bookCategories[index]['books'][bookIndex]),
+                                color: Colors
+                                    .blue, //AppColors.colorByCategoryTitle(category)),
+                              ),
+                            ),
+                            progressColor: Colors
+                                .red //AppColors.colorByCategoryTitle(category),
+                            ),
+                      );
+                      //Text(bookCategories[index]['books'][bookIndex]),
                     },
                   ),
                 ),
@@ -311,7 +211,7 @@ _customAppBar(BuildContext context, List<Categories> booksNovetatsList) {
           onPressed: () {
             print(booksNovetatsList.length);
             for (var books in booksNovetatsList) {
-                print('con id: ${books.id} y no nomnbre: ${books.nameEs}');
+              print('con id: ${books.id} y no nomnbre: ${books.nameEs}');
             }
             //Navigator.pushNamed(context, NavigatorRoutes.searchBook);
           },
@@ -339,12 +239,11 @@ _bookItem(Book book, BuildContext context) {
               child: SizedBox(
                 width: 120,
                 height: 180,
-                child:
-                Image.network(book.caratula![0].img.toString(),fit: BoxFit.cover,
-                errorBuilder:
-                (BuildContext context, Object exception, StackTrace? stackTrace) {
+                child: Image.network(book.caratula![0].img.toString(),
+                    fit: BoxFit.cover, errorBuilder: (BuildContext context,
+                        Object exception, StackTrace? stackTrace) {
                   return Image.asset('assets/images/portada.jpeg');
-                } )
+                }),
               ),
             ),
 

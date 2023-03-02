@@ -42,6 +42,22 @@ class RequestProvider {
     }
   }
 
+  Future getBookListByCategory(int categoryId) async {
+    try {
+      dynamic _response = await _apiClient.getBooksListByCategory(categoryId);
+      if (_response != null){
+
+        return _response;
+      }else{
+        print('algo ha salido mal');
+      }
+    }on ApiException catch(ae){
+      rethrow;
+      ae.printDetails();
+    }
+  }
+  }
+
 
 
   Future<dynamic> testingRequest() async {
@@ -52,4 +68,4 @@ class RequestProvider {
       rethrow;
     }
     }
-}
+

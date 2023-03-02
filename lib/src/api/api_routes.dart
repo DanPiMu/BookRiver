@@ -3,5 +3,6 @@ final Map<String, String> routes = {
   "user":"/user",
   "sign_in":"/register",
   "home" :"/home",
-  "bookDetail":"/home/books/detail"
+  "bookDetail":"/home/books/detail",
+  "booksByCategory":"/home/books/category",
 };

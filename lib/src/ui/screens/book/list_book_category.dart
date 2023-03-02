@@ -1,3 +1,7 @@
+import 'package:book_river/src/api/api_exception.dart';
+import 'package:book_river/src/api/request_helper.dart';
+import 'package:book_river/src/model/book.dart';
+import 'package:book_river/src/model/categories.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -6,13 +10,50 @@ import '../../../config/routes/navigator_routes.dart';
 import '../../../model/pruebas+/book_prueba.dart';
 
 class ListBookCategory extends StatefulWidget {
-  const ListBookCategory({Key? key}) : super(key: key);
+   ListBookCategory({Key? key,
+     required int this.bookIdCategory,
+   }) : super(key: key);
+
+   int bookIdCategory;
+
 
   @override
   State<ListBookCategory> createState() => _ListBookCategoryState();
 }
 
 class _ListBookCategoryState extends State<ListBookCategory> {
+
+  bool _isLoading = true;
+
+  List<Book> _bookListByCategory =[];
+
+  Future<void> readResponseBookList () async {
+    try{
+      final data = await RequestProvider().getBookListByCategory(widget.bookIdCategory);
+      List<dynamic> bookListData = data;
+
+      _bookListByCategory = bookListData.map((listData) => Book.fromJson(listData)).toList();
+
+      setState(() {
+        _isLoading = false;
+      });
+    } on ApiException catch(ae){
+      ae.printDetails();
+      //esto en una snakbar
+      print(ae.message);
+
+    }catch(e){
+      print('asfklsadjflkasjdfñlaksflaskdj');
+    }
+
+  }
+  @override
+  void initState() {
+    readResponseBookList();
+
+    super.initState();
+  }
+
   //Importamos la categoria seleccionada
   String category = 'Infantil';
   List<BookPrueba> books = [
