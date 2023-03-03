@@ -118,8 +118,8 @@ class ApiClient {
   }
 
   ///Listado Books por id categoria
-  getBooksListByCategory(int id) async {
-    var _response = await _requestGET(needsAuth: true, path: "${routes["booksByCategory"]}/$id");
+  getBooksListByCategory(int id, int orden) async {
+    var _response = await _requestGET(needsAuth: true, path: "${routes["booksByCategory"]}/$id?filter_id=$orden");
     // Obtenim ReturnCode
     var _rc = _response["rc"];
 

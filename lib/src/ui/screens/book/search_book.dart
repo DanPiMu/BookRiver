@@ -21,77 +21,89 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    return _content();
+  }
+
+  Scaffold _content() {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: Text(
-              'Descobreix llibres i persones',
-              style: TextStyle(
-                  fontSize: 15,
-                  color: AppColors.colorByCategoryTitle(category)),
+    body: CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          title: Text(
+            'Descobreix llibres i persones',
+            style: TextStyle(
+                fontSize: 15,
+                color: AppColors.colorByCategoryTitle(category)),
+          ),
+          centerTitle: true,
+          floating: true,
+          pinned: true,
+          backgroundColor: AppColors.colorByCategoryBG(category),
+          expandedHeight: 180.0,
+          bottom: _tabBar(),
+          flexibleSpace: FlexibleSpaceBar(
+            background: _searchBar(),
+          ),
+        ),
+
+        /*TabBarView(
+          controller: _tabController,
+          children: const <Widget>[
+            Center(
+              child: Text("It's cloudy here"),
             ),
-            centerTitle: true,
-            floating: true,
-            pinned: true,
-            backgroundColor: AppColors.colorByCategoryBG(category),
-            expandedHeight: 180.0,
-            bottom: TabBar(
-              indicatorColor: AppColors.colorByCategoryTitle(category),
-              labelColor: AppColors.colorByCategoryTitle(category),
-              //selected text color
-              unselectedLabelColor: Colors.black,
-              //Unselected text color
-              controller: _tabController,
-              tabs: <Widget>[
-                Tab(
-                  text: 'Llibres',
-                ),
-                Tab(
-                  text: 'Usuaris',
+            Center(
+              child: Text("It's rainy here"),
+            ),
+          ],
+        ),*/
+      ],
+    ),
+  );
+  }
+
+  Container _searchBar() {
+    return Container(
+            padding: EdgeInsets.only(bottom: 55, left: 10, right: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: AppColors.colorByCategoryTitle(category),
+                    ),
+                    hintText: "Buscar...",
+                    hintStyle: TextStyle(
+                        color: AppColors.colorByCategoryTitle(category)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                  ),
                 ),
               ],
             ),
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                padding: EdgeInsets.only(bottom: 55, left: 10, right: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: AppColors.colorByCategoryTitle(category),
-                        ),
-                        hintText: "Buscar...",
-                        hintStyle: TextStyle(
-                            color: AppColors.colorByCategoryTitle(category)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          );
+  }
 
-          /*TabBarView(
-            controller: _tabController,
-            children: const <Widget>[
-              Center(
-                child: Text("It's cloudy here"),
-              ),
-              Center(
-                child: Text("It's rainy here"),
-              ),
-            ],
-          ),*/
-        ],
-      ),
-    );
+  TabBar _tabBar() {
+    return TabBar(
+          indicatorColor: AppColors.colorByCategoryTitle(category),
+          labelColor: AppColors.colorByCategoryTitle(category),
+          //selected text color
+          unselectedLabelColor: Colors.black,
+          //Unselected text color
+          controller: _tabController,
+          tabs: <Widget>[
+            Tab(
+              text: 'Llibres',
+            ),
+            Tab(
+              text: 'Usuaris',
+            ),
+          ],
+        );
   }
 }

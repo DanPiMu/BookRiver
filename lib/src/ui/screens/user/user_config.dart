@@ -27,62 +27,66 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
           ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              surfaceTintColor: Colors.white,
-              title: Text('Configuració'),
-              centerTitle: true,
-            ),
-            body:Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.pushNamed(context, NavigatorRoutes.editProfileScreen);
-
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Editar perfil'),
-                        Icon(Icons.arrow_forward_ios, color: AppColors.secondary,)
-                      ],
-                    ),
-                  )
-                  ,
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: (){
-                      print('2');
-                      Navigator.pushNamed(context, NavigatorRoutes.editPasswordScreen);
-                    },
-                    child:
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Canviar contrasenya'),
-                        Icon(Icons.arrow_forward_ios, color: AppColors.secondary)
-                      ],
-                    ),
-                  )
-                  ,
-                  Container(
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text('Tancar Sessió'),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
+          _content(context)
         ],
       )
       ;
+  }
+
+  Scaffold _content(BuildContext context) {
+    return Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            surfaceTintColor: Colors.white,
+            title: Text('Configuració'),
+            centerTitle: true,
+          ),
+          body:Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(context, NavigatorRoutes.editProfileScreen);
+
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Editar perfil'),
+                      Icon(Icons.arrow_forward_ios, color: AppColors.secondary,)
+                    ],
+                  ),
+                )
+                ,
+                SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: (){
+                    print('2');
+                    Navigator.pushNamed(context, NavigatorRoutes.editPasswordScreen);
+                  },
+                  child:
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Canviar contrasenya'),
+                      Icon(Icons.arrow_forward_ios, color: AppColors.secondary)
+                    ],
+                  ),
+                )
+                ,
+                Container(
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text('Tancar Sessió'),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
   }
 }

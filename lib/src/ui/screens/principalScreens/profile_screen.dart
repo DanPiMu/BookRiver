@@ -27,94 +27,110 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
           ),
-          Scaffold(
-            backgroundColor: Colors.transparent,
-              appBar: _customAppBar(context),
-              body: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top:30.0, bottom:30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: 130,
-                          width: 130,
-                          decoration: BoxDecoration(
-                              border:Border.all(color: Colors.green),
-                              borderRadius: BorderRadius.circular(60),
-                              color: Colors.black
-                          ),
-                        ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children:[
-                              Text('@Nombre Usuario'),
-                              Row(
-                                children: [
-                                  Icon(Icons.mail, color:AppColors.secondary),
-                                  Text('correo user')
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Icon(Icons.cake, color:AppColors.secondary),
-                                  Text('Fecha de cumpleaños')
-                                ],
-                              )
-                            ]
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left:15, right:15),
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          itemCount: 10,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 1.0,
-                            crossAxisSpacing: 15.0,
-                            mainAxisSpacing: 15.0,
-                          ),
-                          itemBuilder: (context, index) {
-                            return Container(
-                              color: Colors.blue,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.ac_unit),
-                                    Text('data'),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ))
-                ],
-              ),
-              floatingActionButton: FloatingActionButton.extended(
-                  backgroundColor: AppColors.secondary,
-                  onPressed: () {
-                    Navigator.pushNamed(context, NavigatorRoutes.userRatings);
-                  },
-                  label: Text(
-                    'Valoracions',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                  icon: Icon(
-                    Icons.star,
-                    color: Colors.white,
-                  ),
-                  elevation: 1))
+          _content(context)
         ],
       )
       ;
+  }
+
+  Scaffold _content(BuildContext context) {
+    return Scaffold(
+          backgroundColor: Colors.transparent,
+            appBar: _customAppBar(context),
+            body: Column(
+              children: [
+                _userInfo(),
+                _shelvesList()
+              ],
+            ),
+            floatingActionButton: _ratingButton(context));
+  }
+
+  FloatingActionButton _ratingButton(BuildContext context) {
+    return FloatingActionButton.extended(
+              backgroundColor: AppColors.secondary,
+              onPressed: () {
+                Navigator.pushNamed(context, NavigatorRoutes.userRatings);
+              },
+              label: Text(
+                'Valoracions',
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              icon: Icon(
+                Icons.star,
+                color: Colors.white,
+              ),
+              elevation: 1);
+  }
+
+  Expanded _shelvesList() {
+    return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left:15, right:15),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: 10,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1.0,
+                        crossAxisSpacing: 15.0,
+                        mainAxisSpacing: 15.0,
+                      ),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          color: Colors.blue,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.ac_unit),
+                                Text('data'),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ));
+  }
+
+  Padding _userInfo() {
+    return Padding(
+                padding: const EdgeInsets.only(top:30.0, bottom:30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 130,
+                      width: 130,
+                      decoration: BoxDecoration(
+                          border:Border.all(color: Colors.green),
+                          borderRadius: BorderRadius.circular(60),
+                          color: Colors.black
+                      ),
+                    ),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:[
+                          Text('@Nombre Usuario'),
+                          Row(
+                            children: [
+                              Icon(Icons.mail, color:AppColors.secondary),
+                              Text('correo user')
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.cake, color:AppColors.secondary),
+                              Text('Fecha de cumpleaños')
+                            ],
+                          )
+                        ]
+                    )
+                  ],
+                ),
+              );
   }
   _customAppBar(BuildContext context){
     return AppBar(

@@ -221,7 +221,7 @@ _customAppBar(BuildContext context, List<Categories> booksNovetatsList) {
             for (var books in booksNovetatsList) {
               print('con id: ${books.id} y no nomnbre: ${books.nameEs}');
             }
-            //Navigator.pushNamed(context, NavigatorRoutes.searchBook);
+            Navigator.pushNamed(context, NavigatorRoutes.searchBook);
           },
           icon: Icon(
             Icons.search,

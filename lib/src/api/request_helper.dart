@@ -42,9 +42,9 @@ class RequestProvider {
     }
   }
 
-  Future getBookListByCategory(int categoryId) async {
+  Future getBookListByCategory(int categoryId, int orden) async {
     try {
-      dynamic _response = await _apiClient.getBooksListByCategory(categoryId);
+      dynamic _response = await _apiClient.getBooksListByCategory(categoryId, orden);
       if (_response != null){
 
         return _response;
