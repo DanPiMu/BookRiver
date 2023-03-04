@@ -136,6 +136,44 @@ class ApiClient {
         throw ApiException(getRCMessage(_rc), _rc);
     }
   }
+  
+  ///Listado de valoraciones del libro por id categoria
+  getRatingBooksList(int id) async {
+    var _response = await _requestGET(needsAuth: true, path: "${routes["booksRating"]}/$id");
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
+
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
+  postRatingBook(int idBook, int star, String review) async {
+    var _response = await _requestPOST(
+        needsAuth: true, path: "${routes["bookDetail"]}/$idBook?stars=$star&review=$review");
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
 
 
   /// EXEMPLE

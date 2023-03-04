@@ -56,16 +56,37 @@ class RequestProvider {
       ae.printDetails();
     }
   }
-  }
 
 
+  Future getRatingsBookList(int categoryId) async {
+    try {
+      dynamic _response = await _apiClient.getRatingBooksList(categoryId);
+      if (_response != null){
 
-  Future<dynamic> testingRequest() async {
-
-    try{
-      return true;
+        return _response;
+      }else{
+        print('algo ha salido mal');
+      }
     }on ApiException catch(ae){
       rethrow;
+      ae.printDetails();
     }
+  }
+Future postRatingBook(int idBook, int star, String review) async {
+    try {
+      dynamic _response = await _apiClient.postRatingBook(idBook
+        , star, review);
+      if (_response != null){
+
+        return _response;
+      }else{
+        print('algo ha salido mal');
+      }
+    }on ApiException catch(ae){
+      rethrow;
+      ae.printDetails();
     }
+  }
+
+  }
 

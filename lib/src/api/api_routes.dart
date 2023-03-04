@@ -5,4 +5,5 @@ final Map<String, String> routes = {
   "home" :"/home",
   "bookDetail":"/home/books/detail",
   "booksByCategory":"/home/books/category",
+  "booksRating":"/home/books/ratings",
 };

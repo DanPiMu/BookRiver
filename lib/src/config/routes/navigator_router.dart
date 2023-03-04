@@ -1,4 +1,5 @@
 
+import 'package:book_river/src/model/ratings.dart';
 import 'package:book_river/src/ui/screens/book/rating_book.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -61,13 +62,19 @@ class AppRouter {
         });
 
       case NavigatorRoutes.ratingsBook:
+      Book bookId = settings.arguments as Book;
         return MaterialPageRoute(builder: (context){
-          return const RatingsBook();
+          return RatingsBook(
+            bookId: bookId.id!
+          );
         });
 
       case NavigatorRoutes.ratingBook:
+      Book bookRatings = settings.arguments as Book;
         return MaterialPageRoute(builder: (context){
-          return const RatingBook();
+          return RatingBook(
+            bookRating : bookRatings,
+          );
         });
 
       case NavigatorRoutes.profileOtherUser:

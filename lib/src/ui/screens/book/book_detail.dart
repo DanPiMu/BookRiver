@@ -21,7 +21,6 @@ class BookDetail extends StatefulWidget {
 }
 
 class _BookDetailState extends State<BookDetail> {
-
   bool _isLoading = true;
 
   ///El objeto del libro detallado
@@ -49,8 +48,8 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
-    if(_isLoading){
-     return const Center(
+    if (_isLoading) {
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -63,6 +62,9 @@ class _BookDetailState extends State<BookDetail> {
     return Scaffold(
         body: CustomScrollView(slivers: [
           SliverAppBar(
+            leading: IconButton(icon:Icon(Icons.arrow_back) ,onPressed: () {
+              Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
+            },),
             backgroundColor: Colors.transparent,
             collapsedHeight: 70,
             surfaceTintColor: Colors.white,
@@ -73,7 +75,7 @@ class _BookDetailState extends State<BookDetail> {
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: const BoxDecoration(
-                  color:  Color.fromARGB(255, 255, 244, 242),
+                  color: Color.fromARGB(255, 255, 244, 242),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
@@ -116,229 +118,220 @@ class _BookDetailState extends State<BookDetail> {
 
   Align _cartButton() {
     return Align(
-        alignment: Alignment.bottomCenter,
-        child: ElevatedButton(
-          onPressed: () {
-            //Provider.of<NavigationNotifier>(context, listen: false).addToCart(detailedBookById);
-            final snackBar = SnackBar(
-              content: const Text('Libro añadido!'),
-              action: SnackBarAction(
-                label: 'Ir al carrito',
-                onPressed: () {
-                  Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
-                },
-              ),
-            );
+      alignment: Alignment.bottomCenter,
+      child: ElevatedButton(
+        onPressed: () {
+          //Provider.of<NavigationNotifier>(context, listen: false).addToCart(detailedBookById);
+          final snackBar = SnackBar(
+            content: const Text('Libro añadido!'),
+            action: SnackBarAction(
+              label: 'Ir al carrito',
+              onPressed: () {
+                Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
+              },
+            ),
+          );
 
-            // Find the ScaffoldMessenger in the widget tree
-            // and use it to show a SnackBar.
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          // Find the ScaffoldMessenger in the widget tree
+          // and use it to show a SnackBar.
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-            //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
-          },
-          child: Text('A la cistella · ${detailedBookById.price}€'),
-        ),
-      );
+          //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
+        },
+        child: Text('A la cistella · ${detailedBookById.price}€'),
+      ),
+    );
   }
 
   Row _rowButtons() {
     return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        children: [
-                          RawMaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                _isButtonPressedVullLlegir = false;
-                                _isButtonPressedLlegint = false;
-                                _isButtonPressedLlegit =
-                                    !_isButtonPressedLlegit;
-                              });
-                            },
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            child: Icon(
-                              Icons.bookmark_added,
-                              color: _isButtonPressedLlegit
-                                  ? Colors.blue
-                                  : Colors.cyanAccent,
-                              size: 35.0,
-                            ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(
-                              side: BorderSide(
-                                color: _isButtonPressedLlegit
-                                    ? Colors.blue
-                                    : Colors.cyanAccent,
-                              ),
-                            ),
-                          ),
-                          Text('Llegit')
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          RawMaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                _isButtonPressedLlegit = false;
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Column(
+          children: [
+            RawMaterialButton(
+              onPressed: () {
+                setState(() {
+                  _isButtonPressedVullLlegir = false;
+                  _isButtonPressedLlegint = false;
+                  _isButtonPressedLlegit = !_isButtonPressedLlegit;
+                });
+              },
+              elevation: 2.0,
+              fillColor: Colors.white,
+              child: Icon(
+                Icons.bookmark_added,
+                color: _isButtonPressedLlegit ? Colors.blue : Colors.cyanAccent,
+                size: 35.0,
+              ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(
+                side: BorderSide(
+                  color:
+                      _isButtonPressedLlegit ? Colors.blue : Colors.cyanAccent,
+                ),
+              ),
+            ),
+            Text('Llegit')
+          ],
+        ),
+        Column(
+          children: [
+            RawMaterialButton(
+              onPressed: () {
+                setState(() {
+                  _isButtonPressedLlegit = false;
 
-                                _isButtonPressedLlegint = false;
-                                _isButtonPressedVullLlegir =
-                                    !_isButtonPressedVullLlegir;
-                              });
-                            },
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            child: Icon(
-                              Icons.bookmark_add,
-                              color: _isButtonPressedVullLlegir
-                                  ? Colors.blue
-                                  : Colors.cyanAccent,
-                              size: 35.0,
-                            ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(
-                              side: BorderSide(
-                                color: _isButtonPressedVullLlegir
-                                    ? Colors.blue
-                                    : Colors.cyanAccent,
-                              ),
-                            ),
-                          ),
-                          Text('Vull llegir')
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          RawMaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                _isButtonPressedLlegit = false;
-                                _isButtonPressedVullLlegir = false;
-                                _isButtonPressedLlegint =
-                                    !_isButtonPressedLlegint;
-                              });
-                            },
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            child: Icon(
-                              Icons.collections_bookmark,
-                              color: _isButtonPressedLlegint
-                                  ? Colors.blue
-                                  : Colors.cyanAccent,
-                              size: 35.0,
-                            ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(
-                              side: BorderSide(
-                                color: _isButtonPressedLlegint
-                                    ? Colors.blue
-                                    : Colors.cyanAccent,
-                              ),
-                            ),
-                          ),
-                          Text('Llegint')
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          RawMaterialButton(
-                            onPressed: () {
-                              _showDialog();
-                            },
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            child: Icon(
-                              Icons.read_more,
-                              color: Colors.pinkAccent,
-                              size: 35.0,
-                            ),
-                            padding: EdgeInsets.all(15.0),
-                            shape: CircleBorder(),
-                          ),
-                          Text('Més')
-                        ],
-                      )
-                    ],
-                  );
+                  _isButtonPressedLlegint = false;
+                  _isButtonPressedVullLlegir = !_isButtonPressedVullLlegir;
+                });
+              },
+              elevation: 2.0,
+              fillColor: Colors.white,
+              child: Icon(
+                Icons.bookmark_add,
+                color: _isButtonPressedVullLlegir
+                    ? Colors.blue
+                    : Colors.cyanAccent,
+                size: 35.0,
+              ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(
+                side: BorderSide(
+                  color: _isButtonPressedVullLlegir
+                      ? Colors.blue
+                      : Colors.cyanAccent,
+                ),
+              ),
+            ),
+            Text('Vull llegir')
+          ],
+        ),
+        Column(
+          children: [
+            RawMaterialButton(
+              onPressed: () {
+                setState(() {
+                  _isButtonPressedLlegit = false;
+                  _isButtonPressedVullLlegir = false;
+                  _isButtonPressedLlegint = !_isButtonPressedLlegint;
+                });
+              },
+              elevation: 2.0,
+              fillColor: Colors.white,
+              child: Icon(
+                Icons.collections_bookmark,
+                color:
+                    _isButtonPressedLlegint ? Colors.blue : Colors.cyanAccent,
+                size: 35.0,
+              ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(
+                side: BorderSide(
+                  color:
+                      _isButtonPressedLlegint ? Colors.blue : Colors.cyanAccent,
+                ),
+              ),
+            ),
+            Text('Llegint')
+          ],
+        ),
+        Column(
+          children: [
+            RawMaterialButton(
+              onPressed: () {
+                _showDialog();
+              },
+              elevation: 2.0,
+              fillColor: Colors.white,
+              child: Icon(
+                Icons.read_more,
+                color: Colors.pinkAccent,
+                size: 35.0,
+              ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(),
+            ),
+            Text('Més')
+          ],
+        )
+      ],
+    );
   }
 
   CarouselSlider _carouselImage() {
     return CarouselSlider(
-                    options: CarouselOptions(
-                      height: 300,
-                      aspectRatio: 2.0,
-                      enlargeCenterPage: true,
-                    ),
-                    items: detailedBookById.bookImgs?.map((imgUrl) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 5.0),
-                              child:Image.network(imgUrl.img!,
-                          fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                          Object exception, StackTrace? stackTrace) {
-                          return Image.asset('assets/images/portada.jpeg');
-                          },
-                          ),
-                          );
-                              //imgUrl != null ? Image.network(imgUrl.img!): Image.asset('assets/images/portada.jpeg'));
-                        },
-                      );
-                    }).toList(),
-                  );
+      options: CarouselOptions(
+        height: 300,
+        aspectRatio: 2.0,
+        enlargeCenterPage: true,
+      ),
+      items: detailedBookById.bookImgs?.map((imgUrl) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Image.network(
+                imgUrl.img!,
+                fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return Image.asset('assets/images/portada.jpeg');
+                },
+              ),
+            );
+            //imgUrl != null ? Image.network(imgUrl.img!): Image.asset('assets/images/portada.jpeg'));
+          },
+        );
+      }).toList(),
+    );
   }
 
   Row _topBar(double percentage, double rating) {
     return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        width: 80,
-                        height: 50,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              detailedBookById.title!,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            Text(
-                                '${detailedBookById.author} · ${detailedBookById.price}€',
-                                style: TextStyle(color: Colors.black))
-                          ],
-                        ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(right: 5.0, top: 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, NavigatorRoutes.ratingsBook);
-                              //me voy a la otra pagina, para ver las valoraciones del libro actual
-                            },
-                            child: CircularPercentIndicator(
-                              radius: 25.0,
-                              lineWidth: 5.0,
-                              percent: percentage,
-                              center: Text(
-                                "$rating",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12.0,
-                                ),
-                              ),
-                              progressColor: Colors.yellow,
-                            ),
-                          )),
-                    ],
-                  );
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Container(
+          width: 80,
+          height: 50,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: [
+              Text(
+                detailedBookById.title!,
+                style: TextStyle(color: Colors.black),
+              ),
+              Text('${detailedBookById.author} · ${detailedBookById.price}€',
+                  style: TextStyle(color: Colors.black))
+            ],
+          ),
+        ),
+        Padding(
+            padding: const EdgeInsets.only(right: 5.0, top: 20),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, NavigatorRoutes.ratingsBook,
+                    arguments: detailedBookById);
+              },
+              child: CircularPercentIndicator(
+                radius: 25.0,
+                lineWidth: 5.0,
+                percent: percentage,
+                center: Text(
+                  "$rating",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0,
+                  ),
+                ),
+                progressColor: Colors.yellow,
+              ),
+            )),
+      ],
+    );
   }
 
   void _showDialog() {

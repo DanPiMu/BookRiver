@@ -1,13 +1,11 @@
 import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/model/book.dart';
-import 'package:book_river/src/model/categories.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../config/app_colors.dart';
 import '../../../config/routes/navigator_routes.dart';
-import '../../../model/pruebas+/book_prueba.dart';
 
 class ListBookCategory extends StatefulWidget {
    ListBookCategory({Key? key,
