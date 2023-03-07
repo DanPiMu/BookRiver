@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
+import '../../../api/api_exception.dart';
+import '../../../api/request_helper.dart';
 import '../../../config/app_colors.dart';
 import '../../../config/routes/navigator_routes.dart';
+import '../../../model/shelves.dart';
 
 class ShelvesScreen extends StatefulWidget {
   const ShelvesScreen({Key? key}) : super(key: key);
@@ -11,8 +15,44 @@ class ShelvesScreen extends StatefulWidget {
 }
 
 class _ShelvesScreenState extends State<ShelvesScreen> {
+
+  bool _isLoadingShelves = true;
+  List<Shelves> _shelvesList =[];
+  Future<List<Shelves>> readResponseShelvesList () async {
+    try {
+      final data = await RequestProvider().getShelves();
+      List<dynamic> shelvesListData = data['libraries'];
+
+      setState(() {
+        _shelvesList = shelvesListData.map((listData) => Shelves.fromJson(listData)).toList();
+        print('hecho');
+        _isLoadingShelves = false;
+      });
+
+      return _shelvesList;
+
+    } on ApiException catch(ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+
+    } catch(e) {
+      print('Problemillas');
+      rethrow;
+    }
+  }
+  @override
+  void initState() {
+    readResponseShelvesList();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    if(_isLoadingShelves){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return _content(context);
   }
 
@@ -30,7 +70,7 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
     return GridView.builder(
         //physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: 5,
+        itemCount: _shelvesList.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1.0,
@@ -42,12 +82,12 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
               onTap: () {
                 Navigator.pushNamed(context, NavigatorRoutes.detailShelves);
               },
-              child: _shelveItem());
+              child: _shelveItem(index));
         },
       );
   }
 
-  Container _shelveItem() {
+  Container _shelveItem(int index) {
     return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -57,8 +97,17 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.ac_unit),
-                        Text('data'),
+                        Image.network(_shelvesList[index].img.toString(),
+                            fit: BoxFit.cover, errorBuilder: (BuildContext context,
+                                Object exception, StackTrace? stackTrace) {
+                              return Icon(Icons.book);
+                            }),
+                        Text(_shelvesList[index].name!),
+                        Row(
+                          children: [
+
+                          ],
+                        )
                       ],
                     ),
                   ),
