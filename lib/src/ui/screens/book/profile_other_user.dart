@@ -1,16 +1,54 @@
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../../api/api_exception.dart';
+import '../../../api/request_helper.dart';
+import '../../../model/User.dart';
+
 class ProfileOtherUser extends StatefulWidget {
-  const ProfileOtherUser({Key? key}) : super(key: key);
+
+  ProfileOtherUser({Key? key, required int this.userID}) : super(key: key);
+
+  int userID;
 
   @override
   State<ProfileOtherUser> createState() => _ProfileOtherUserState();
 }
 
 class _ProfileOtherUserState extends State<ProfileOtherUser> {
+  bool _isLoading = true;
+
+  late User publicUser;
+
+  Future<void> _otherUserById() async {
+    try{
+      final data = await RequestProvider().getOtheruser(widget.userID);
+      publicUser = User.fromJson(data[0]);
+      setState(() {
+        _isLoading = false;
+      });
+    } on ApiException catch(ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+
+    } catch(e) {
+      print('Problemillas');
+      rethrow;
+    }
+  }
+  @override
+  void initState() {
+    _otherUserById();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return
       Stack(
         children: [
@@ -58,7 +96,8 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
     return SizedBox(
                 height: 220,
                 //decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-                child: Column(
+                child:
+                Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top:10.0),
@@ -67,15 +106,25 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
                         height: 160,
                         width: 160,
                         decoration: BoxDecoration(
-                            color: Colors.green,
                             borderRadius: BorderRadius.circular(100)
+                        ),
+                        child: Image.network(
+                          publicUser.userImg.toString(),
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return  CircleAvatar(
+                              backgroundImage: AssetImage('assets/images/pepe.jpeg'),
+                            );
+
+                          },
                         ),
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top:10.0),
-                    child: Text('@Username', style: TextStyle(
+                    child: Text('@${publicUser.username!}', style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18
                     ),),
@@ -89,10 +138,14 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
     return Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left:15, right:15),
-                    child: GridView.builder(
+                    child: publicUser.libraries.isEmpty ? Text('No tiene librerias publicas',textAlign: TextAlign.center, style: TextStyle(
+                      fontSize: 30,
+                    ),):
+
+                    GridView.builder(
                       //physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: 10,
+                      itemCount: publicUser.libraries.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 1.0,
@@ -106,8 +159,8 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.ac_unit),
-                                Text('data'),
+                                Icon(Icons.person),
+                                Text(publicUser.libraries[index].name!),
                               ],
                             ),
                           ),

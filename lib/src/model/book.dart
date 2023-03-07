@@ -1,3 +1,5 @@
+import 'package:book_river/src/model/ratings.dart';
+
 import 'categories.dart';
 
 class Book {
@@ -14,6 +16,7 @@ class Book {
   List<Categories> categories = [];
 
 
+
   Book(
       this.id,
       this.title,
@@ -25,7 +28,7 @@ class Book {
       this.updatedAt,
       this.caratula,
       this.bookImgs,
-      this.categories);
+      this.categories,);
 
   Book.fromJson(Map<String, dynamic> json) {
     id = json['id'];

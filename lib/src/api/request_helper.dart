@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:book_river/src/api/api_exception.dart';
@@ -17,13 +15,12 @@ class RequestProvider {
   Future getBooks() async {
     try {
       dynamic _response = await _apiClient.booksHome();
-      if (_response != null){
-
+      if (_response != null) {
         return _response;
-      }else{
+      } else {
         print('algo ha salido mal');
       }
-    }on ApiException catch(ae){
+    } on ApiException catch (ae) {
       ae.printDetails();
     }
   }
@@ -31,62 +28,97 @@ class RequestProvider {
   Future getBookById(int bookId) async {
     try {
       dynamic _response = await _apiClient.getBookById(bookId);
-      if (_response != null){
-
+      if (_response != null) {
         return _response;
-      }else{
+      } else {
         print('algo ha salido mal');
       }
-    }on ApiException catch(ae){
+    } on ApiException catch (ae) {
       ae.printDetails();
     }
   }
 
   Future getBookListByCategory(int categoryId, int orden) async {
     try {
-      dynamic _response = await _apiClient.getBooksListByCategory(categoryId, orden);
-      if (_response != null){
-
+      dynamic _response =
+          await _apiClient.getBooksListByCategory(categoryId, orden);
+      if (_response != null) {
         return _response;
-      }else{
+      } else {
         print('algo ha salido mal');
       }
-    }on ApiException catch(ae){
+    } on ApiException catch (ae) {
       rethrow;
       ae.printDetails();
     }
   }
-
 
   Future getRatingsBookList(int categoryId) async {
     try {
       dynamic _response = await _apiClient.getRatingBooksList(categoryId);
-      if (_response != null){
-
+      if (_response != null) {
         return _response;
-      }else{
+      } else {
         print('algo ha salido mal');
       }
-    }on ApiException catch(ae){
+    } on ApiException catch (ae) {
       rethrow;
       ae.printDetails();
     }
   }
-Future postRatingBook(int idBook, int star, String review) async {
+
+  Future postRatingBook(int idBook, int star, String review) async {
     try {
-      dynamic _response = await _apiClient.postRatingBook(idBook
-        , star, review);
-      if (_response != null){
-
+      dynamic _response = await _apiClient.postRatingBook(idBook, star, review);
+      if (_response != null) {
         return _response;
-      }else{
+      } else {
         print('algo ha salido mal');
       }
-    }on ApiException catch(ae){
+    } on ApiException catch (ae) {
       rethrow;
       ae.printDetails();
     }
   }
 
+  Future getOtheruser(int userID) async {
+    try {
+      dynamic _response = await _apiClient.getInfoOtherUser(userID);
+      if (_response != null) {
+        return _response;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
+    }
   }
 
+  Future getShelves() async {
+    try {
+      dynamic _response = await _apiClient.getShelves();
+      if (_response != null) {
+        return _response;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
+    }
+  }
+  Future postShelvesBook(int idBook, int idShelves) async {
+    try {
+      dynamic _response = await _apiClient.postShelvesBook(idBook, idShelves);
+      if (_response != null) {
+        return _response;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
+    }
+  }
+}

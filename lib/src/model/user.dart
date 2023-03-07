@@ -1,3 +1,8 @@
+import 'package:book_river/src/model/ratings.dart';
+
+import 'book.dart';
+import 'shelves.dart';
+
 class User {
   int? id;
   String? username;
@@ -5,6 +10,8 @@ class User {
   String? birthDate;
   String? userImg;
   String? createdAt;
+  List<Ratings>? ratings;
+  List<Shelves> libraries = [];
 
   User(
       {this.id,
@@ -12,7 +19,7 @@ class User {
         this.email,
         this.birthDate,
         this.userImg,
-        this.createdAt});
+        this.createdAt, this.ratings, required this.libraries});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -21,6 +28,18 @@ class User {
     birthDate = json['birth_date'];
     userImg = json['user_img'];
     createdAt = json['created_at'];
+    if (json['ratings'] != null) {
+      ratings = <Ratings>[];
+      json['ratings'].forEach((v) {
+        ratings?.add(new Ratings.fromJson(v));
+      });
+    }
+    if (json['libraries'] != null) {
+      libraries = <Shelves>[];
+      json['libraries'].forEach((v) {
+        libraries.add(new Shelves.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {

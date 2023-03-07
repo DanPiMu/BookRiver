@@ -100,7 +100,7 @@ class _RatingsBookState extends State<RatingsBook> {
               (context, index) => GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
-                      context, NavigatorRoutes.profileOtherUser, arguments: _booksRatingsList[0].book!.id);
+                      context, NavigatorRoutes.profileOtherUser, arguments: _booksRatingsList[index].user);
                 },
                 child: _ratingUserItem(index),
               ),
@@ -140,7 +140,15 @@ class _RatingsBookState extends State<RatingsBook> {
           Container(
             height: 50,
             width: 50,
-            color: Colors.green,
+            child:
+            Image.network(
+              _booksRatingsList[index].user!.userImg.toString(),
+              fit: BoxFit.cover,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return Image.asset('assets/images/portada2.jpeg', fit: BoxFit.cover,);
+              },
+            ),
           ),
           Flexible(
               child: Padding(

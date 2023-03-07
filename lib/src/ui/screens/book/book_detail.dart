@@ -1,9 +1,10 @@
 import 'package:book_river/src/model/book.dart';
+import 'package:book_river/src/model/shelves.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:provider/provider.dart';
 
+import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
 import '../../../config/routes/navigator_routes.dart';
 
@@ -22,33 +23,117 @@ class BookDetail extends StatefulWidget {
 
 class _BookDetailState extends State<BookDetail> {
   bool _isLoading = true;
+  bool _isLoadingShelves = true;
 
   ///El objeto del libro detallado
   late Book detailedBookById;
 
   int? _selectedOption;
 
+  int? idShelves;
+
   bool _isButtonPressedLlegit = false;
   bool _isButtonPressedVullLlegir = false;
   bool _isButtonPressedLlegint = false;
 
+  List<Shelves> _shelvesList =[];
+  Future<List<Shelves>> readResponseShelvesList () async {
+    try {
+      final data = await RequestProvider().getShelves();
+      List<dynamic> shelvesListData = data['libraries'];
+
+      setState(() {
+        _shelvesList = shelvesListData.map((listData) => Shelves.fromJson(listData)).toList();
+        print('hecho');
+        _isLoadingShelves = false;
+      });
+
+      return _shelvesList;
+
+    } on ApiException catch(ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+
+    } catch(e) {
+      print('Problemillas');
+      rethrow;
+    }
+  }
   Future<void> _bookById() async {
-    final data = await RequestProvider().getBookById(widget.bookId);
-    detailedBookById = Book.fromJson(data[0]);
-    setState(() {
-      _isLoading = false;
-    });
+    try{
+      final data = await RequestProvider().getBookById(widget.bookId);
+      detailedBookById = Book.fromJson(data[0]);
+      setState(() {
+        _isLoading = false;
+      });
+    } on ApiException catch(ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+
+    } catch(e) {
+      print('Problemillas');
+      rethrow;
+    }
+  }
+  Future<void> _addBookToShelves() async {
+    try{
+      await RequestProvider().postShelvesBook(widget.bookId, idShelves!);
+      //detailedBookById = Book.fromJson(data[0]);
+
+    } on ApiException catch(ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+
+    } catch(e) {
+      print('Problemillas');
+      rethrow;
+    }
+  }
+
+  bool _inTheLibrary(){
+    bool bookFound = true;
+    for(Book book in _shelvesList[0].books){
+      if(book.id == detailedBookById.id){
+        return true;
+      } bookFound = false;
+
+    }
+    return bookFound;
+  }
+  bool _inTheLibrary1(){
+    bool bookFound = true;
+    for(Book book in _shelvesList[1].books){
+      if(book.id == detailedBookById.id){
+        return true;
+      } bookFound = false;
+
+    }
+    return bookFound;
+  }
+  bool _inTheLibrary2(){
+    bool bookFound = true;
+    for(Book book in _shelvesList[2].books){
+      if(book.id == detailedBookById.id){
+        return true;
+      } bookFound = false;
+
+    }
+    return bookFound;
   }
 
   @override
   void initState() {
     super.initState();
     _bookById();
+    readResponseShelvesList();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
+    if (_isLoading  && _isLoadingShelves) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -115,30 +200,33 @@ class _BookDetailState extends State<BookDetail> {
         ]),
         floatingActionButton: _cartButton());
   }
+//TOD: slivertoboxadapter
+  Widget _cartButton() {
+    return Container(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ElevatedButton(
+          onPressed: () {
 
-  Align _cartButton() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: ElevatedButton(
-        onPressed: () {
-          //Provider.of<NavigationNotifier>(context, listen: false).addToCart(detailedBookById);
-          final snackBar = SnackBar(
-            content: const Text('Libro añadido!'),
-            action: SnackBarAction(
-              label: 'Ir al carrito',
-              onPressed: () {
-                Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
-              },
-            ),
-          );
+            //Provider.of<NavigationNotifier>(context, listen: false).addToCart(detailedBookById);
+            final snackBar = SnackBar(
+              content: const Text('Libro añadido!'),
+              action: SnackBarAction(
+                label: 'Ir al carrito',
+                onPressed: () {
+                  Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
+                },
+              ),
+            );
 
-          // Find the ScaffoldMessenger in the widget tree
-          // and use it to show a SnackBar.
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            // Find the ScaffoldMessenger in the widget tree
+            // and use it to show a SnackBar.
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-          //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
-        },
-        child: Text('A la cistella · ${detailedBookById.price}€'),
+            //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
+          },
+          child: Text('A la cistella · ${detailedBookById.price}€'),
+        ),
       ),
     );
   }
@@ -151,7 +239,10 @@ class _BookDetailState extends State<BookDetail> {
           children: [
             RawMaterialButton(
               onPressed: () {
+                idShelves = _shelvesList[2].id;
+                _addBookToShelves();
                 setState(() {
+
                   _isButtonPressedVullLlegir = false;
                   _isButtonPressedLlegint = false;
                   _isButtonPressedLlegit = !_isButtonPressedLlegit;
@@ -161,14 +252,14 @@ class _BookDetailState extends State<BookDetail> {
               fillColor: Colors.white,
               child: Icon(
                 Icons.bookmark_added,
-                color: _isButtonPressedLlegit ? Colors.blue : Colors.cyanAccent,
+                color: _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
                 size: 35.0,
               ),
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(
                 side: BorderSide(
                   color:
-                      _isButtonPressedLlegit ? Colors.blue : Colors.cyanAccent,
+                      _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
                 ),
               ),
             ),
@@ -179,9 +270,11 @@ class _BookDetailState extends State<BookDetail> {
           children: [
             RawMaterialButton(
               onPressed: () {
+                idShelves = _shelvesList[0].id;
+                _addBookToShelves();
+
                 setState(() {
                   _isButtonPressedLlegit = false;
-
                   _isButtonPressedLlegint = false;
                   _isButtonPressedVullLlegir = !_isButtonPressedVullLlegir;
                 });
@@ -190,7 +283,7 @@ class _BookDetailState extends State<BookDetail> {
               fillColor: Colors.white,
               child: Icon(
                 Icons.bookmark_add,
-                color: _isButtonPressedVullLlegir
+                color: _inTheLibrary()
                     ? Colors.blue
                     : Colors.cyanAccent,
                 size: 35.0,
@@ -198,7 +291,7 @@ class _BookDetailState extends State<BookDetail> {
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(
                 side: BorderSide(
-                  color: _isButtonPressedVullLlegir
+                  color: _inTheLibrary()
                       ? Colors.blue
                       : Colors.cyanAccent,
                 ),
@@ -211,6 +304,9 @@ class _BookDetailState extends State<BookDetail> {
           children: [
             RawMaterialButton(
               onPressed: () {
+                idShelves = _shelvesList[1].id;
+                _addBookToShelves();
+
                 setState(() {
                   _isButtonPressedLlegit = false;
                   _isButtonPressedVullLlegir = false;
@@ -222,14 +318,14 @@ class _BookDetailState extends State<BookDetail> {
               child: Icon(
                 Icons.collections_bookmark,
                 color:
-                    _isButtonPressedLlegint ? Colors.blue : Colors.cyanAccent,
+                _inTheLibrary1() ? Colors.blue : Colors.cyanAccent,
                 size: 35.0,
               ),
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(
                 side: BorderSide(
                   color:
-                      _isButtonPressedLlegint ? Colors.blue : Colors.cyanAccent,
+                      _inTheLibrary1() ? Colors.blue : Colors.cyanAccent,
                 ),
               ),
             ),
@@ -288,52 +384,59 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
 
-  Row _topBar(double percentage, double rating) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-          width: 80,
-          height: 50,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Column(
-            children: [
-              Text(
-                detailedBookById.title!,
-                style: TextStyle(color: Colors.black),
-              ),
-              Text('${detailedBookById.author} · ${detailedBookById.price}€',
-                  style: TextStyle(color: Colors.black))
-            ],
-          ),
-        ),
-        Padding(
-            padding: const EdgeInsets.only(right: 5.0, top: 20),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, NavigatorRoutes.ratingsBook,
-                    arguments: detailedBookById);
-              },
-              child: CircularPercentIndicator(
-                radius: 25.0,
-                lineWidth: 5.0,
-                percent: percentage,
-                center: Text(
-                  "$rating",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12.0,
-                  ),
+  Widget _topBar(double percentage, double rating) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Stack(
+        alignment: Alignment.center,
+       // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // Container(
+          //   width: 80,
+          //   height: 50,
+          // ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              children: [
+                Text(
+                  detailedBookById.title!,
+                  style: TextStyle(color: Colors.black),
                 ),
-                progressColor: Colors.yellow,
-              ),
-            )),
-      ],
+                Text('${detailedBookById.author} · ${detailedBookById.price}€',
+                    style: TextStyle(color: Colors.black))
+              ],
+            ),
+          ),
+          Positioned(
+            right:10,
+            child: Padding(
+                padding: const EdgeInsets.only(right: 5.0, top: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, NavigatorRoutes.ratingsBook,
+                        arguments: detailedBookById);
+                  },
+                  child: CircularPercentIndicator(
+                    radius: 25.0,
+                    lineWidth: 5.0,
+                    percent: percentage,
+                    center: Text(
+                      "$rating",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                    progressColor: Colors.yellow,
+                  ),
+                )),
+          ),
+        ],
+      ),
     );
   }
-
+//TODO: checkbox
   void _showDialog() {
     showDialog(
       context: context,

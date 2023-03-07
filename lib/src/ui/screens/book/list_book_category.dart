@@ -26,7 +26,6 @@ class _ListBookCategoryState extends State<ListBookCategory> {
   List<Book> _bookListByCategory =[];
 
 Future<List<Book>> readResponseBookList (int category) async {
-    
     try {
       final data = await RequestProvider().getBookListByCategory(widget.bookIdCategory,category);
       List<dynamic> bookListData = data;
@@ -40,15 +39,13 @@ Future<List<Book>> readResponseBookList (int category) async {
       
     } on ApiException catch(ae) {
       ae.printDetails();
-      //esto en una snakbar
-      print(ae.message);
-      
-      throw ae; // lanzar la excepción de nuevo para manejarla en otro lugar si es necesario
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+
     } catch(e) {
-      print('asfklsadjflkasjdfñlaksflaskdj');
-      throw e; // lanzar la excepción de nuevo para manejarla en otro lugar si es necesario
+      print('Problemillas');
+      rethrow;
     }
-  
   }
 
   

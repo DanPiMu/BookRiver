@@ -9,9 +9,6 @@ class Ratings {
   Book? book;
   String? createdAt;
 
-  Ratings(
-      {this.id, this.stars, this.review, this.user, this.book, this.createdAt});
-
   Ratings.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     stars = json['stars'];

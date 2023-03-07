@@ -178,6 +178,8 @@ class _LogInState extends State<LogIn> {
                 const SizedBox(
                   height: 20,
                 ),
+
+                //TODO: widget de contraseña
                 TextFormField(
                   obscureText: true,
                   obscuringCharacter: "*",

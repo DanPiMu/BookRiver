@@ -2,6 +2,7 @@ import 'package:book_river/src/api/request_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../../api/api_exception.dart';
 import '../../../config/app_colors.dart';
 import '../../../config/routes/navigator_routes.dart';
 import '../../../model/book.dart';
@@ -89,10 +90,20 @@ class _RatingBookState extends State<RatingBook> {
               _bookComment(),
               ElevatedButton(
                 onPressed: () async {
-                  await RequestProvider().postRatingBook(
-                      widget.bookRating.id!, _rating, myController.text);
-                  Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
-                      arguments: widget.bookRating);
+                  try{
+                    await RequestProvider().postRatingBook(
+                        widget.bookRating.id!, _rating, myController.text);
+                    Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
+                        arguments: widget.bookRating);
+                  } on ApiException catch(ae) {
+                    ae.printDetails();
+                    SnackBar(content: Text(ae.message!));
+                    rethrow;
+
+                  } catch(e) {
+                    print('Problemillas');
+                    rethrow;
+                  }
                 },
                 child: Text('Valorar'),
               )

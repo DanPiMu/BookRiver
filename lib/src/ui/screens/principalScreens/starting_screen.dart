@@ -1,3 +1,4 @@
+import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/config/routes/navigator_routes.dart';
 import 'package:book_river/src/model/book.dart';
@@ -24,14 +25,25 @@ class _StartingScreenState extends State<StartingScreen> {
   List<Book> _booksNovetatsList = [];
 
   Future<void> readResponseBooks() async {
-    final data = await RequestProvider().getBooks();
+    try{
+      final data = await RequestProvider().getBooks();
 
-    List<dynamic> bookListData = data['data']['books'];
-    _booksNovetatsList =
-        bookListData.map((bookData) => Book.fromJson(bookData)).toList();
-    setState(() {
-      novetatLoading = false;
-    });
+      List<dynamic> bookListData = data['data']['books'];
+      _booksNovetatsList =
+          bookListData.map((bookData) => Book.fromJson(bookData)).toList();
+      setState(() {
+        novetatLoading = false;
+      });
+    } on ApiException catch(ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+
+    } catch(e) {
+      print('Problemillas');
+      rethrow;
+    }
+
   }
 
   //Categories
@@ -39,6 +51,7 @@ class _StartingScreenState extends State<StartingScreen> {
 
   Future<void> readResponseCategory() async {
     final data = await RequestProvider().getBooks();
+
     List<dynamic> categoryListData = data['data']['categories'];
     _categoriesList = categoryListData
         .map((categoryData) => Categories.fromJson(categoryData))
@@ -57,7 +70,7 @@ class _StartingScreenState extends State<StartingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return novetatLoading && categoryLoading == false
+    return novetatLoading && categoryLoading
         ? const Center(
             child: CircularProgressIndicator(),
           )

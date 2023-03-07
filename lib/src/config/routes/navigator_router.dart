@@ -1,4 +1,5 @@
 
+import 'package:book_river/src/model/User.dart';
 import 'package:book_river/src/model/ratings.dart';
 import 'package:book_river/src/ui/screens/book/rating_book.dart';
 import 'package:flutter/foundation.dart';
@@ -78,8 +79,11 @@ class AppRouter {
         });
 
       case NavigatorRoutes.profileOtherUser:
+        User userID = settings.arguments as User;
         return MaterialPageRoute(builder: (context){
-          return const ProfileOtherUser();
+          return ProfileOtherUser(
+            userID: userID.id!
+          );
         });
 
       case NavigatorRoutes.listBookCategory:

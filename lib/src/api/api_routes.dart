@@ -6,4 +6,7 @@ final Map<String, String> routes = {
   "bookDetail":"/home/books/detail",
   "booksByCategory":"/home/books/category",
   "booksRating":"/home/books/ratings",
+  "publicUser":"/home/user/perfil/public",
+  "getShelves": "/home/libraries",
+  "addDefaultShelves":"/home/books/addLibrary",
 };
