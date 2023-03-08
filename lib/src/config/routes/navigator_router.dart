@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../model/book.dart';
 import '../../model/categories.dart';
+import '../../model/shelves.dart';
 import '../../ui/screens/book/book_detail.dart';
 import '../../ui/screens/book/list_book_category.dart';
 import '../../ui/screens/book/profile_other_user.dart';
@@ -105,8 +106,11 @@ class AppRouter {
         });
 
       case NavigatorRoutes.detailShelves:
+        Shelves shelvesId = settings.arguments as Shelves;
         return MaterialPageRoute(builder: (context){
-          return const DetailShelves();
+          return DetailShelves(
+            shelvesId: shelvesId.id!,
+          );
         });
 
       case NavigatorRoutes.editShelves:

@@ -121,4 +121,32 @@ class RequestProvider {
       ae.printDetails();
     }
   }
+  static Future<bool> addNewShelves(Map<String, dynamic> params) async {
+    try{
+      dynamic _response = await ApiClient().postNewShelves(params);
+      if(_response != null){
+
+        return true;
+      }
+      return false;
+
+    }on ApiException catch(ae){
+      ae.printDetails();
+    }
+    return false;
+  }
+  ///Obtenemos estanteria por id
+  Future getShelvesById(int shelveID) async {
+    try {
+      dynamic _response = await _apiClient.getShelvesById(shelveID);
+      if (_response != null) {
+        return _response;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
+    }
+  }
 }

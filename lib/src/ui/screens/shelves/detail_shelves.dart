@@ -1,122 +1,69 @@
+import 'package:book_river/src/model/shelves.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../../api/api_exception.dart';
+import '../../../api/request_helper.dart';
 import '../../../config/app_colors.dart';
 import '../../../config/routes/navigator_routes.dart';
 import '../../../model/pruebas+/book_prueba.dart';
 
 class DetailShelves extends StatefulWidget {
-  const DetailShelves({Key? key}) : super(key: key);
 
+  DetailShelves( {Key? key,required int this.shelvesId}) : super(key: key);
+
+  int shelvesId;
   @override
   State<DetailShelves> createState() => _DetailShelvesState();
 }
 
 class _DetailShelvesState extends State<DetailShelves> {
-  bool isPublic = false;
-  List<BookPrueba> books = [
-    BookPrueba(
-        1,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpg",
-        ],
-        "Aventura 1",
-        "MisCoyo",
-        "Aventura",
-        "a",
-        5,
-        5.0),
-    BookPrueba(
-        2,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Aventura 2",
-        "Pepe",
-        "Aventura",
-        "a",
-        4,
-        4.0),
-    BookPrueba(
-        3,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Aventura 3",
-        "Antonio",
-        "Fantasia",
-        "a",
-        6,
-        1.0),
-    BookPrueba(
-        4,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Mi cuarto libro",
-        "Armando",
-        "Fantasia",
-        "a",
-        1,
-        2.0),
-    BookPrueba(
-        5,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Granjero",
-        "Julio",
-        "Accion",
-        "Accion",
-        2,
-        1.0),
-    BookPrueba(
-        6,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "Panadero",
-        "Ayahuasca",
-        "Accion",
-        "Accion",
-        3,
-        3.0),
-    BookPrueba(
-        7,
-        [
-          "assets/images/portada.jpeg",
-          "assets/images/portada1.jpg",
-          "assets/images/portada2.jpeg"
-        ],
-        "El ingles se eneseña mal",
-        "Martin",
-        "Misterio",
-        "a",
-        10,
-        5.0),
-  ];
+  late Shelves shelvesObject;
+  late bool isPublic;
+  bool _isLoading = true;
+
+  Future<void> _shelvesById() async {
+    try{
+      final data = await RequestProvider().getShelvesById(widget.shelvesId);
+      shelvesObject = Shelves.fromJson(data);
+      setState(() {
+        _isLoading = false;
+        if(shelvesObject.privacity ==1){
+          isPublic = true;
+        }else{
+          isPublic =false;
+        }
+      });
+    } on ApiException catch(ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+
+    } catch(e) {
+      print('Problemillas');
+      rethrow;
+    }
+  }
+  @override
+  void initState() {
+    _shelvesById();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if(_isLoading){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return _content(context);
   }
 
   Scaffold _content(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Misteri'),
+        title: Text(shelvesObject.name!),
         centerTitle: true,
         actions: [
           IconButton(onPressed: (){
@@ -139,9 +86,7 @@ class _DetailShelvesState extends State<DetailShelves> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                    child: Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')),
-              ),
+                    child: Text(shelvesObject.description!))),
               Text(
                 'Llibres',
                 style: TextStyle(color: AppColors.tertiary, fontSize: 20),
@@ -164,10 +109,7 @@ class _DetailShelvesState extends State<DetailShelves> {
                       activeColor: AppColors.tertiary,
                       value: isPublic,
                       onChanged: (value) {
-                        setState(() {
-                          isPublic = value;
-                          print(isPublic);
-                        });
+
                       },
                     ),
                   ],
@@ -178,17 +120,24 @@ class _DetailShelvesState extends State<DetailShelves> {
   ListView _bookList() {
     return ListView.builder(
                 shrinkWrap: true,
-                itemCount: books.length,
+                itemCount: shelvesObject.books.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                      leading: Image.asset(books[index].img[0]),
-                      title: Text(books[index].title),
-                      subtitle: Text('Precio: €${books[index].price}'),
+                      leading:Image.network(
+                        shelvesObject.books[index].caratula![0].img!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Image.asset('assets/images/portada.jpeg');
+                        },
+                      ),
+                      title: Text(shelvesObject.books[index].title!),
+                      subtitle: Text('Precio: €${shelvesObject.books[index].price}'),
                       trailing: CircularPercentIndicator(
                         radius: 20.0,
                         lineWidth: 3.0,
-                        percent: books[index].rating / 5,
-                        center: Text("${books[index].rating}",
+                        percent: shelvesObject.books[index].avgRating! / 5,
+                        center: Text("${shelvesObject.books[index].avgRating}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13.0,

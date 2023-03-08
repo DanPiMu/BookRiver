@@ -63,7 +63,7 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
         padding: const EdgeInsets.all(13.0),
         child: _shelveList(),
       ),
-      floatingActionButton: _addButton(context));
+      floatingActionButton: _addShelvesButton(context));
   }
 
   GridView _shelveList() {
@@ -80,45 +80,55 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
         itemBuilder: (context, index) {
           return GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, NavigatorRoutes.detailShelves);
+                print('111111111');
+                //Navigator.pushNamed(context, NavigatorRoutes.detailShelves);
               },
               child: _shelveItem(index));
         },
       );
   }
 
-  Container _shelveItem(int index) {
-    return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.blue,
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(_shelvesList[index].img.toString(),
-                            fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                                Object exception, StackTrace? stackTrace) {
-                              return Icon(Icons.book);
-                            }),
-                        Text(_shelvesList[index].name!),
-                        Row(
-                          children: [
+  Widget _shelveItem(int index) {
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(context, NavigatorRoutes.detailShelves, arguments: _shelvesList[index]);
+      },
+      child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.blue,
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.network(_shelvesList[index].img.toString(),
+                              fit: BoxFit.cover, errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return Icon(Icons.book);
+                              }),
+                          Text(_shelvesList[index].name!),
+                          Row(
+                            children: [
 
-                          ],
-                        )
-                      ],
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                );
+    );
   }
 
-  FloatingActionButton _addButton(BuildContext context) {
+  FloatingActionButton _addShelvesButton(BuildContext context) {
     return FloatingActionButton.extended(
           backgroundColor: AppColors.secondaryCake,
           onPressed: () {
-            Navigator.pushNamed(context, NavigatorRoutes.addShelves);
+            Navigator.pushNamed(context, NavigatorRoutes.addShelves).then((_){
+              setState(() {
+                readResponseShelvesList();
+              });
+            });
           },
           label: Text(
             'Afegir',
