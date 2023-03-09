@@ -149,4 +149,33 @@ class RequestProvider {
       ae.printDetails();
     }
   }
+  static Future<bool> updateShelves(Map<String, dynamic> params, int idShelves) async {
+    try{
+      dynamic _response = await ApiClient().postUpdateShelves(params, idShelves);
+      if(_response != null){
+
+        return true;
+      }
+      return false;
+
+    }on ApiException catch(ae){
+      ae.printDetails();
+    }
+    return false;
+  }
+  Future getUser() async {
+    try {
+      dynamic _response = await _apiClient.getUser();
+      if (_response != null) {
+        return _response;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
+    }
+  }
+
+
 }

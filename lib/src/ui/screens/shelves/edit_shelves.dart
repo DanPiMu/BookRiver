@@ -1,168 +1,263 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../api/api_exception.dart';
+import '../../../api/request_helper.dart';
 import '../../../config/app_colors.dart';
+import '../../../model/shelves.dart';
 
 class EditShelves extends StatefulWidget {
-  const EditShelves({Key? key}) : super(key: key);
+  EditShelves({Key? key, required Shelves this.shelvesId}) : super(key: key);
+
+  Shelves shelvesId;
 
   @override
   State<EditShelves> createState() => _EditShelvesState();
 }
 
 class _EditShelvesState extends State<EditShelves> {
-  bool isPublic = false;
+  final _formKey = GlobalKey<FormState>();
+
+  late bool isPublicBool;
+
+  publicShelve() {
+    if (widget.shelvesId.privacity == 1) {
+      isPublicBool = true;
+    } else {
+      isPublicBool = false;
+    }
+  }
+
+  //0 si es privada y 1 si es publica
+  int isPublic = 0;
+
+  publicCheck() {
+    if (isPublicBool == true) {
+      print('Es publica');
+      isPublic = 1;
+    } else {
+      print('No es publica');
+      isPublic = 0;
+    }
+  }
+
+  Future<bool> _updateShelves() async {
+    try {
+      bool aux = await RequestProvider.updateShelves({
+        "name": _nameController.text,
+        "description": _descriptionController.text,
+        "privacity": isPublic
+      },widget.shelvesId.id!);
+      return aux;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
+
+  File? image;
+
+  Future pickImage() async {
+    try {
+      var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() {
+        this.image = imageTemp;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future pickImageC() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    publicShelve();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return
-      Stack(
-        children: [
-          Container(
-            color: Colors.white,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-          ),
-          Image.asset(
-            "assets/images/fondo_2.png",
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
-          _content(context)
-        ],
-      )
-      ;
+    return Stack(
+      children: [
+        Container(
+          color: Colors.white,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        ),
+        Image.asset(
+          "assets/images/fondo_2.png",
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+        ),
+        _content(context)
+      ],
+    );
   }
 
   Scaffold _content(BuildContext context) {
     return Scaffold(
-          backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              surfaceTintColor: Colors.white,
-              backgroundColor: Color.fromARGB(0, 0, 0, 0),
-              title: Text('Edita aquesta prestatgeria'),
-              centerTitle: true,
-              actions: [
-                Icon(Icons.delete)
-              ],
-            ),
-            body:
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  _imgShelve(),
-                  _nameAndDescription(),
-                  _statusShelve(),
-                  Text('*Tots els usuarios que visitin el teu perfil veuràn aquesta prestatgeria',style: TextStyle(
-                      fontSize: 10, color: AppColors.secondary
-                  ),),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  _saveChanges(context)
-                ],
-              ),)
-        );
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          surfaceTintColor: Colors.white,
+          backgroundColor: Color.fromARGB(0, 0, 0, 0),
+          title: Text('Edita aquesta prestatgeria'),
+          centerTitle: true,
+          actions: [Icon(Icons.delete)],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              _imgShelve(),
+              _nameAndDescription(),
+              _statusShelve(),
+              Text(
+                '*Tots els usuarios que visitin el teu perfil veuràn aquesta prestatgeria',
+                style: TextStyle(fontSize: 10, color: AppColors.secondary),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              _saveChanges(context)
+            ],
+          ),
+        ));
   }
 
   ElevatedButton _saveChanges(BuildContext context) {
     return ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Desa els canvis'));
+        onPressed: () async {
+          if (_formKey.currentState!.validate()) {
+            bool aux = await _updateShelves();
+            if (aux) {
+              Navigator.pop(context);
+            } else {
+              SnackBar(content: Text("No se actualiza"));
+              print("No se actualiza");
+            }
+          }
+        },
+        child: const Text('Desa els canvis'));
   }
 
   Padding _statusShelve() {
     return Padding(
-                  padding: const EdgeInsets.only(left:8.0, right: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Prestatgeria pública'),
-                      Switch(
-                        activeColor: AppColors.tertiary,
-                        value: isPublic,
-                        onChanged: (value) {
-                          setState(() {
-                            isPublic = value;
-                            print(isPublic);
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                );
+      padding: const EdgeInsets.only(left: 8.0, right: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Prestatgeria pública'),
+          Switch(
+            activeColor: AppColors.tertiary,
+            value: isPublicBool,
+            onChanged: (value) {
+              setState(() {
+                isPublicBool = value;
+                publicCheck();
+                print(isPublic);
+              });
+            },
+          ),
+        ],
+      ),
+    );
   }
 
-  Column _nameAndDescription() {
-    return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top:15.0, bottom: 8, left: 8, right: 8),
-                      child: TextFormField(
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 10.0),
-                            border: OutlineInputBorder(),
-                            hintText: 'Nom de la prestatgeria',
-                            labelText: 'Nom',
-                            labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold
-                            )
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 120,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top:15.0, bottom: 8, left: 8, right: 8),
-                        child: TextFormField(
-                          keyboardType: TextInputType.multiline,
-                          expands: true,
-                          maxLines: null,
-                          textAlignVertical: TextAlignVertical.top,
-                          decoration: const InputDecoration(
-                            //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                              border: OutlineInputBorder(),
-                              hintText: 'Escriu aqui la teva descripcio',
-                              labelText: 'Descripció',
-                              labelStyle: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              )
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
+  Widget _nameAndDescription() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 15.0, bottom: 8, left: 8, right: 8),
+            child: TextFormField(
+              controller: _nameController,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                  border: OutlineInputBorder(),
+                  hintText: 'Nom de la prestatgeria',
+                  labelText: 'Nom',
+                  labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ),
+          SizedBox(
+            height: 120,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 15.0, bottom: 8, left: 8, right: 8),
+              child: TextFormField(
+                controller: _descriptionController,
+                keyboardType: TextInputType.multiline,
+                expands: true,
+                maxLines: null,
+                textAlignVertical: TextAlignVertical.top,
+                decoration: const InputDecoration(
+                    //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                    border: OutlineInputBorder(),
+                    hintText: 'Escriu aqui la teva descripcio',
+                    labelText: 'Descripció',
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Padding _imgShelve() {
     return Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey[350]),
-                    width: double.infinity,
-                    height: 270,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.add_photo_alternate, color: Colors.white,size: 40,),
-                        Text(
-                          'Afegeix una imatge per aquesta prestatgeria',
-                          style: TextStyle(
-                              color:Colors.white
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
+      padding: EdgeInsets.all(8),
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey[350]),
+        width: double.infinity,
+        height: 270,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(
+              Icons.add_photo_alternate,
+              color: Colors.white,
+              size: 40,
+            ),
+            Text(
+              'Afegeix una imatge per aquesta prestatgeria',
+              style: TextStyle(color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

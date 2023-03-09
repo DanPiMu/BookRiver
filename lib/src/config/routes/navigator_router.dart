@@ -114,13 +114,19 @@ class AppRouter {
         });
 
       case NavigatorRoutes.editShelves:
+        Shelves shelvesId = settings.arguments as Shelves;
         return MaterialPageRoute(builder: (context){
-          return const EditShelves();
+          return EditShelves(
+            shelvesId: shelvesId
+          );
         });
 
       case NavigatorRoutes.userRatings:
+        User user = settings.arguments as User;
         return MaterialPageRoute(builder: (context){
-          return const UserRatings();
+          return UserRatings(
+            user: user
+          );
         });
 
       case NavigatorRoutes.userSettings:

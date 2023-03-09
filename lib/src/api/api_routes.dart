@@ -10,5 +10,7 @@ final Map<String, String> routes = {
   "getShelves": "/home/libraries",
   "addDefaultShelves":"/home/books/addLibrary",
   "newShelves": "/home/libraries/create",
-  "shelvesDetail": "/home/libraries/detail2"
+  "shelvesDetail": "/home/libraries/detail2",
+  "updateShelves": "/home/libraries/update",
+  "getUser":"/home/user/perfil"
 };

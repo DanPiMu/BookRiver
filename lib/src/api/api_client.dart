@@ -283,6 +283,53 @@ class ApiClient {
     }
   }
 
+  postUpdateShelves(Map<String, dynamic> params, int idShelves) async {
+    Map<String, dynamic> params1 = {"data": jsonEncode(params)};
+
+    var _response = await _requestPOST(
+      needsAuth: true,
+      path: "${routes["updateShelves"]}/$idShelves",
+      formData: params1,
+    );
+
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
+
+  getUser() async {
+    var _response =
+    await _requestGET(needsAuth: true, path: "${routes["getUser"]}");
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
+
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
+
+
+
   /// EXEMPLE
   ///
   ///

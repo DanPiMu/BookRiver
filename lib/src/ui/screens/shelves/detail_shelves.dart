@@ -53,7 +53,7 @@ class _DetailShelvesState extends State<DetailShelves> {
   @override
   Widget build(BuildContext context) {
     if(_isLoading){
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -67,7 +67,12 @@ class _DetailShelvesState extends State<DetailShelves> {
         centerTitle: true,
         actions: [
           IconButton(onPressed: (){
-            Navigator.pushNamed(context, NavigatorRoutes.editShelves);
+            print('apretao');
+            Navigator.pushNamed(context, NavigatorRoutes.editShelves, arguments: shelvesObject).then((value){
+              setState(() {
+                _shelvesById();
+              });
+            });
           }, icon: Icon(Icons.edit, color: AppColors.secondary,))
         ],
       ),

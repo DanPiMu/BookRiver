@@ -40,7 +40,7 @@ class _BookDetailState extends State<BookDetail> {
   Future<List<Shelves>> readResponseShelvesList () async {
     try {
       final data = await RequestProvider().getShelves();
-      List<dynamic> shelvesListData = data['libraries'];
+      List<dynamic> shelvesListData = data;
 
       setState(() {
         _shelvesList = shelvesListData.map((listData) => Shelves.fromJson(listData)).toList();

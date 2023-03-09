@@ -23,7 +23,7 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
   Future<void> _otherUserById() async {
     try{
       final data = await RequestProvider().getOtheruser(widget.userID);
-      publicUser = User.fromJson(data[0]);
+      publicUser = User.fromJson(data);
       setState(() {
         _isLoading = false;
       });
