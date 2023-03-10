@@ -1,6 +1,9 @@
+import 'package:book_river/src/api/api_client.dart';
+import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../../api/api_exception.dart';
 import '../../../config/routes/navigator_routes.dart';
 
 class UserSettingsScreen extends StatefulWidget {
@@ -80,7 +83,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 ,
                 Container(
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      try{
+                        await RequestProvider().logOut();
+                        Navigator.pushNamedAndRemoveUntil(context,NavigatorRoutes.login,(route)=> false );
+                      } on ApiException catch (ae) {
+                        ae.printDetails();
+                      }
+                    },
                     child: Text('Tancar Sessió'),
                   ),
                 )

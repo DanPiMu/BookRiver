@@ -41,7 +41,7 @@ class RequestProvider {
   Future getBookListByCategory(int categoryId, int orden) async {
     try {
       dynamic _response =
-          await _apiClient.getBooksListByCategory(categoryId, orden);
+      await _apiClient.getBooksListByCategory(categoryId, orden);
       if (_response != null) {
         return _response;
       } else {
@@ -108,6 +108,7 @@ class RequestProvider {
       ae.printDetails();
     }
   }
+
   Future postShelvesBook(int idBook, int idShelves) async {
     try {
       dynamic _response = await _apiClient.postShelvesBook(idBook, idShelves);
@@ -121,20 +122,20 @@ class RequestProvider {
       ae.printDetails();
     }
   }
-  static Future<bool> addNewShelves(Map<String, dynamic> params) async {
-    try{
-      dynamic _response = await ApiClient().postNewShelves(params);
-      if(_response != null){
 
+  static Future<bool> addNewShelves(Map<String, dynamic> params) async {
+    try {
+      dynamic _response = await ApiClient().postNewShelves(params);
+      if (_response != null) {
         return true;
       }
       return false;
-
-    }on ApiException catch(ae){
+    } on ApiException catch (ae) {
       ae.printDetails();
     }
     return false;
   }
+
   ///Obtenemos estanteria por id
   Future getShelvesById(int shelveID) async {
     try {
@@ -149,20 +150,22 @@ class RequestProvider {
       ae.printDetails();
     }
   }
-  static Future<bool> updateShelves(Map<String, dynamic> params, int idShelves) async {
-    try{
-      dynamic _response = await ApiClient().postUpdateShelves(params, idShelves);
-      if(_response != null){
 
+  static Future<bool> updateShelves(Map<String, dynamic> params,
+      int idShelves) async {
+    try {
+      dynamic _response = await ApiClient().postUpdateShelves(
+          params, idShelves);
+      if (_response != null) {
         return true;
       }
       return false;
-
-    }on ApiException catch(ae){
+    } on ApiException catch (ae) {
       ae.printDetails();
     }
     return false;
   }
+
   Future getUser() async {
     try {
       dynamic _response = await _apiClient.getUser();
@@ -177,5 +180,43 @@ class RequestProvider {
     }
   }
 
+  Future logOut() async {
+    try {
+      dynamic _response = await _apiClient.postLogOut();
+      if (_response != null) {
+        return _response;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
+    }
+  }
 
-}
+    static Future<bool> editUser(Map<String, dynamic> params,) async {
+      try {
+        dynamic _response = await ApiClient().postEditUser(params);
+        if (_response != null) {
+          return true;
+        }
+        return false;
+      } on ApiException catch (ae) {
+        ae.printDetails();
+      }
+      return false;
+    }
+    static Future<bool> editPassword(Map<String, dynamic> params,) async {
+      try {
+        dynamic _response = await ApiClient().postEditPassword(params);
+        if (_response != null) {
+          return true;
+        }
+        return false;
+      } on ApiException catch (ae) {
+        ae.printDetails();
+      }
+      return false;
+    }
+  }
+

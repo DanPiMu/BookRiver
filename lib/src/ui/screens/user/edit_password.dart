@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../api/api_exception.dart';
+import '../../../api/request_helper.dart';
+
 class EditPasswordScreen extends StatefulWidget {
   const EditPasswordScreen({Key? key}) : super(key: key);
 
@@ -9,6 +12,23 @@ class EditPasswordScreen extends StatefulWidget {
 
 class _EditPasswordScreenState extends State<EditPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
+  var _oldPassController = TextEditingController();
+  var _newPassController = TextEditingController();
+  var _confirmPassController = TextEditingController();
+
+  Future<bool> _updatePass() async {
+    try {
+      bool aux = await RequestProvider.editUser({
+        "actual_pass": _oldPassController.text,
+        "password": _newPassController.text,
+        "password_confirmation": _newPassController.text
+      });
+      return aux;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +73,17 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
               padding: const EdgeInsets.only(left: 0, top: 40.0),
               child: ElevatedButton(
                 child: const Text('Desa els canvis'),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    print('Guardado');
-                    Navigator.pop(context);
+
+                    bool aux = await _updatePass();
+
+                    if (aux) {
+                      Navigator.pop(context);
+                    } else {
+                      SnackBar(content: Text("No se actualiza"));
+                      print("No se actualiza");
+                    }
                   }
                 },
               ));
@@ -65,6 +91,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
 
   TextFormField _confirmPasswrd() {
     return TextFormField(
+      controller: _confirmPassController,
             obscureText: true,
             obscuringCharacter: "*",
             decoration: const InputDecoration(
@@ -91,6 +118,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
 
   TextFormField _newPasswrd() {
     return TextFormField(
+      controller: _newPassController,
             obscureText: true,
             obscuringCharacter: "*",
             decoration: const InputDecoration(
@@ -116,6 +144,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
 
   TextFormField _oldPasswrd() {
     return TextFormField(
+      controller: _oldPassController,
             obscureText: true,
             obscuringCharacter: "*",
             decoration: const InputDecoration(

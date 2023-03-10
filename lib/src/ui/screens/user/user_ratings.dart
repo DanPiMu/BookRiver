@@ -100,21 +100,17 @@ class _UserRatingsState extends State<UserRatings> {
                       width: 20,
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black)
-                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: List.generate(5, (indexStart) {
                           return Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.green)
-                            ),
+
                             child: Icon(
                               indexStart < _booksRatingsList[index].stars!
                                   ? Icons.star
                                   : Icons.star_border,
                               color: AppColors.tertiary,
+                              size: 17,
 
                             ),
                           );

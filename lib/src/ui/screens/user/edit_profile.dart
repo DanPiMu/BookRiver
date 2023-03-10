@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../api/api_exception.dart';
+import '../../../api/request_helper.dart';
+
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
 
@@ -9,6 +12,21 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+
+  Future<bool> _updateUser() async {
+    try {
+      bool aux = await RequestProvider.editUser({
+        "username": _nameController.text,
+        "birth_date": _dateController.text,
+        "email": _emailController.text
+      });
+      return aux;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
+
   DateTime? _selectedDate;
 
   final _formKey = GlobalKey<FormState>();
@@ -55,11 +73,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 padding: const EdgeInsets.only(left: 0, top: 40.0),
                 child: ElevatedButton(
                   child: const Text('Desa els canvis'),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      print('Guardado');
-                      Navigator.pop(context);
+                      print(_emailController.text);
+                    print(_dateController.text);
+                    print(_nameController.text);
+                      bool aux = await _updateUser();
+
+                      if (aux) {
+                        Navigator.pop(context);
+                      } else {
+                        SnackBar(content: Text("No se actualiza"));
+                        print("No se actualiza");
+                      }
                     }
                   },
                 ));
@@ -106,6 +132,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               },
               child: TextFormField(
                 enabled: false,
+
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 10.0),
@@ -115,7 +142,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 validator: (value) {
                   return _selectedDate == null ? 'Seleccione una fecha' : null;
                 },
-                controller: TextEditingController(
+                controller: _dateController = TextEditingController(
                     text: _selectedDate == null
                         ? ''
                         : DateFormat('dd/MM/yyyy').format(_selectedDate!)),

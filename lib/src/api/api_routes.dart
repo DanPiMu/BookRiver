@@ -12,5 +12,8 @@ final Map<String, String> routes = {
   "newShelves": "/home/libraries/create",
   "shelvesDetail": "/home/libraries/detail2",
   "updateShelves": "/home/libraries/update",
-  "getUser":"/home/user/perfil"
+  "getUser":"/home/user/perfil",
+  "log_out": "/home/user/logout",
+  "edit_user":"/home/user/perfil/edit",
+  "edit_pssword":"/home/user/perfil/editPassword"
 };
