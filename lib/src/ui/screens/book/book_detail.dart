@@ -44,7 +44,6 @@ class _BookDetailState extends State<BookDetail> {
 
       setState(() {
         _shelvesList = shelvesListData.map((listData) => Shelves.fromJson(listData)).toList();
-        print('hecho');
         _isLoadingShelves = false;
       });
 
@@ -80,7 +79,7 @@ class _BookDetailState extends State<BookDetail> {
   Future<void> _addBookToShelves() async {
     try{
       await RequestProvider().postShelvesBook(widget.bookId, idShelves!);
-      //detailedBookById = Book.fromJson(data[0]);
+    
 
     } on ApiException catch(ae) {
       ae.printDetails();

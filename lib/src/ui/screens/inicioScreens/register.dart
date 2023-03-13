@@ -17,6 +17,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   
+  bool _passVisibility = true;
   
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
@@ -108,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   ElevatedButton _registerButton() {
     return ElevatedButton(onPressed: ()async {
-              if(_formKey.currentState!.validate()){
+              if(_formKey.currentState!.validate() && isChecked ==true){
                 bool aux = await _savePreferences();
                 if(aux){
                   print("dentro");
@@ -155,18 +156,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           height: 20,
                         ),
                         TextFormField(
-                          obscureText: true,
+                          obscureText: _passVisibility,
                           obscuringCharacter: "*",
                           controller: _passwordController,
-                          decoration: const InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0),
-                            border: OutlineInputBorder(),
-                            //en un futuro hacerlo funcional
-                            suffixIcon: Icon(Icons.visibility),
-                            hintText: 'Enter your Password',
-                            labelText: 'Password',
-                          ),
+                          decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
+                    border: OutlineInputBorder(),
+                    //en un futuro hacerlo funcional
+                    suffixIcon: IconButton(
+                      icon: _passVisibility
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility),
+                      onPressed: () {
+                        _passVisibility = !_passVisibility;
+
+                        setState(() {});
+                      },
+                    ),
+                    hintText: 'Enter your Password',
+                    labelText: 'Password',
+                  ),
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
                               return 'Please enter valid Password';
@@ -223,6 +233,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onChanged: (bool? value) {
                                   setState(() {
                                     isChecked = value!;
+                                    print(isChecked);
                                   });
                                 },
                                 controlAffinity:

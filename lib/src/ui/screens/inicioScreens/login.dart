@@ -18,16 +18,18 @@ class _LogInState extends State<LogIn> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _emailController = TextEditingController();
+
+  bool _passVisibility = true;
   TextEditingController _passwordController = TextEditingController();
 
   Future<bool> _savePreferences() async {
-    try{
+    try {
       bool aux = await UserHelper.login({
-        "email" :_emailController.text,
-        "password":_passwordController.text,
+        "email": _emailController.text,
+        "password": _passwordController.text,
       });
       return aux;
-    } on ApiException catch(ae){
+    } on ApiException catch (ae) {
       ae.printDetails();
     }
     return false;
@@ -67,81 +69,79 @@ class _LogInState extends State<LogIn> {
 
   Scaffold _content() {
     return Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 40.0),
-                child: Image.asset(
-                  'assets/images/BookRiver_logo.png',
-                  height: 160,
-                  width: 160,
-                ),
-              ),
+      backgroundColor: Colors.transparent,
+      body: SingleChildScrollView(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: Image.asset(
+              'assets/images/BookRiver_logo.png',
+              height: 160,
+              width: 160,
+            ),
+          ),
 
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: Image.asset(
-                  'assets/images/LoginText.png',
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: Image.asset(
+              'assets/images/LoginText.png',
+            ),
+          ),
 
-              ///Form y boton de Recuperar contraseña
-              _form(),
-              const SizedBox(
-                height: 167,
-              ),
+          ///Form y boton de Recuperar contraseña
+          _form(),
+          const SizedBox(
+            height: 167,
+          ),
 
-              ///Boton de inciar
-              _loginButton(),
+          ///Boton de inciar
+          _loginButton(),
 
-              ///Boton de Resgistrar
-              _registerButton(),
-            ],
-          )),
-        );
+          ///Boton de Resgistrar
+          _registerButton(),
+        ],
+      )),
+    );
   }
 
   Row _registerButton() {
     return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 60,
-                  width: 60,
-                  child: Image.asset('assets/images/Frame 1.png'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, NavigatorRoutes.register);
-                  },
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(AppColors.white)),
-                  child: const Text('Registrat aqui'),
-                ),
-              ],
-            );
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 60,
+          width: 60,
+          child: Image.asset('assets/images/Frame 1.png'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pushNamed(context, NavigatorRoutes.register);
+          },
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(AppColors.white)),
+          child: const Text('Registrat aqui'),
+        ),
+      ],
+    );
   }
 
   ElevatedButton _loginButton() {
     return ElevatedButton(
-                onPressed: () async {
-                  if(_formKey.currentState!.validate()){
-                    bool aux = await _savePreferences();
-                    if(aux){
-                      Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-
-                    }else{
-                      print("no entro");
-                    }
-                  }
-                  //Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-                },
-                child: Text('Iniciar sesion'));
+        onPressed: () async {
+          if (_formKey.currentState!.validate()) {
+            bool aux = await _savePreferences();
+            if (aux) {
+              Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
+            } else {
+              print("no entro");
+            }
+          }
+          //Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
+        },
+        child: Text('Iniciar sesion'));
   }
 
   _form() {
@@ -179,17 +179,25 @@ class _LogInState extends State<LogIn> {
                   height: 20,
                 ),
 
-                //TODO: widget de contraseña
                 TextFormField(
-                  obscureText: true,
+                  obscureText: _passVisibility,
                   obscuringCharacter: "*",
                   controller: _passwordController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 15.0, horizontal: 10.0),
                     border: OutlineInputBorder(),
                     //en un futuro hacerlo funcional
-                    suffixIcon: Icon(Icons.visibility),
+                    suffixIcon: IconButton(
+                      icon: _passVisibility
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility),
+                      onPressed: () {
+                        _passVisibility = !_passVisibility;
+
+                        setState(() {});
+                      },
+                    ),
                     hintText: 'Enter your Password',
                     labelText: 'Password',
                   ),
@@ -217,7 +225,8 @@ class _LogInState extends State<LogIn> {
                         onPressed: () {},
                         child: TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, NavigatorRoutes.passwordRecovery);
+                              Navigator.pushNamed(
+                                  context, NavigatorRoutes.passwordRecovery);
                             },
                             child: Text(
                               'Recuperar',
