@@ -1,5 +1,6 @@
 /// TODO: Modificar rutes
 import 'package:book_river/src/config/app_localizations.dart';
+import 'package:book_river/src/utils/user_helper_plantilla.dart';
 import 'package:flutter/material.dart';
 import 'config/app_styles.dart';
 import 'config/routes/navigator_router.dart';
@@ -19,7 +20,7 @@ class _BookRiver extends State<BookRiver> {
       debugShowCheckedModeBanner: false,
       title: 'Sample App',
       theme: AppStyles.mainTheme,
-      initialRoute: NavigatorRoutes.login,
+      initialRoute: UserHelper.hasUserSession() ? NavigatorRoutes.mainHolder : NavigatorRoutes.login,
       onGenerateRoute: AppRouter.generateRoute,
 
 

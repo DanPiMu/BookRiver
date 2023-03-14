@@ -14,6 +14,7 @@ class Book {
   List<Caratula>? caratula;
   List<BookImgs>? bookImgs;
   List<Categories> categories = [];
+  int units =1;
 
 
 

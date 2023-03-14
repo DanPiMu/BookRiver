@@ -2,6 +2,7 @@ import 'package:book_river/src/model/pruebas+/book_prueba.dart';
 import 'package:flutter/material.dart';
 
 import '../config/enums.dart';
+import '../model/book.dart';
 
 class NavigationNotifier extends ChangeNotifier {
   ///Opcion seleccionada
@@ -21,14 +22,14 @@ class NavigationNotifier extends ChangeNotifier {
   ///       navegació a partir del index en forma de integer.
 
 // Cart
-  List<BookPrueba> books = [];
+  List<Book> books = [];
 
   double get total {
     return books.fold(
-        0, (total, product) => total + product.price * product.units);
+        0, (total, product) => total + product.price! * product.units);
   }
 
-  void addToCart(BookPrueba product) {
+  void addToCart(Book product) {
     bool repetido = false;
 
     for (var i = 0; i < books.length; i++) {
@@ -46,18 +47,18 @@ class NavigationNotifier extends ChangeNotifier {
     print(repetido);
   }
 
-  void removeFromCart(BookPrueba product) {
+  void removeFromCart(Book product) {
     books.remove(product);
     product.units = 1;
     notifyListeners();
   }
 
-  void addUnitsToProduct(BookPrueba product, int units) {
+  void addUnitsToProduct(Book product, int units) {
     product.units += units;
     notifyListeners();
   }
 
-  void removeUnitsToProduct(BookPrueba product, int units) {
+  void removeUnitsToProduct(Book product, int units) {
     if (product.units == 0) {
       removeFromCart(product);
     } else {

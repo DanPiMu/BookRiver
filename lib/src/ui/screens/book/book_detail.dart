@@ -3,10 +3,12 @@ import 'package:book_river/src/model/shelves.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
 import '../../../config/routes/navigator_routes.dart';
+import '../../../provider/navigation_notifier.dart';
 
 class BookDetail extends StatefulWidget {
   BookDetail({
@@ -79,7 +81,7 @@ class _BookDetailState extends State<BookDetail> {
   Future<void> _addBookToShelves() async {
     try{
       await RequestProvider().postShelvesBook(widget.bookId, idShelves!);
-    
+
 
     } on ApiException catch(ae) {
       ae.printDetails();
@@ -195,11 +197,11 @@ class _BookDetailState extends State<BookDetail> {
               child: Text(
                   'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.'),
             ),
-          )
+          ),
+
         ]),
         floatingActionButton: _cartButton());
   }
-//TOD: slivertoboxadapter
   Widget _cartButton() {
     return Container(
       child: Align(
@@ -207,7 +209,7 @@ class _BookDetailState extends State<BookDetail> {
         child: ElevatedButton(
           onPressed: () {
 
-            //Provider.of<NavigationNotifier>(context, listen: false).addToCart(detailedBookById);
+            Provider.of<NavigationNotifier>(context, listen: false).addToCart(detailedBookById);
             final snackBar = SnackBar(
               content: const Text('Libro añadido!'),
               action: SnackBarAction(
@@ -217,9 +219,6 @@ class _BookDetailState extends State<BookDetail> {
                 },
               ),
             );
-
-            // Find the ScaffoldMessenger in the widget tree
-            // and use it to show a SnackBar.
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
             //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
@@ -239,7 +238,7 @@ class _BookDetailState extends State<BookDetail> {
             RawMaterialButton(
               onPressed: () {
                 idShelves = _shelvesList[2].id;
-                _addBookToShelves();
+                 _addBookToShelves();
                 setState(() {
 
                   _isButtonPressedVullLlegir = false;
@@ -435,71 +434,47 @@ class _BookDetailState extends State<BookDetail> {
       ),
     );
   }
+
+
 //TODO: checkbox
-  void _showDialog() {
-    showDialog(
+  List<String> options = ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4'];
+  List<bool> selected = [false, false, false, false];
+  _showDialog() {
+      showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text('Afegeix aquest llibre a una de les teves prestatgeries'),
-          children: <Widget>[
-            RadioListTile(
-              title: Text('Opción 1'),
-              value: 1,
-              groupValue: _selectedOption,
-              onChanged: (value) {
-                setState(() {
-                  _selectedOption = value;
-                });
-                //Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile(
-              title: Text('Opción 2'),
-              value: 2,
-              groupValue: _selectedOption,
-              onChanged: (value) {
-                setState(() {
-                  _selectedOption = value;
-                });
-                //Navigator.of(context).pop();
-              },
-            ),
-            RadioListTile(
-              title: Text('Opción 3'),
-              value: 3,
-              groupValue: _selectedOption,
-              onChanged: (value) {
-                setState(() {
-                  _selectedOption = value;
-                });
-                //Navigator.of(context).pop();
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  TextButton(
-                    child: Text('Cancelar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  SizedBox(width: 10),
-                  TextButton(
-                    child: Text('Confirmar'),
-                    onPressed: () {
-                      Navigator.of(context).pop(_selectedOption);
-                    },
-                  ),
-                ],
+        return AlertDialog(
+          title: Text('Selecciona opciones ${selected[0]}'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(
+                options.length,
+                    (index) => CheckboxListTile(
+                  title: Text(options[index]),
+                  value: selected[index],
+                  selected: selected[index],
+                  onChanged: (value) {
+                    print("$value");
+                    setState(() {
+                      selected[index] = value!;
+                    });
+                  },
+                ),
               ),
-            )
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         );
       },
     );
   }
+
 }

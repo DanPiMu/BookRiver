@@ -2,6 +2,7 @@ import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../model/book.dart';
 import '../../../model/pruebas+/book_prueba.dart';
 import '../../../provider/navigation_notifier.dart';
 
@@ -13,7 +14,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  List<BookPrueba> cartItems = [];
+  List<Book> cartItems = [];
 
   @override
   void initState() {
@@ -40,9 +41,16 @@ class _CartScreenState extends State<CartScreen> {
                     padding: EdgeInsets.all(20.0),
                     child: Row(
                       children: [
-                        Container(
-                          child:
-                          Image.asset(item.img[1], fit: BoxFit.cover),
+                        SizedBox(
+                          child: item.caratula?[0].img == null ? Image.asset('assets/images/portada.jpeg'):
+                          Image.network(
+                            item.caratula![0].img!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (BuildContext context, Object exception,
+                                StackTrace? stackTrace) {
+                              return Image.asset('assets/images/portada.jpeg');
+                            },
+                          ),
                           height: 150,
                           width: 100,
                         ),
@@ -56,7 +64,7 @@ class _CartScreenState extends State<CartScreen> {
                                 style:
                                 TextStyle(fontWeight: FontWeight.bold)),
                             SizedBox(height: 8.0),
-                            Text(item.author),
+                            Text(item.author!),
                             SizedBox(height: 8.0),
                             Text(
                               '${item.price.toString()}€',

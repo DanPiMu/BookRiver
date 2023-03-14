@@ -51,7 +51,7 @@ Future<List<Book>> readResponseBookList (int category) async {
   
   @override
   void initState() {
-    readResponseBookList(0);
+    readResponseBookList(1);
 
     super.initState();
   }
