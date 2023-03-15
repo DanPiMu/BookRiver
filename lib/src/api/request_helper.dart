@@ -41,7 +41,7 @@ class RequestProvider {
   Future getBookListByCategory(int categoryId, int orden) async {
     try {
       dynamic _response =
-      await _apiClient.getBooksListByCategory(categoryId, orden);
+          await _apiClient.getBooksListByCategory(categoryId, orden);
       if (_response != null) {
         return _response;
       } else {
@@ -151,11 +151,11 @@ class RequestProvider {
     }
   }
 
-  static Future<bool> updateShelves(Map<String, dynamic> params,
-      int idShelves) async {
+  static Future<bool> updateShelves(
+      Map<String, dynamic> params, int idShelves) async {
     try {
-      dynamic _response = await ApiClient().postUpdateShelves(
-          params, idShelves);
+      dynamic _response =
+          await ApiClient().postUpdateShelves(params, idShelves);
       if (_response != null) {
         return true;
       }
@@ -194,29 +194,61 @@ class RequestProvider {
     }
   }
 
-    static Future<bool> editUser(Map<String, dynamic> params,) async {
-      try {
-        dynamic _response = await ApiClient().postEditUser(params);
-        if (_response != null) {
-          return true;
-        }
-        return false;
-      } on ApiException catch (ae) {
-        ae.printDetails();
+  static Future<bool> editUser(
+    Map<String, dynamic> params,
+  ) async {
+    try {
+      dynamic _response = await ApiClient().postEditUser(params);
+      if (_response != null) {
+        return true;
       }
       return false;
+    } on ApiException catch (ae) {
+      ae.printDetails();
     }
-    static Future<bool> editPassword(Map<String, dynamic> params,) async {
-      try {
-        dynamic _response = await ApiClient().postEditPassword(params);
-        if (_response != null) {
-          return true;
-        }
-        return false;
-      } on ApiException catch (ae) {
-        ae.printDetails();
+    return false;
+  }
+
+  static Future<bool> editPassword(
+    Map<String, dynamic> params,
+  ) async {
+    try {
+      dynamic _response = await ApiClient().postEditPassword(params);
+      if (_response != null) {
+        return true;
       }
       return false;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
+
+  Future getBooksByName(String name) async {
+    try {
+      dynamic _response = await _apiClient.getBookByName(name);
+      if (_response != null) {
+        return _response;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
     }
   }
 
+  Future getUsersByName(String name) async {
+    try {
+      dynamic _response = await _apiClient.getUserByName(name);
+      if (_response != null) {
+        return _response;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
+    }
+  }
+}

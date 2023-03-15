@@ -25,7 +25,7 @@ class _StartingScreenState extends State<StartingScreen> {
   List<Book> _booksNovetatsList = [];
 
   Future<void> readResponseBooks() async {
-    try{
+    try {
       final data = await RequestProvider().getBooks();
 
       List<dynamic> bookListData = data['data']['books'];
@@ -34,16 +34,14 @@ class _StartingScreenState extends State<StartingScreen> {
       setState(() {
         novetatLoading = false;
       });
-    } on ApiException catch(ae) {
+    } on ApiException catch (ae) {
       ae.printDetails();
       SnackBar(content: Text(ae.message!));
       rethrow;
-
-    } catch(e) {
+    } catch (e) {
       print('Problemillas');
       rethrow;
     }
-
   }
 
   //Categories
@@ -117,8 +115,7 @@ class _StartingScreenState extends State<StartingScreen> {
           onTap: () {
             print(_categoriesList[index].nameEs);
             Navigator.pushNamed(context, NavigatorRoutes.listBookCategory,
-              arguments: _categoriesList[index]
-            );
+                arguments: _categoriesList[index]);
           },
           child: _carrouselItemCategory(index),
         );
@@ -134,79 +131,69 @@ class _StartingScreenState extends State<StartingScreen> {
 
   Card _carrouselItemCategory(int index) {
     return Card(
-          elevation: 5,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
+      elevation: 5,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Text(
+              _categoriesList[index].nameEs.toString(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Text(
-                  _categoriesList[index].nameEs.toString(),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-              //Text(bookCategories[index]['description']),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _categoriesList[index].books.length,
-                  itemBuilder: (BuildContext context, int bookIndex) {
-                    var bookRating =
-                        _categoriesList[index].books[bookIndex].avgRating!;
-                    return _carouselBookItem(index, bookIndex, bookRating);
-                    //Text(bookCategories[index]['books'][bookIndex]),
-                  },
-                ),
-              ),
-            ],
+          //Text(bookCategories[index]['description']),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _categoriesList[index].books.length,
+              itemBuilder: (BuildContext context, int bookIndex) {
+                var bookRating =
+                    _categoriesList[index].books[bookIndex].avgRating!;
+                return _carouselBookItem(index, bookIndex, bookRating);
+                //Text(bookCategories[index]['books'][bookIndex]),
+              },
+            ),
           ),
-        );
+        ],
+      ),
+    );
   }
 
   ListTile _carouselBookItem(int index, int bookIndex, num bookRating) {
     return ListTile(
-                    leading: Image.network(
-                        _categoriesList[index]
-                            .books[bookIndex]
-                            .bookImgs![0]
-                            .img
-                            .toString(),
-                        fit: BoxFit.cover, errorBuilder:
-                            (BuildContext context, Object exception,
-                                StackTrace? stackTrace) {
-                      return Image.asset('assets/images/portada.jpeg');
-                    }),
-                    title: Text(_categoriesList[index]
-                        .books[bookIndex]
-                        .title
-                        .toString()),
-                    subtitle: Text(
-                        'Precio: €${_categoriesList[index].books[bookIndex].price.toString()}'),
-                    trailing: CircularPercentIndicator(
-                        radius: 20.0,
-                        lineWidth: 3.0,
-                        percent: bookRating / 5,
-                        center: Text(
-                          bookRating.toString(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13.0,
-                            color: Colors
-                                .blue, //AppColors.colorByCategoryTitle(category)),
-                          ),
-                        ),
-                        progressColor: Colors
-                            .red //AppColors.colorByCategoryTitle(category),
-                        ),
-                  );
+      leading: Image.network(
+          _categoriesList[index].books[bookIndex].bookImgs![0].img.toString(),
+          fit: BoxFit.cover, errorBuilder:
+              (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return Image.asset('assets/images/portada.jpeg');
+      }),
+      title: Text(_categoriesList[index].books[bookIndex].title.toString()),
+      subtitle: Text(
+          'Precio: €${_categoriesList[index].books[bookIndex].price.toString()}'),
+      trailing: CircularPercentIndicator(
+          radius: 20.0,
+          lineWidth: 3.0,
+          percent: bookRating / 5,
+          center: Text(
+            bookRating.toString(),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 13.0,
+              color: Colors.blue, //AppColors.colorByCategoryTitle(category)),
+            ),
+          ),
+          progressColor: Colors.red //AppColors.colorByCategoryTitle(category),
+          ),
+    );
   }
 }
 
@@ -248,7 +235,7 @@ _bookItem(Book book, BuildContext context) {
   return GestureDetector(
       onTap: () {
         print(book);
-        
+
         Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
             arguments: book);
       },
@@ -267,48 +254,46 @@ _bookItem(Book book, BuildContext context) {
 
 Padding _imageBook(Book book) {
   return Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: SizedBox(
-              width: 120,
-              height: 180,
-              child: Image.network(book.caratula![0].img.toString(),
-                  fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                      Object exception, StackTrace? stackTrace) {
-                return Image.asset('assets/images/portada.jpeg');
-              }),
-            ),
-          );
+    padding: const EdgeInsets.all(12.0),
+    child: SizedBox(
+      width: 120,
+      height: 180,
+      child: Image.network(book.caratula![0].img!, fit: BoxFit.cover,
+          errorBuilder:
+              (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return Image.asset('assets/images/portada.jpeg');
+      }),
+    ),
+  );
 }
 
 Column _caption(Book book) {
   return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                book.title!,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              Text(
-                book.author!,
-                style: const TextStyle(fontSize: 14),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  book.categories.isNotEmpty
-                      ? Text(
-                          book.categories[0].nameEs.toString(),
-                          style: const TextStyle(
-                              color: Colors.grey, fontSize: 12),
-                        )
-                      : const Text(
-                          'No tiene categoria',
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                        ),
-                  Text('${book.price.toString()}€')
-                ],
-              )
-            ],
-          );
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        book.title!,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+      ),
+      Text(
+        book.author!,
+        style: const TextStyle(fontSize: 14),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          book.categories.isNotEmpty
+              ? Text(
+                  book.categories[0].nameEs.toString(),
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                )
+              : const Text(
+                  'No tiene categoria',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+          Text('${book.price.toString()}€')
+        ],
+      )
+    ],
+  );
 }

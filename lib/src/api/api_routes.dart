@@ -8,12 +8,14 @@ final Map<String, String> routes = {
   "booksRating":"/home/books/ratings",
   "publicUser":"/home/user/perfil/public",
   "getShelves": "/home/libraries",
-  "addDefaultShelves":"/home/books/addLibrary",
+  "addDefaultShelves":"/home/books/add-library",
   "newShelves": "/home/libraries/create",
   "shelvesDetail": "/home/libraries/detail2",
   "updateShelves": "/home/libraries/update",
   "getUser":"/home/user/perfil",
   "log_out": "/home/user/logout",
   "edit_user":"/home/user/perfil/edit",
-  "edit_pssword":"/home/user/perfil/editPassword"
+  "edit_pssword":"/home/user/perfil/edit-password",
+  "search_book":"/home/books/title",
+  "search_user":"/home/user/find",
 };

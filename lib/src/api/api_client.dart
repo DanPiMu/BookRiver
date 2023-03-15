@@ -223,7 +223,7 @@ class ApiClient {
   postShelvesBook(int idBook, int idShelves) async {
     var _response = await _requestPOST(
         needsAuth: true,
-        path: "${routes["addDefaultShelves"]}/$idBook?library=$idShelves");
+        path: "${routes["addDefaultShelves"]}/$idBook?library_id=$idShelves");
     // Obtenim ReturnCode
     var _rc = _response["rc"];
 
@@ -388,6 +388,44 @@ class ApiClient {
         if (_response["data"] != null) {
           return _response["data"];
         }
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
+  getBookByName(String name) async {
+    var _response =
+    await _requestGET(needsAuth: true, path: "${routes["search_book"]}/$name");
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
+
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
+  getUserByName(String name) async {
+    var _response =
+    await _requestGET(needsAuth: true, path: "${routes["search_user"]}/$name");
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
+
         return null;
       default:
         print("here default: $_rc");

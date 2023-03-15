@@ -1,3 +1,4 @@
+import 'package:book_river/src/config/app_colors.dart';
 import 'package:book_river/src/model/book.dart';
 import 'package:book_river/src/model/shelves.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -24,6 +25,7 @@ class BookDetail extends StatefulWidget {
 }
 
 class _BookDetailState extends State<BookDetail> {
+
   bool _isLoading = true;
   bool _isLoadingShelves = true;
 
@@ -38,89 +40,90 @@ class _BookDetailState extends State<BookDetail> {
   bool _isButtonPressedVullLlegir = false;
   bool _isButtonPressedLlegint = false;
 
-  List<Shelves> _shelvesList =[];
-  Future<List<Shelves>> readResponseShelvesList () async {
+  List<Shelves> _shelvesList = [];
+
+  Future<List<Shelves>> readResponseShelvesList() async {
     try {
       final data = await RequestProvider().getShelves();
       List<dynamic> shelvesListData = data;
 
       setState(() {
-        _shelvesList = shelvesListData.map((listData) => Shelves.fromJson(listData)).toList();
+        _shelvesList = shelvesListData
+            .map((listData) => Shelves.fromJson(listData))
+            .toList();
         _isLoadingShelves = false;
       });
 
       return _shelvesList;
-
-    } on ApiException catch(ae) {
+    } on ApiException catch (ae) {
       ae.printDetails();
       SnackBar(content: Text(ae.message!));
       rethrow;
-
-    } catch(e) {
+    } catch (e) {
       print('Problemillas');
       rethrow;
     }
   }
+
   Future<void> _bookById() async {
-    try{
+    try {
       final data = await RequestProvider().getBookById(widget.bookId);
-      detailedBookById = Book.fromJson(data[0]);
+      detailedBookById = Book.fromJson(data);
       setState(() {
         _isLoading = false;
       });
-    } on ApiException catch(ae) {
+    } on ApiException catch (ae) {
       ae.printDetails();
       SnackBar(content: Text(ae.message!));
       rethrow;
-
-    } catch(e) {
+    } catch (e) {
       print('Problemillas');
       rethrow;
     }
   }
+
   Future<void> _addBookToShelves() async {
-    try{
+    try {
       await RequestProvider().postShelvesBook(widget.bookId, idShelves!);
-
-
-    } on ApiException catch(ae) {
+    } on ApiException catch (ae) {
       ae.printDetails();
       SnackBar(content: Text(ae.message!));
       rethrow;
-
-    } catch(e) {
+    } catch (e) {
       print('Problemillas');
       rethrow;
     }
   }
 
-  bool _inTheLibrary(){
+  bool _inTheLibrary() {
     bool bookFound = true;
-    for(Book book in _shelvesList[0].books){
-      if(book.id == detailedBookById.id){
+    for (Book book in _shelvesList[0].books) {
+      if (book.id == detailedBookById.id) {
         return true;
-      } bookFound = false;
-
+      }
+      bookFound = false;
     }
     return bookFound;
   }
-  bool _inTheLibrary1(){
-    bool bookFound = true;
-    for(Book book in _shelvesList[1].books){
-      if(book.id == detailedBookById.id){
-        return true;
-      } bookFound = false;
 
+  bool _inTheLibrary1() {
+    bool bookFound = true;
+    for (Book book in _shelvesList[1].books) {
+      if (book.id == detailedBookById.id) {
+        return true;
+      }
+      bookFound = false;
     }
     return bookFound;
   }
-  bool _inTheLibrary2(){
-    bool bookFound = true;
-    for(Book book in _shelvesList[2].books){
-      if(book.id == detailedBookById.id){
-        return true;
-      } bookFound = false;
 
+  bool _inTheLibrary2() {
+    bool bookFound = true;
+    for (Book book in _shelvesList[2].books) {
+      if (book.id == detailedBookById.id) {
+        return true;
+      }
+      bookFound = false;
     }
     return bookFound;
   }
@@ -134,7 +137,7 @@ class _BookDetailState extends State<BookDetail> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading  && _isLoadingShelves) {
+    if (_isLoading && _isLoadingShelves) {
       return const Center(
         child: CircularProgressIndicator(),
       );
@@ -148,9 +151,12 @@ class _BookDetailState extends State<BookDetail> {
     return Scaffold(
         body: CustomScrollView(slivers: [
           SliverAppBar(
-            leading: IconButton(icon:Icon(Icons.arrow_back) ,onPressed: () {
-              Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-            },),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
+              },
+            ),
             backgroundColor: Colors.transparent,
             collapsedHeight: 70,
             surfaceTintColor: Colors.white,
@@ -198,18 +204,18 @@ class _BookDetailState extends State<BookDetail> {
                   'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.'),
             ),
           ),
-
         ]),
         floatingActionButton: _cartButton());
   }
+
   Widget _cartButton() {
     return Container(
       child: Align(
         alignment: Alignment.bottomCenter,
         child: ElevatedButton(
           onPressed: () {
-
-            Provider.of<NavigationNotifier>(context, listen: false).addToCart(detailedBookById);
+            Provider.of<NavigationNotifier>(context, listen: false)
+                .addToCart(detailedBookById);
             final snackBar = SnackBar(
               content: const Text('Libro añadido!'),
               action: SnackBarAction(
@@ -238,9 +244,8 @@ class _BookDetailState extends State<BookDetail> {
             RawMaterialButton(
               onPressed: () {
                 idShelves = _shelvesList[2].id;
-                 _addBookToShelves();
+                _addBookToShelves();
                 setState(() {
-
                   _isButtonPressedVullLlegir = false;
                   _isButtonPressedLlegint = false;
                   _isButtonPressedLlegit = !_isButtonPressedLlegit;
@@ -256,8 +261,7 @@ class _BookDetailState extends State<BookDetail> {
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(
                 side: BorderSide(
-                  color:
-                      _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
+                  color: _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
                 ),
               ),
             ),
@@ -281,17 +285,13 @@ class _BookDetailState extends State<BookDetail> {
               fillColor: Colors.white,
               child: Icon(
                 Icons.bookmark_add,
-                color: _inTheLibrary()
-                    ? Colors.blue
-                    : Colors.cyanAccent,
+                color: _inTheLibrary() ? Colors.blue : Colors.cyanAccent,
                 size: 35.0,
               ),
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(
                 side: BorderSide(
-                  color: _inTheLibrary()
-                      ? Colors.blue
-                      : Colors.cyanAccent,
+                  color: _inTheLibrary() ? Colors.blue : Colors.cyanAccent,
                 ),
               ),
             ),
@@ -315,15 +315,13 @@ class _BookDetailState extends State<BookDetail> {
               fillColor: Colors.white,
               child: Icon(
                 Icons.collections_bookmark,
-                color:
-                _inTheLibrary1() ? Colors.blue : Colors.cyanAccent,
+                color: _inTheLibrary1() ? Colors.blue : Colors.cyanAccent,
                 size: 35.0,
               ),
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(
                 side: BorderSide(
-                  color:
-                      _inTheLibrary1() ? Colors.blue : Colors.cyanAccent,
+                  color: _inTheLibrary1() ? Colors.blue : Colors.cyanAccent,
                 ),
               ),
             ),
@@ -334,7 +332,7 @@ class _BookDetailState extends State<BookDetail> {
           children: [
             RawMaterialButton(
               onPressed: () {
-                _showDialog();
+                _showDialog(_shelvesList);
               },
               elevation: 2.0,
               fillColor: Colors.white,
@@ -387,7 +385,7 @@ class _BookDetailState extends State<BookDetail> {
       width: MediaQuery.of(context).size.width,
       child: Stack(
         alignment: Alignment.center,
-       // mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           // Container(
           //   width: 80,
@@ -407,7 +405,7 @@ class _BookDetailState extends State<BookDetail> {
             ),
           ),
           Positioned(
-            right:10,
+            right: 10,
             child: Padding(
                 padding: const EdgeInsets.only(right: 5.0, top: 20),
                 child: GestureDetector(
@@ -435,46 +433,57 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
 
-
 //TODO: checkbox
-  List<String> options = ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4'];
-  List<bool> selected = [false, false, false, false];
-  _showDialog() {
-      showDialog(
+
+  _showDialog(List<Shelves> shelvesList) {
+    List<Shelves> _shelvesListSublist = shelvesList.sublist(3);
+    Shelves? pres;
+    showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Selecciona opciones ${selected[0]}'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: List.generate(
-                options.length,
-                    (index) => CheckboxListTile(
-                  title: Text(options[index]),
-                  value: selected[index],
-                  selected: selected[index],
-                  onChanged: (value) {
-                    print("$value");
-                    setState(() {
-                      selected[index] = value!;
-                    });
-                  },
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                'Afegeix un daquest llibres a un de les teves prestatgeries',
+                style: TextStyle(fontSize: 15),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(
+                    _shelvesListSublist.length,
+                    (index) => RadioListTile(
+                      groupValue: pres,
+                      title: Text(_shelvesListSublist[index].name.toString()),
+                      value: _shelvesListSublist[index],
+                      selected: pres == _shelvesListSublist[index],
+                      activeColor: AppColors.tertiary,
+                      onChanged: (value) {
+                        print("$value");
+                        setState(() {
+                          pres = value!;
+                          print(pres?.name);
+                        });
+                      },
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Aceptar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Aceptar'),
+                  onPressed: () {
+                    idShelves = pres!.id;
+                    _addBookToShelves();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
-
 }
