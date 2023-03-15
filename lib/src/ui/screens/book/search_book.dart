@@ -20,19 +20,35 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
   TextEditingController _searchController = TextEditingController();
   List<Book> _bookList = [];
   List<User> _userList = [];
-  bool _isLoading = false;
+  bool _cargandoLibros = false;
+  bool _cargandoAutores = false;
 
   String category = 'Infantil';
 
-  Future<List<Book>> readResponseBookList(String text) async {
+  Future<List<Book>> readResponseSearchList(String text) async {
+    setState(() {
+      _cargandoLibros = true;
+      _cargandoAutores = true;
+    });
     try {
+      ///Cargando libros
       final data = await RequestProvider().getBooksByName(text);
       List<dynamic> bookListData = data;
 
+      ///Cargando autores
+      final data1 = await RequestProvider().getUsersByName(text);
+      List<dynamic> userListData = data1;
+
       setState(() {
+        ///Cargando libros
         _bookList =
             bookListData.map((listData) => Book.fromJson(listData)).toList();
-        _isLoading = false;
+        _cargandoLibros = false;
+
+        ///Cargando autores
+        _userList =
+            userListData.map((listData) => User.fromJson(listData)).toList();
+        _cargandoAutores = false;
       });
 
       return _bookList;
@@ -46,6 +62,7 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
     }
   }
 
+//No se usa
   Future<List<User>> readResponseUserList(String text) async {
     try {
       final data = await RequestProvider().getUsersByName(text);
@@ -54,7 +71,7 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
       setState(() {
         _userList =
             userListData.map((listData) => User.fromJson(listData)).toList();
-        _isLoading = false;
+        _cargandoAutores = false;
       });
 
       return _userList;
@@ -67,7 +84,6 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
       rethrow;
     }
   }
-
 
 
   @override
@@ -108,7 +124,7 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
               flexibleSpace: FlexibleSpaceBar(
                 background: SearchBar(
                   textController: _searchController,
-                  onTextChanged: (text) => readResponseBookList(text),
+                  onTextChanged: (text) => readResponseSearchList(text),
                 ),
               ),
             ),
@@ -118,7 +134,7 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
           controller: _tabController,
           children: [
             // Widget del Tab 1
-            if (_isLoading)
+            if (_cargandoLibros)
               Expanded(
                 child: Center(
                   child: CircularProgressIndicator(),
@@ -129,7 +145,7 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
                 child: SearchResultBookList(books: _bookList),
               ),
             // Widget del Tab 2
-            if (_isLoading)
+            if (_cargandoAutores)
               Expanded(
                 child: Center(
                   child: CircularProgressIndicator(),
