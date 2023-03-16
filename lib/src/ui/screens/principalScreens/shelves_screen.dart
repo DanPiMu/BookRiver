@@ -80,12 +80,7 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
         mainAxisSpacing: 15.0,
       ),
       itemBuilder: (context, index) {
-        return GestureDetector(
-            onTap: () {
-              print('111111111');
-              //Navigator.pushNamed(context, NavigatorRoutes.detailShelves);
-            },
-            child: _shelveItem(index));
+        return _shelveItem(index);
       },
     );
   }
@@ -97,25 +92,57 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
             arguments: _shelvesList[index]);
       },
       child: Container(
+        height: 200,
+        width: 200,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.blue,
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.network(_shelvesList[index].img.toString(),
-                  fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                      Object exception, StackTrace? stackTrace) {
-                return Icon(Icons.book);
-              }),
-              Text(_shelvesList[index].name!),
-              Row(
-                children: [],
-              )
-            ],
+          image: DecorationImage(
+            image: NetworkImage(_shelvesList[index].img!),
+            fit: BoxFit.cover,
           ),
+          borderRadius: BorderRadius.circular(20),
+          color: AppColors.colorByCategoryShelves(_shelvesList[index].name!),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              _shelvesList[index].name == 'Vull Llegir' ||
+                      _shelvesList[index].name == 'Llegint' ||
+                      _shelvesList[index].name == 'Llegit'
+                  ? Icons.book_sharp
+                  : Icons.book_outlined,
+            ),
+            Text(_shelvesList[index].name!),
+            Container(
+              height: 70,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _shelvesList[index].books.length,
+                      itemBuilder: (BuildContext context, int index1) {
+
+                        return Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Image.network(
+                              _shelvesList[index]
+                                  .books[index1]
+                                  .caratula![0]
+                                  .img!,
+                              fit: BoxFit.cover, errorBuilder:
+                                  (BuildContext context, Object exception,
+                                      StackTrace? stackTrace) {
+                            return Image.asset('assets/images/portada.jpeg');
+                          }),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -74,7 +74,8 @@ class _AddNewShelveState extends State<AddNewShelve> {
         "name": _nameController.text,
         "description": _descriptionController.text,
         "privacity": isPublic
-      });
+      },
+      image!);
       return aux;
     } on ApiException catch (ae) {
       ae.printDetails();

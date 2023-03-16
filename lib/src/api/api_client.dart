@@ -239,8 +239,14 @@ class ApiClient {
         throw ApiException(getRCMessage(_rc), _rc);
     }
   }
-  postNewShelves(Map<String, dynamic> params) async {
+  postNewShelves(Map<String, dynamic> params, File image) async {
     Map<String, dynamic> params1 = {"data": jsonEncode(params)};
+
+    MultipartFile aux = await MultipartFile.fromFile(
+      image.path,
+      filename: "${DateTime.now()}${image.path}.jpg",
+    );
+    params1.putIfAbsent("media", () => aux);
 
     var _response = await _requestPOST(
       needsAuth: true,

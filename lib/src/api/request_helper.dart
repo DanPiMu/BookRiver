@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/model/book.dart';
@@ -123,9 +124,9 @@ class RequestProvider {
     }
   }
 
-  static Future<bool> addNewShelves(Map<String, dynamic> params) async {
+  static Future<bool> addNewShelves(Map<String, dynamic> params, File image) async {
     try {
-      dynamic _response = await ApiClient().postNewShelves(params);
+      dynamic _response = await ApiClient().postNewShelves(params, image);
       if (_response != null) {
         return true;
       }

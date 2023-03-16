@@ -135,26 +135,18 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
           children: [
             // Widget del Tab 1
             if (_cargandoLibros)
-              Expanded(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+              Center(
+                child: CircularProgressIndicator(),
               )
             else
-              Expanded(
-                child: SearchResultBookList(books: _bookList),
-              ),
+              SearchResultBookList(books: _bookList),
             // Widget del Tab 2
             if (_cargandoAutores)
-              Expanded(
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+              Center(
+                child: CircularProgressIndicator(),
               )
             else
-              Expanded(
-                child: SearchResultUserList(users: _userList),
-              ),
+              SearchResultUserList(users: _userList),
           ],
         ),
       ),
@@ -163,6 +155,7 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
 
   TabBar _tabBar() {
     return TabBar(
+      onTap: (value) => _searchController.clear(),
       indicatorColor: AppColors.colorByCategoryTitle(category),
       labelColor: AppColors.colorByCategoryTitle(category),
       //selected text color
