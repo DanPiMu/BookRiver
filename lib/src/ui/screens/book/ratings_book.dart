@@ -41,7 +41,7 @@ class _RatingsBookState extends State<RatingsBook> {
 
   @override
   Widget build(BuildContext context) {
-    if(_isLoading){
+    if (_isLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -99,8 +99,8 @@ class _RatingsBookState extends State<RatingsBook> {
             delegate: SliverChildBuilderDelegate(
               (context, index) => GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(
-                      context, NavigatorRoutes.profileOtherUser, arguments: _booksRatingsList[index].user);
+                  Navigator.pushNamed(context, NavigatorRoutes.profileOtherUser,
+                      arguments: _booksRatingsList[index].user);
                 },
                 child: _ratingUserItem(index),
               ),
@@ -118,7 +118,8 @@ class _RatingsBookState extends State<RatingsBook> {
         backgroundColor: AppColors.secondaryCake,
         onPressed: () {
           print('apretado');
-          Navigator.pushNamed(context, NavigatorRoutes.ratingBook, arguments: _booksRatingsList[0].book!);
+          Navigator.pushNamed(context, NavigatorRoutes.ratingBook,
+              arguments: _booksRatingsList[0].book!);
         },
         label: Text(
           'Valorar',
@@ -140,13 +141,15 @@ class _RatingsBookState extends State<RatingsBook> {
           Container(
             height: 50,
             width: 50,
-            child:
-            Image.network(
+            child: Image.network(
               _booksRatingsList[index].user!.userImg.toString(),
               fit: BoxFit.cover,
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace? stackTrace) {
-                return Image.asset('assets/images/portada2.jpeg', fit: BoxFit.cover,);
+                return Image.asset(
+                  'assets/images/portada2.jpeg',
+                  fit: BoxFit.cover,
+                );
               },
             ),
           ),
@@ -164,15 +167,16 @@ class _RatingsBookState extends State<RatingsBook> {
                 Row(
                   children: List.generate(5, (indexStart) {
                     return Icon(
-                      indexStart < _booksRatingsList[index].stars! ? Icons.star : Icons.star_border,
+                      indexStart < _booksRatingsList[index].stars!
+                          ? Icons.star
+                          : Icons.star_border,
                       color: AppColors.tertiary,
                     );
                   }),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(_booksRatingsList[index].review.toString())
-                ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(_booksRatingsList[index].review.toString())),
               ],
             ),
           ))

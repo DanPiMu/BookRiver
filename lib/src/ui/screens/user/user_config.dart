@@ -16,87 +16,86 @@ class UserSettingsScreen extends StatefulWidget {
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    return
-      Stack(
-        children: [
-          Container(
-            color: Colors.white,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-          ),
-          Image.asset(
-            "assets/images/fondo_4.png",
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
-          _content(context)
-        ],
-      )
-      ;
+    return Stack(
+      children: [
+        Container(
+          color: Colors.white,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+        ),
+        Image.asset(
+          "assets/images/fondo_4.png",
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+        ),
+        _content(context)
+      ],
+    );
   }
 
   Scaffold _content(BuildContext context) {
     return Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            surfaceTintColor: Colors.white,
-            title: Text('Configuració'),
-            centerTitle: true,
-          ),
-          body:Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: (){
-                    Navigator.pushNamed(context, NavigatorRoutes.editProfileScreen);
-
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Editar perfil'),
-                      Icon(Icons.arrow_forward_ios, color: AppColors.secondary,)
-                    ],
-                  ),
-                )
-                ,
-                SizedBox(
-                  height: 20,
-                ),
-                GestureDetector(
-                  onTap: (){
-                    print('2');
-                    Navigator.pushNamed(context, NavigatorRoutes.editPasswordScreen);
-                  },
-                  child:
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Canviar contrasenya'),
-                      Icon(Icons.arrow_forward_ios, color: AppColors.secondary)
-                    ],
-                  ),
-                )
-                ,
-                Container(
-                  child: TextButton(
-                    onPressed: () async {
-                      try{
-                        await RequestProvider().logOut();
-                        Navigator.pushNamedAndRemoveUntil(context,NavigatorRoutes.login,(route)=> false );
-                      } on ApiException catch (ae) {
-                        ae.printDetails();
-                      }
-                    },
-                    child: Text('Tancar Sessió'),
-                  ),
-                )
-              ],
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        surfaceTintColor: Colors.white,
+        title: Text('Configuració'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, NavigatorRoutes.editProfileScreen);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Editar perfil'),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.secondary,
+                  )
+                ],
+              ),
             ),
-          ),
-        );
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () {
+                print('2');
+                Navigator.pushNamed(
+                    context, NavigatorRoutes.editPasswordScreen);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Canviar contrasenya'),
+                  Icon(Icons.arrow_forward_ios, color: AppColors.secondary)
+                ],
+              ),
+            ),
+            Container(
+              child: TextButton(
+                onPressed: () async {
+                  try {
+                    await RequestProvider().logOut();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, NavigatorRoutes.login, (route) => false);
+                  } on ApiException catch (ae) {
+                    ae.printDetails();
+                  }
+                },
+                child: Text('Tancar Sessió'),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

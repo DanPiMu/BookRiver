@@ -106,23 +106,25 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
+              size: 50,
               _shelvesList[index].name == 'Vull Llegir' ||
                       _shelvesList[index].name == 'Llegint' ||
                       _shelvesList[index].name == 'Llegit'
-                  ? Icons.book_sharp
-                  : Icons.book_outlined,
+                  ? Icons.book_sharp // icono de estanteria predefinida
+                  : Icons.book_outlined, // icono de estanteria creada
             ),
             Text(_shelvesList[index].name!),
             Container(
               height: 70,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Expanded(
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: _shelvesList[index].books.length,
                       itemBuilder: (BuildContext context, int index1) {
-
                         return Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Image.network(

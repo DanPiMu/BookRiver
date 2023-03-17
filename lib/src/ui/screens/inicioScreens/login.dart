@@ -178,7 +178,6 @@ class _LogInState extends State<LogIn> {
                 const SizedBox(
                   height: 20,
                 ),
-
                 TextFormField(
                   obscureText: _passVisibility,
                   obscuringCharacter: "*",

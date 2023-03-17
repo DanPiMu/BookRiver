@@ -5,6 +5,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
+import '../../../config/routes/navigator_routes.dart';
 import '../../../model/book.dart';
 
 class SearchBook extends StatefulWidget {
@@ -84,7 +85,6 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
       rethrow;
     }
   }
-
 
   @override
   void initState() {
@@ -188,29 +188,35 @@ class SearchResultBookList extends StatelessWidget {
       itemCount: books.length,
       itemBuilder: (BuildContext context, int index) {
         final book = books[index];
-        return ListTile(
-          leading: Image.network(
-              book.caratula![0].img!,
-              fit: BoxFit.cover, errorBuilder:
-              (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return Image.asset('assets/images/portada.jpeg');
-          }),
-          title: Text(book.title.toString()),
-          subtitle: Text(
-              'Precio: €${book.price.toString()}'),
-          trailing: CircularPercentIndicator(
-              radius: 20.0,
-              lineWidth: 3.0,
-              percent: book.avgRating! / 5,
-              center: Text(
-                book.avgRating.toString(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13.0,
-                  color: Colors.blue, //AppColors.colorByCategoryTitle(category)),
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
+                arguments: book);
+          },
+          child: ListTile(
+            leading: Image.network(book.caratula![0].img!, fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+              return Image.asset('assets/images/portada.jpeg');
+            }),
+            title: Text(book.title.toString()),
+            subtitle: Text('Precio: €${book.price.toString()}'),
+            trailing: CircularPercentIndicator(
+                radius: 20.0,
+                lineWidth: 3.0,
+                percent: book.avgRating! / 5,
+                center: Text(
+                  book.avgRating.toString(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.0,
+                    color: Colors
+                        .blue, //AppColors.colorByCategoryTitle(category)),
+                  ),
                 ),
-              ),
-              progressColor: Colors.red //AppColors.colorByCategoryTitle(category),
+                progressColor:
+                    Colors.red //AppColors.colorByCategoryTitle(category),
+                ),
           ),
         );
       },
@@ -232,18 +238,20 @@ class SearchResultUserList extends StatelessWidget {
       itemCount: users.length,
       itemBuilder: (BuildContext context, int index) {
         final user = users[index];
-        return ListTile(
-          leading: Image.network(
-              user.userImg!,
-              fit: BoxFit.cover, errorBuilder:
-              (BuildContext context, Object exception, StackTrace? stackTrace) {
-                return CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/pepe.jpeg'),
-                );
-
-          }),
-          title: Text(user.username.toString()),
-
+        return GestureDetector(
+          onTap: () => {
+          Navigator.pushNamed(
+          context, NavigatorRoutes.profileOtherUser, arguments: user)
+          },
+          child: ListTile(
+            leading: Image.network(user.userImg!, fit: BoxFit.cover, errorBuilder:
+                (BuildContext context, Object exception, StackTrace? stackTrace) {
+              return CircleAvatar(
+                backgroundImage: AssetImage('assets/images/pepe.jpeg'),
+              );
+            }),
+            title: Text(user.username.toString()),
+          ),
         );
       },
     );

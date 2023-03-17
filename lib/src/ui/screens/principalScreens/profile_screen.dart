@@ -110,7 +110,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return FloatingActionButton.extended(
         backgroundColor: AppColors.secondary,
         onPressed: () {
-          Navigator.pushNamed(context, NavigatorRoutes.userRatings, arguments: myUser);
+          Navigator.pushNamed(context, NavigatorRoutes.userRatings,
+              arguments: myUser);
         },
         label: Text(
           'Valoracions',
@@ -137,28 +138,75 @@ class _ProfileScreenState extends State<ProfileScreen> {
           mainAxisSpacing: 15.0,
         ),
         itemBuilder: (context, index) {
-          return Container(
-            color: Colors.blue,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.network(_shelvesList[index].img.toString(),
-                      fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                          Object exception, StackTrace? stackTrace) {
-                    return Icon(Icons.book);
-                  }),
-                  Text(_shelvesList[index].name!),
-                  Row(
-                    children: [],
-                  )
-                ],
-              ),
-            ),
-          );
+          return _shelveItem(index);
         },
       ),
     ));
+  }
+
+  Widget _shelveItem(int index) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, NavigatorRoutes.detailShelves,
+            arguments: _shelvesList[index]);
+      },
+      child: Container(
+        height: 200,
+        width: 200,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(_shelvesList[index].img!),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          color: AppColors.colorByCategoryShelves(_shelvesList[index].name!),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              size: 50,
+              _shelvesList[index].name == 'Vull Llegir' ||
+                      _shelvesList[index].name == 'Llegint' ||
+                      _shelvesList[index].name == 'Llegit'
+                  ? Icons.book_sharp // icono de estanteria predefinida
+                  : Icons.book_outlined, // icono de estanteria creada
+            ),
+            Text(_shelvesList[index].name!),
+            Container(
+              height: 70,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _shelvesList[index].books.length,
+                      itemBuilder: (BuildContext context, int index1) {
+                        return Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Image.network(
+                              _shelvesList[index]
+                                  .books[index1]
+                                  .caratula![0]
+                                  .img!,
+                              fit: BoxFit.cover, errorBuilder:
+                                  (BuildContext context, Object exception,
+                                      StackTrace? stackTrace) {
+                            return Image.asset('assets/images/portada.jpeg');
+                          }),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Padding _userInfo() {

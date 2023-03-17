@@ -170,12 +170,21 @@ class _StartingScreenState extends State<StartingScreen> {
 
   ListTile _carouselBookItem(int index, int bookIndex, num bookRating) {
     return ListTile(
-      leading: Image.network(
+      leading: Container(
+        height: 100,
+        width: 40,
+        child: Image.network(
           _categoriesList[index].books[bookIndex].bookImgs![0].img.toString(),
-          fit: BoxFit.cover, errorBuilder:
+          fit: BoxFit.cover,
+          errorBuilder:
               (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return Image.asset('assets/images/portada.jpeg');
-      }),
+            return Image.asset(
+              'assets/images/portada.jpeg',
+              fit: BoxFit.cover,
+            );
+          },
+        ),
+      ),
       title: Text(_categoriesList[index].books[bookIndex].title.toString()),
       subtitle: Text(
           'Precio: €${_categoriesList[index].books[bookIndex].price.toString()}'),
@@ -235,7 +244,6 @@ _bookItem(Book book, BuildContext context) {
   return GestureDetector(
       onTap: () {
         print(book);
-
         Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
             arguments: book);
       },

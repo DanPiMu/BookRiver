@@ -153,10 +153,10 @@ class RequestProvider {
   }
 
   static Future<bool> updateShelves(
-      Map<String, dynamic> params, int idShelves) async {
+      Map<String, dynamic> params, int idShelves, File image) async {
     try {
       dynamic _response =
-          await ApiClient().postUpdateShelves(params, idShelves);
+          await ApiClient().postUpdateShelves(params, idShelves, image);
       if (_response != null) {
         return true;
       }

@@ -22,17 +22,19 @@ class _AddNewShelveState extends State<AddNewShelve> {
 
   //0 si es privada y 1 si es publica
   int isPublic = 0;
-  publicCheck(){
-    if(isPublicBool == true){
+
+  publicCheck() {
+    if (isPublicBool == true) {
       print('Es publica');
-      isPublic =1;
-    }else{
+      isPublic = 1;
+    } else {
       print('No es publica');
-      isPublic =0;
+      isPublic = 0;
     }
   }
 
   File? image;
+
   Future pickImage() async {
     try {
       var image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -40,7 +42,6 @@ class _AddNewShelveState extends State<AddNewShelve> {
       if (image == null) return;
 
       final imageTemp = File(image.path);
-      
 
       setState(() {
         this.image = imageTemp;
@@ -49,6 +50,7 @@ class _AddNewShelveState extends State<AddNewShelve> {
       print('Failed to pick image: $e');
     }
   }
+
   Future pickImageC() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -56,7 +58,6 @@ class _AddNewShelveState extends State<AddNewShelve> {
       if (image == null) return;
 
       final imageTemp = File(image.path);
-
 
       setState(() => this.image = imageTemp);
     } on PlatformException catch (e) {
@@ -70,12 +71,10 @@ class _AddNewShelveState extends State<AddNewShelve> {
   Future<bool> _addShelves() async {
     try {
       bool aux = await RequestProvider.addNewShelves({
-
         "name": _nameController.text,
         "description": _descriptionController.text,
         "privacity": isPublic
-      },
-      image!);
+      }, image!);
       return aux;
     } on ApiException catch (ae) {
       ae.printDetails();
@@ -225,35 +224,46 @@ class _AddNewShelveState extends State<AddNewShelve> {
     return Padding(
       padding: EdgeInsets.all(8),
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           _showMyDialog();
           print(image.toString());
         },
-        child: Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: Color.fromARGB(255, 235, 251, 255)),
-          width: double.infinity,
-          height: 270,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.add_photo_alternate,
-                color: AppColors.tertiary,
-                size: 40,
+        child: image != null
+            ? Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Image.file(
+                  image!,
+                  width: double.infinity,
+                  height: 270,
+                ))
+            : Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color.fromARGB(255, 235, 251, 255)),
+                width: double.infinity,
+                height: 270,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.add_photo_alternate,
+                      color: AppColors.tertiary,
+                      size: 40,
+                    ),
+                    Text(
+                      'Afegeix una imatge per aquesta prestatgeria',
+                      style: TextStyle(color: AppColors.tertiary),
+                    )
+                  ],
+                ),
               ),
-              Text(
-                'Afegeix una imatge per aquesta prestatgeria',
-                style: TextStyle(color: AppColors.tertiary),
-              )
-            ],
-          ),
-        ),
       ),
     );
   }
+
   Future<void> _showMyDialog() async {
     return showDialog<void>(
       context: context,

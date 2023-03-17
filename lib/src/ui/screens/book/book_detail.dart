@@ -25,7 +25,6 @@ class BookDetail extends StatefulWidget {
 }
 
 class _BookDetailState extends State<BookDetail> {
-
   bool _isLoading = true;
   bool _isLoadingShelves = true;
 
@@ -147,6 +146,7 @@ class _BookDetailState extends State<BookDetail> {
     return _content(percentage, rating.toDouble());
   }
 
+  //TODO: Revisar todo el tema de los Navigators.pop
   _content(double percentage, double rating) {
     return Scaffold(
         body: CustomScrollView(slivers: [

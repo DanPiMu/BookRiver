@@ -16,7 +16,7 @@ class MainHolder extends StatelessWidget {
   Widget build(BuildContext context) {
     final navigationProvider = Provider.of<NavigationNotifier>(context);
     return Scaffold(
-      body:_buildBody(navigationProvider.selectedOption),
+      body: _buildBody(navigationProvider.selectedOption),
       bottomNavigationBar: const CustomNavigationBar(),
     );
   }
@@ -24,7 +24,7 @@ class MainHolder extends StatelessWidget {
 
 ///Aqui añadimos las pantallas que necesiten NavBar
 Widget _buildBody(NavigationOption selectedOption) {
-  switch( selectedOption){
+  switch (selectedOption) {
     case NavigationOption.Inici:
       return const StartingScreen();
     case NavigationOption.Prestatgeries:

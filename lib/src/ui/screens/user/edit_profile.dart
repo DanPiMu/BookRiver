@@ -74,21 +74,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: ElevatedButton(
                   child: const Text('Desa els canvis'),
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      print(_emailController.text);
-                    print(_dateController.text);
-                    print(_nameController.text);
-                      bool aux = await _updateUser();
+            if (_formKey.currentState!.validate()) {
+              print(_emailController.text);
+              print(_dateController.text);
+              print(_nameController.text);
+              bool aux = await _updateUser();
 
-                      if (aux) {
-                        Navigator.pop(context);
-                      } else {
-                        SnackBar(content: Text("No se actualiza"));
-                        print("No se actualiza");
-                      }
-                    }
-                  },
-                ));
+              if (aux) {
+                Navigator.pop(context);
+              } else {
+                SnackBar(content: Text("No se actualiza"));
+                print("No se actualiza");
+              }
+            }
+          },
+        ));
   }
 
   TextFormField _nameForm() {

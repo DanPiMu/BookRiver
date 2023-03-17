@@ -50,7 +50,7 @@ class _EditShelvesState extends State<EditShelves> {
         "name": _nameController.text,
         "description": _descriptionController.text,
         "privacity": isPublic
-      },widget.shelvesId.id!);
+      }, widget.shelvesId.id!, image!);
       return aux;
     } on ApiException catch (ae) {
       ae.printDetails();
@@ -236,28 +236,79 @@ class _EditShelvesState extends State<EditShelves> {
   Padding _imgShelve() {
     return Padding(
       padding: EdgeInsets.all(8),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey[350]),
-        width: double.infinity,
-        height: 270,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(
-              Icons.add_photo_alternate,
-              color: Colors.white,
-              size: 40,
-            ),
-            Text(
-              'Afegeix una imatge per aquesta prestatgeria',
-              style: TextStyle(color: Colors.white),
-            )
-          ],
-        ),
+      child: GestureDetector(
+        onTap: () {
+          _showMyDialog();
+          print("OK");
+        },
+        child: image != null
+            ? Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Image.file(
+                  image!,
+                  width: double.infinity,
+                  height: 270,
+                ))
+            : Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey[350]),
+                width: double.infinity,
+                height: 270,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.add_photo_alternate,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                    Text(
+                      'Afegeix una imatge per aquesta prestatgeria',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
       ),
+    );
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Seleccionar foto'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Con que quieres escoger la foto.')
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Galeria'),
+              onPressed: () {
+                pickImage();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Camara'),
+              onPressed: () {
+                pickImageC();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

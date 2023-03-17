@@ -104,14 +104,12 @@ class _UserRatingsState extends State<UserRatings> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: List.generate(5, (indexStart) {
                           return Container(
-
                             child: Icon(
                               indexStart < _booksRatingsList[index].stars!
                                   ? Icons.star
                                   : Icons.star_border,
                               color: AppColors.tertiary,
                               size: 17,
-
                             ),
                           );
                         }),

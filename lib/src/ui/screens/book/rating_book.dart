@@ -90,17 +90,16 @@ class _RatingBookState extends State<RatingBook> {
               _bookComment(),
               ElevatedButton(
                 onPressed: () async {
-                  try{
+                  try {
                     await RequestProvider().postRatingBook(
                         widget.bookRating.id!, _rating, myController.text);
                     Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
                         arguments: widget.bookRating);
-                  } on ApiException catch(ae) {
+                  } on ApiException catch (ae) {
                     ae.printDetails();
                     SnackBar(content: Text(ae.message!));
                     rethrow;
-
-                  } catch(e) {
+                  } catch (e) {
                     print('Problemillas');
                     rethrow;
                   }
