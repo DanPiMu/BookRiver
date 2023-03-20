@@ -66,4 +66,24 @@ class AppColors {
         }
     }
   }
+  static colorByCategoryShelvesByTittle(String name) {
+    switch (name) {
+      case "Vull Llegir":
+        {
+          return Color.fromARGB(255, 36, 239, 255);
+        }
+      case "Llegint":
+        {
+          return Color.fromARGB(255, 255, 77, 41);
+        }
+      case "Llegit":
+        {
+          return Color.fromARGB(255, 185, 255, 44,);
+        }
+      default:
+        {
+          return Color.fromARGB(255, 0, 0, 0);
+        }
+    }
+  }
 }

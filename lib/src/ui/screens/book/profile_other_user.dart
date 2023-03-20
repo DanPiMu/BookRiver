@@ -183,8 +183,11 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
                       publicUser.libraries[index].name == 'Llegit'
                   ? Icons.book_sharp // icono de estanteria predefinida
                   : Icons.book_outlined, // icono de estanteria creada
-            ),
-            Text(publicUser.libraries[index].name!),
+
+
+                color: AppColors.colorByCategoryShelvesByTittle(publicUser.libraries[index].name!)),
+            Text(publicUser.libraries[index].name!, style: TextStyle(fontFamily: 'Abril Fatface',
+                color: AppColors.colorByCategoryShelvesByTittle(publicUser.libraries[index].name!))),
             Container(
               height: 70,
               child: Row(

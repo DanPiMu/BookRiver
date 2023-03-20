@@ -138,7 +138,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
   ListTile _bookItem(int index) {
     return ListTile(
       leading: Image.network(
-        _bookListByCategory[index].caratula![0].toString(),
+        _bookListByCategory[index].caratula![0].img!,
         fit: BoxFit.cover,
         errorBuilder:
             (BuildContext context, Object exception, StackTrace? stackTrace) {

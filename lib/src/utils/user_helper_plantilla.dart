@@ -20,7 +20,7 @@ class UserHelper {
 
   ///Revisar si s'ha inciat sessió
   static bool hasUserSession() {
-    if(_user != null){
+    if (_user != null) {
       return true;
     }
     return false;
@@ -38,11 +38,11 @@ class UserHelper {
     try {
       // Obtenim les dades de SharedPreferences y hem de carregarles correctament
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? userData = prefs.getString(sharedUserData) ;
+      String? userData = prefs.getString(sharedUserData);
 
-      if(userData != null){
+      if (userData != null) {
         var _json = jsonDecode(userData);
-        if( _json !=null){
+        if (_json != null) {
           setUser(_json['user']);
           setAccessToken(_json['access_token']);
         }
@@ -56,39 +56,48 @@ class UserHelper {
 
   /// Request registre usuari
   static Future<bool> register(Map<String, dynamic> params) async {
-    try{
+    try {
       dynamic _response = await ApiClient().register(params);
-      if(_response != null){
+      if (_response != null) {
         //final prefs = await SharedPreferences.getInstance();
         await updateUserData(_response);
         return true;
       }
       return false;
-
-    }on ApiException catch(ae){
-      ae.printDetails();
-    }
-        return false;
-
-  }
-
-  static Future<bool> login(Map<String, dynamic> params) async {
-    try{
-      dynamic _response = await ApiClient().signIn(params);
-      if(_response != null){
-        //final prefs = await SharedPreferences.getInstance();
-        await updateUserData(_response);
-        return true;
-      }
-      return false;
-
-    }on ApiException catch(ae){
+    } on ApiException catch (ae) {
       ae.printDetails();
     }
     return false;
   }
 
+  static Future<bool> login(Map<String, dynamic> params) async {
+    try {
+      dynamic _response = await ApiClient().signIn(params);
+      if (_response != null) {
+        //final prefs = await SharedPreferences.getInstance();
+        await updateUserData(_response);
+        return true;
+      }
+      return false;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
 
+  static Future<bool> recovery(Map<String, dynamic> params) async {
+    try {
+      dynamic _response = await ApiClient().recovery(params);
+      if (_response != null) {
+        //final prefs = await SharedPreferences.getInstance();
+        return true;
+      }
+      return false;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
 
   /// Actualitza el valor de [_user] i actualitza les dades locals de SharedPreferences
   /// de l'usuari que ha iniciat sessió.
@@ -122,13 +131,8 @@ class UserHelper {
     final prefs = await SharedPreferences.getInstance();
 
     prefs.setString(sharedUserData, jsonEncode(json));
-
   }
-
 
   ///Eliminem la info del user de ShredPreferences
-  static Future _removeUserDataFromSharedPreferences() async {
-
-  }
-
+  static Future _removeUserDataFromSharedPreferences() async {}
 }

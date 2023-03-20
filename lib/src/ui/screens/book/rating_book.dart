@@ -93,8 +93,9 @@ class _RatingBookState extends State<RatingBook> {
                   try {
                     await RequestProvider().postRatingBook(
                         widget.bookRating.id!, _rating, myController.text);
-                    Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
-                        arguments: widget.bookRating);
+                    Navigator.of(context).pop();
+
+                    //Navigator.pushNamed(context, NavigatorRoutes.bookDetails,arguments: widget.bookRating);
                   } on ApiException catch (ae) {
                     ae.printDetails();
                     SnackBar(content: Text(ae.message!));

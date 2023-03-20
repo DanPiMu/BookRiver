@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../api/api_exception.dart';
+import '../../../config/routes/navigator_routes.dart';
+import '../../../utils/user_helper_plantilla.dart';
+
 class PasswordRecoveryScreen extends StatefulWidget {
   const PasswordRecoveryScreen({Key? key}) : super(key: key);
 
@@ -10,6 +14,22 @@ class PasswordRecoveryScreen extends StatefulWidget {
 class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
+
+  TextEditingController _emailController = TextEditingController();
+
+
+  Future<bool> _recoveryPass() async {
+    try {
+      bool aux = await UserHelper.recovery({
+        "email": _emailController.text,
+
+      });
+      return aux;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +95,35 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
           _sendButton(),
         ],
       )),
+
     );
+
   }
 
   ElevatedButton _sendButton() =>
-      ElevatedButton(onPressed: () {}, child: const Text('Enviar'));
+      ElevatedButton(onPressed: () async {
+
+
+
+        if (_formKey.currentState!.validate()) {
+          bool aux = await _recoveryPass();
+          if (aux) {
+            final snackBar = SnackBar(
+              content: Text('Te hemos enviado un correo, revisa tu bandeja de entrada'),
+              action: SnackBarAction(
+                label: 'Iniciar sesion',
+                onPressed: () {
+                  Navigator.pushNamed(context, NavigatorRoutes.login);
+                },
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            //Navigator.pushNamed(context, NavigatorRoutes.login);
+          } else {
+            print("no entro");
+          }
+        }
+      }, child: const Text('Enviar'));
 
   Container _form() {
     return Container(
@@ -112,7 +156,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                   height: 20,
                 ),
                 TextFormField(
-                  //controller: _emailController,
+                  controller: _emailController,
                   decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -137,4 +181,5 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
       ),
     );
   }
+
 }

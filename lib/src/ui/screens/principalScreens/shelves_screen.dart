@@ -112,8 +112,11 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
                       _shelvesList[index].name == 'Llegit'
                   ? Icons.book_sharp // icono de estanteria predefinida
                   : Icons.book_outlined, // icono de estanteria creada
-            ),
-            Text(_shelvesList[index].name!),
+                color: AppColors.colorByCategoryShelvesByTittle(_shelvesList[index].name!)),
+            Text(_shelvesList[index].name!, style: TextStyle(
+                fontFamily: 'Abril Fatface',
+                color: AppColors.colorByCategoryShelvesByTittle(_shelvesList[index].name!)
+            ),),
             Container(
               height: 70,
               child: Row(

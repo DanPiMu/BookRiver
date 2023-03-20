@@ -119,7 +119,11 @@ class _RatingsBookState extends State<RatingsBook> {
         onPressed: () {
           print('apretado');
           Navigator.pushNamed(context, NavigatorRoutes.ratingBook,
-              arguments: _booksRatingsList[0].book!);
+              arguments: _booksRatingsList[0].book!).then((_) => {
+                setState(() => {
+                readResponseBooks()
+                })
+          });
         },
         label: Text(
           'Valorar',

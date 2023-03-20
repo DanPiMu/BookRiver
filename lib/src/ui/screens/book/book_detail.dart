@@ -151,18 +151,12 @@ class _BookDetailState extends State<BookDetail> {
     return Scaffold(
         body: CustomScrollView(slivers: [
           SliverAppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-              },
-            ),
             backgroundColor: Colors.transparent,
             collapsedHeight: 70,
             surfaceTintColor: Colors.white,
-            pinned: true,
+            pinned: false,
             snap: false,
-            floating: false,
+            floating: true,
             expandedHeight: 470.0,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(

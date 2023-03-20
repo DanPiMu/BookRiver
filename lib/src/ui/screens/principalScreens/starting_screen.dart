@@ -17,6 +17,9 @@ class StartingScreen extends StatefulWidget {
 }
 
 class _StartingScreenState extends State<StartingScreen> {
+  //Carousel controller
+  CarouselController buttonCarouselController = CarouselController();
+
   //bools loadings
   bool novetatLoading = true;
   bool categoryLoading = true;
@@ -78,19 +81,48 @@ class _StartingScreenState extends State<StartingScreen> {
   Widget _content() {
     return Scaffold(
         appBar: _customAppBar(context, _categoriesList),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Novetats'),
-              _novetatsList(),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text('Categories'),
-              _carouselCategories(),
-            ],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0,right:20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Novetats',
+                  style: TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),
+                ),
+                _novetatsList(),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Categories',
+                      style: TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),),
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () =>
+                              buttonCarouselController.previousPage(
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.linear),
+                          icon: Icon(Icons.arrow_back_ios_sharp),
+                        ),
+                        Image.asset('assets/images/Vectorstar.png'),
+                        IconButton(
+                          onPressed: () => buttonCarouselController.nextPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.linear),
+                          icon: Icon(Icons.arrow_forward_ios_sharp),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                _carouselCategories(),
+              ],
+            ),
           ),
         ));
   }
@@ -109,6 +141,7 @@ class _StartingScreenState extends State<StartingScreen> {
 
   _carouselCategories() {
     return CarouselSlider.builder(
+      carouselController: buttonCarouselController,
       itemCount: _categoriesList.length,
       itemBuilder: (BuildContext context, int index, int a) {
         return GestureDetector(
@@ -193,7 +226,7 @@ class _StartingScreenState extends State<StartingScreen> {
           lineWidth: 3.0,
           percent: bookRating / 5,
           center: Text(
-            bookRating.toString(),
+            bookRating.toStringAsFixed(1),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 13.0,
@@ -247,15 +280,18 @@ _bookItem(Book book, BuildContext context) {
         Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
             arguments: book);
       },
-      child: Card(
-        child: Column(
-          children: [
-            ///imagen
-            _imageBook(book),
+      child: Container(
+        width: 170,
+        child: Card(
+          child: Column(
+            children: [
+              ///imagen
+              _imageBook(book),
 
-            ///Pie Foto
-            _caption(book),
-          ],
+              ///Pie Foto
+              _caption(book, context),
+            ],
+          ),
         ),
       ));
 }
@@ -275,9 +311,9 @@ Padding _imageBook(Book book) {
   );
 }
 
-Column _caption(Book book) {
+Column _caption(Book book, BuildContext context) {
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Text(
         book.title!,

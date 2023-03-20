@@ -136,10 +136,20 @@ class _LogInState extends State<LogIn> {
             if (aux) {
               Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
             } else {
-              print("no entro");
+              final snackBar = SnackBar(
+                content:
+                    Text('Contraseña incorrecta, has olvidado tu contraseña?'),
+                action: SnackBarAction(
+                  label: 'Aqui!',
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, NavigatorRoutes.passwordRecovery);
+                  },
+                ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           }
-          //Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
         },
         child: Text('Iniciar sesion'));
   }
@@ -204,9 +214,8 @@ class _LogInState extends State<LogIn> {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter valid Password';
                     }
-                    //dani@dani.com
-                    //123456789
-                    if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
+
+                    if (!RegExp(r'^\d{9,}$').hasMatch(value!)) {
                       return 'Enter a valid password with 9 characters';
                     }
                     return null;

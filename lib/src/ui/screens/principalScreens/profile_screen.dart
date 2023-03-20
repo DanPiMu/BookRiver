@@ -170,9 +170,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _shelvesList[index].name == 'Llegint' ||
                       _shelvesList[index].name == 'Llegit'
                   ? Icons.book_sharp // icono de estanteria predefinida
-                  : Icons.book_outlined, // icono de estanteria creada
-            ),
-            Text(_shelvesList[index].name!),
+                  : Icons.personal_injury, // icono de estanteria creada
+            color: AppColors.colorByCategoryShelvesByTittle(_shelvesList[index].name!),),
+            Text(_shelvesList[index].name!, style: TextStyle(
+              fontFamily: 'Abril Fatface',
+              color: AppColors.colorByCategoryShelvesByTittle(_shelvesList[index].name!)
+            ),),
             Container(
               height: 70,
               child: Row(
