@@ -12,20 +12,32 @@ class AppColors {
 
   static Color transparent = const Color.fromARGB(0, 0, 0, 0);
 
+  static Color defaultCategoryColor = const Color.fromARGB(255, 236, 106, 106);
+
   static colorByCategoryBG(String category) {
     switch (category) {
-      case "Ficció":
+      case "Misterio":
         {
-          return Color.fromARGB(255, 234, 251, 205);
+          return Color.fromARGB(255, 202, 244, 140);
         }
-      case "Infantil":
+      case "Romantico":
         {
-          return Color.fromARGB(255, 255, 248, 221);
+          return Color.fromARGB(255, 255, 237, 153);
         }
       case "Novel·la":
         {
-          return Color.fromARGB(255, 216, 234, 255);
+          return Color.fromARGB(255, 148, 199, 255);
         }
+      case "Policiaca":
+        {
+          return Color.fromARGB(255, 255, 148, 234);
+        }
+      case "Ciencia Ficción":
+        {
+          return Color.fromARGB(255, 148, 199, 255);
+        }
+      default:
+        return Color.fromARGB(255, 255, 255, 255);
     }
   }
 
@@ -46,6 +58,7 @@ class AppColors {
     }
   }
 
+  /// Seleccionar el color de una estanteria depende de su nombre
   static colorByCategoryShelves(String name) {
     switch (name) {
       case "Vull Llegir":
@@ -58,7 +71,12 @@ class AppColors {
         }
       case "Llegit":
         {
-          return Color.fromARGB(255, 234, 255, 191,);
+          return Color.fromARGB(
+            255,
+            234,
+            255,
+            191,
+          );
         }
       default:
         {
@@ -66,6 +84,8 @@ class AppColors {
         }
     }
   }
+
+  ///Seleccionar el color de los titulos de las estanteria
   static colorByCategoryShelvesByTittle(String name) {
     switch (name) {
       case "Vull Llegir":
@@ -78,7 +98,12 @@ class AppColors {
         }
       case "Llegit":
         {
-          return Color.fromARGB(255, 185, 255, 44,);
+          return Color.fromARGB(
+            255,
+            185,
+            255,
+            44,
+          );
         }
       default:
         {

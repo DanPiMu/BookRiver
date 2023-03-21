@@ -10,18 +10,46 @@ import '../../../model/book.dart';
 class RatingBook extends StatefulWidget {
   RatingBook({
     Key? key,
-    required Book this.bookRating,
+    required int this.bookID,
   }) : super(key: key);
 
-  Book bookRating;
+  int bookID;
+
+
 
   @override
   State<RatingBook> createState() => _RatingBookState();
 }
 
 class _RatingBookState extends State<RatingBook> {
+  late Book bookRating;
+  Future<void> _bookById() async {
+    try {
+      final data = await RequestProvider().getBookById(widget.bookID);
+      bookRating = Book.fromJson(data);
+      setState(() {
+        _isLoading = false;
+      });
+    } on ApiException catch (ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+    } catch (e) {
+      print('Problemillas');
+      rethrow;
+    }
+  }
+
+  bool _isLoading = true;
+
   int _rating = 0;
   final myController = TextEditingController();
+
+  @override
+  void initState() {
+    _bookById();
+    super.initState();
+  }
 
   void _onStarTapped(int rating) {
     setState(() {
@@ -31,6 +59,11 @@ class _RatingBookState extends State<RatingBook> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Stack(
       children: [
         Container(
@@ -44,6 +77,7 @@ class _RatingBookState extends State<RatingBook> {
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
+
         _content()
       ],
     );
@@ -64,19 +98,19 @@ class _RatingBookState extends State<RatingBook> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Text(widget.bookRating.title.toString(),
+              Text(bookRating.title.toString(),
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: Text(widget.bookRating.author.toString()),
+                child: Text(bookRating.author.toString()),
               ),
-              Padding(
+              /*Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: SizedBox(
                   width: 200,
                   height: 280,
                   child: Image.network(
-                    widget.bookRating.caratula![0].img!,
+                    bookRating.caratula![0].img!,
                     fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace? stackTrace) {
@@ -84,7 +118,7 @@ class _RatingBookState extends State<RatingBook> {
                     },
                   ),
                 ),
-              ),
+              ),*/
               _ratingNumber(),
               _ratingStars(),
               _bookComment(),
@@ -92,10 +126,10 @@ class _RatingBookState extends State<RatingBook> {
                 onPressed: () async {
                   try {
                     await RequestProvider().postRatingBook(
-                        widget.bookRating.id!, _rating, myController.text);
+                        bookRating.id!, _rating, myController.text);
                     Navigator.of(context).pop();
 
-                    //Navigator.pushNamed(context, NavigatorRoutes.bookDetails,arguments: widget.bookRating);
+                    //Navigator.pushNamed(context, NavigatorRoutes.bookDetails,arguments: bookRating);
                   } on ApiException catch (ae) {
                     ae.printDetails();
                     SnackBar(content: Text(ae.message!));

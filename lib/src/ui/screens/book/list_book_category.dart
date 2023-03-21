@@ -1,3 +1,5 @@
+
+
 import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/model/book.dart';
@@ -11,9 +13,12 @@ class ListBookCategory extends StatefulWidget {
   ListBookCategory({
     Key? key,
     required int this.bookIdCategory,
+    required String this.categoryName,
   }) : super(key: key);
 
+
   int bookIdCategory;
+  String categoryName;
 
   @override
   State<ListBookCategory> createState() => _ListBookCategoryState();
@@ -49,6 +54,8 @@ class _ListBookCategoryState extends State<ListBookCategory> {
 
   @override
   void initState() {
+
+
     readResponseBookList(1);
 
     super.initState();
@@ -96,10 +103,12 @@ class _ListBookCategoryState extends State<ListBookCategory> {
   }
 
   Scaffold _content() {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _bookListByCategory[0].categories[0].nameEs.toString(),
+
+          widget.categoryName,//_bookListByCategory[0].categories[0].nameEs.toString(),
           style: TextStyle(color: AppColors.colorByCategoryTitle(category)),
         ),
         centerTitle: true,
@@ -119,7 +128,18 @@ class _ListBookCategoryState extends State<ListBookCategory> {
     );
   }
 
-  ListView _bookList() {
+  Widget _bookList() {
+    if(_bookListByCategory.isEmpty){
+      return Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Center(
+          child: Text(
+            'No tenemos ningun libro con esta categoria',
+            style: TextStyle(color: AppColors.colorByCategoryTitle(category), fontSize: 20, ),
+          )),
+      );
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       itemCount: _bookListByCategory.length,

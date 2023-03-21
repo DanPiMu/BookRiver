@@ -1,4 +1,3 @@
-
 import 'package:book_river/src/model/User.dart';
 import 'package:book_river/src/model/ratings.dart';
 import 'package:book_river/src/ui/screens/book/rating_book.dart';
@@ -32,8 +31,6 @@ import 'navigator_routes.dart';
 class AppRouter {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-
-
       case NavigatorRoutes.login:
         return MaterialPageRoute(
           builder: (context) {
@@ -56,58 +53,54 @@ class AppRouter {
         });
 
       case NavigatorRoutes.bookDetails:
-      Book bookId = settings.arguments as Book;
-        return MaterialPageRoute(builder: (context){
-          return BookDetail(
-             bookId: bookId.id!
-          );
+        Book bookId = settings.arguments as Book;
+        return MaterialPageRoute(builder: (context) {
+          return BookDetail(bookId: bookId.id!);
         });
 
       case NavigatorRoutes.ratingsBook:
-      Book bookId = settings.arguments as Book;
-        return MaterialPageRoute(builder: (context){
-          return RatingsBook(
-            bookId: bookId.id!
-          );
+        int bookId = settings.arguments as int;
+        return MaterialPageRoute(builder: (context) {
+          return RatingsBook(bookId: bookId);
         });
 
       case NavigatorRoutes.ratingBook:
-      Book bookRatings = settings.arguments as Book;
-        return MaterialPageRoute(builder: (context){
+        int bookRatings = settings.arguments as int;
+        return MaterialPageRoute(builder: (context) {
           return RatingBook(
-            bookRating : bookRatings,
+            bookID: bookRatings,
           );
         });
 
       case NavigatorRoutes.profileOtherUser:
         User userID = settings.arguments as User;
-        return MaterialPageRoute(builder: (context){
-          return ProfileOtherUser(
-            userID: userID.id!
-          );
+        return MaterialPageRoute(builder: (context) {
+          return ProfileOtherUser(userID: userID.id!);
         });
 
       case NavigatorRoutes.listBookCategory:
-        Categories bookIdCategory = settings.arguments as Categories;
-        return MaterialPageRoute(builder: (context){
+        int bookIdCategory = settings.arguments as int;
+        String categoryName = settings.arguments as String;
+        return MaterialPageRoute(builder: (context) {
           return ListBookCategory(
-            bookIdCategory: bookIdCategory.id!
+              bookIdCategory: bookIdCategory,
+              categoryName: categoryName
           );
         });
 
       case NavigatorRoutes.searchBook:
-        return MaterialPageRoute(builder: (context){
+        return MaterialPageRoute(builder: (context) {
           return const SearchBook();
         });
 
       case NavigatorRoutes.addShelves:
-        return MaterialPageRoute(builder: (context){
+        return MaterialPageRoute(builder: (context) {
           return const AddNewShelve();
         });
 
       case NavigatorRoutes.detailShelves:
         Shelves shelvesId = settings.arguments as Shelves;
-        return MaterialPageRoute(builder: (context){
+        return MaterialPageRoute(builder: (context) {
           return DetailShelves(
             shelvesId: shelvesId.id!,
           );
@@ -115,42 +108,37 @@ class AppRouter {
 
       case NavigatorRoutes.editShelves:
         Shelves shelvesId = settings.arguments as Shelves;
-        return MaterialPageRoute(builder: (context){
-          return EditShelves(
-            shelvesId: shelvesId
-          );
+        return MaterialPageRoute(builder: (context) {
+          return EditShelves(shelvesId: shelvesId);
         });
 
       case NavigatorRoutes.userRatings:
         User user = settings.arguments as User;
-        return MaterialPageRoute(builder: (context){
-          return UserRatings(
-            user: user
-          );
+        return MaterialPageRoute(builder: (context) {
+          return UserRatings(user: user);
         });
 
       case NavigatorRoutes.userSettings:
-        return MaterialPageRoute(builder: (context){
+        return MaterialPageRoute(builder: (context) {
           return const UserSettingsScreen();
         });
       case NavigatorRoutes.editProfileScreen:
-        return MaterialPageRoute(builder: (context){
+        return MaterialPageRoute(builder: (context) {
           return const EditProfileScreen();
         });
       case NavigatorRoutes.editPasswordScreen:
-        return MaterialPageRoute(builder: (context){
+        return MaterialPageRoute(builder: (context) {
           return const EditPasswordScreen();
         });
 
       case NavigatorRoutes.cartScreen:
-        return MaterialPageRoute(builder: (context){
+        return MaterialPageRoute(builder: (context) {
           return const CartScreen();
         });
 
-
       //Ejemplo con argumentos y sin argumentos
       ///
-  /*static Route<dynamic>? generateRoute(RouteSettings settings) {
+      /*static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch(settings.name) {
       /// Exemple de pantalla sense arguments.
       case NavigatorRoutes.signIn:

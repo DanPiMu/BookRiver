@@ -46,9 +46,7 @@ class _RatingsBookState extends State<RatingsBook> {
         child: CircularProgressIndicator(),
       );
     }
-    //Porcentaje
-    double rating = _booksRatingsList[0].stars!.toDouble();
-    double percentage = rating / 5;
+
     return Stack(
       children: [
         Container(
@@ -64,12 +62,51 @@ class _RatingsBookState extends State<RatingsBook> {
             fit: BoxFit.cover,
           ),
         ),
-        _content(percentage, rating, context)
+        _booksRatingsList.isEmpty
+            ? Scaffold(
+                backgroundColor: AppColors.transparent,
+                body: CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      pinned: true,
+                      snap: true,
+                      floating: true,
+                      surfaceTintColor: Colors.white,
+                      backgroundColor: Colors.transparent,
+                      expandedHeight: 200.0,
+                      flexibleSpace: FlexibleSpaceBar(
+                          title: LayoutBuilder(builder: (context, constraints) {
+                            return Text(
+                              'Valoracions',
+                              style: TextStyle(
+                                color: constraints.maxHeight > 70
+                                    ? Color.fromARGB(0, 0, 0, 0)
+                                    : Colors.black,
+                              ),
+                            );
+                          }),
+                          centerTitle: true,
+                          background: _appBarCustom(0, 0)),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Center(
+                        child: Text('Este libro aun no tiene valoraciones...'),
+                      ),
+                    )
+                    //Text('Este libro no tiene valoraciones aun')
+                  ],
+                ),
+                floatingActionButton: _ratingButton(context),
+              )
+            : _content(context)
       ],
     );
   }
 
-  Scaffold _content(double percentage, double rating, BuildContext context) {
+  Scaffold _content(BuildContext context) {
+    //Porcentaje
+    double rating = _booksRatingsList[0].stars!.toDouble();
+    double percentage = rating / 5;
     return Scaffold(
       backgroundColor: AppColors.transparent,
       body: CustomScrollView(
@@ -117,13 +154,11 @@ class _RatingsBookState extends State<RatingsBook> {
     return FloatingActionButton.extended(
         backgroundColor: AppColors.secondaryCake,
         onPressed: () {
-          print('apretado');
           Navigator.pushNamed(context, NavigatorRoutes.ratingBook,
-              arguments: _booksRatingsList[0].book!).then((_) => {
-                setState(() => {
-                readResponseBooks()
-                })
-          });
+                  arguments: widget.bookId)
+              .then((_) => {
+                    setState(() => {readResponseBooks()})
+                  });
         },
         label: Text(
           'Valorar',

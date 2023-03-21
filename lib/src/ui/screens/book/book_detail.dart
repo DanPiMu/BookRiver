@@ -146,7 +146,6 @@ class _BookDetailState extends State<BookDetail> {
     return _content(percentage, rating.toDouble());
   }
 
-  //TODO: Revisar todo el tema de los Navigators.pop
   _content(double percentage, double rating) {
     return Scaffold(
         body: CustomScrollView(slivers: [
@@ -160,8 +159,11 @@ class _BookDetailState extends State<BookDetail> {
             expandedHeight: 470.0,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 255, 244, 242),
+                decoration: BoxDecoration(
+                  color: detailedBookById.categories.isEmpty
+                      ? AppColors.defaultCategoryColor
+                      : AppColors.colorByCategoryBG(
+                          detailedBookById.categories[0].nameEs!),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
@@ -193,10 +195,8 @@ class _BookDetailState extends State<BookDetail> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.'),
-            ),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(detailedBookById.description!)),
           ),
         ]),
         floatingActionButton: _cartButton());
@@ -240,8 +240,11 @@ class _BookDetailState extends State<BookDetail> {
                 idShelves = _shelvesList[2].id;
                 _addBookToShelves();
                 setState(() {
-                  _isButtonPressedVullLlegir = false;
-                  _isButtonPressedLlegint = false;
+                  //_isButtonPressedVullLlegir = false;
+                  //_isButtonPressedLlegint = false;
+                  print('antes Llegit${_inTheLibrary2}');
+                  _inTheLibrary2();
+                  print('despues Llegit ${_inTheLibrary2}');
                   _isButtonPressedLlegit = !_isButtonPressedLlegit;
                 });
               },
@@ -270,8 +273,11 @@ class _BookDetailState extends State<BookDetail> {
                 _addBookToShelves();
 
                 setState(() {
-                  _isButtonPressedLlegit = false;
-                  _isButtonPressedLlegint = false;
+                  //_isButtonPressedLlegit = false;
+                  //_isButtonPressedLlegint = false;
+                  print('antes vullLlegit${_inTheLibrary}');
+                  _inTheLibrary();
+                  print('despues vullLlegit${_inTheLibrary}');
                   _isButtonPressedVullLlegir = !_isButtonPressedVullLlegir;
                 });
               },
@@ -300,8 +306,11 @@ class _BookDetailState extends State<BookDetail> {
                 _addBookToShelves();
 
                 setState(() {
-                  _isButtonPressedLlegit = false;
-                  _isButtonPressedVullLlegir = false;
+                  //_isButtonPressedLlegit = false;
+                  //_isButtonPressedVullLlegir = false;
+                  print('antes vullLlegnir${_inTheLibrary1}');
+                  _inTheLibrary1();
+                  print('despues vullLlegnir${_inTheLibrary1}');
                   _isButtonPressedLlegint = !_isButtonPressedLlegint;
                 });
               },
@@ -356,7 +365,8 @@ class _BookDetailState extends State<BookDetail> {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-              width: MediaQuery.of(context).size.width,
+              width: 220,
+              //width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Image.network(
                 imgUrl.img!,
@@ -381,10 +391,6 @@ class _BookDetailState extends State<BookDetail> {
         alignment: Alignment.center,
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          // Container(
-          //   width: 80,
-          //   height: 50,
-          // ),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Column(
@@ -405,7 +411,7 @@ class _BookDetailState extends State<BookDetail> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, NavigatorRoutes.ratingsBook,
-                        arguments: detailedBookById);
+                        arguments: detailedBookById.id);
                   },
                   child: CircularPercentIndicator(
                     radius: 25.0,
@@ -426,8 +432,6 @@ class _BookDetailState extends State<BookDetail> {
       ),
     );
   }
-
-//TODO: checkbox
 
   _showDialog(List<Shelves> shelvesList) {
     List<Shelves> _shelvesListSublist = shelvesList.sublist(3);

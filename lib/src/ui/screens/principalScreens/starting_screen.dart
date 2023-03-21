@@ -2,12 +2,14 @@ import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/config/routes/navigator_routes.dart';
 import 'package:book_river/src/model/book.dart';
+import 'package:book_river/src/ui/screens/book/book_detail.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../config/app_colors.dart';
 import '../../../model/categories.dart';
+import '../book/list_book_category.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({Key? key}) : super(key: key);
@@ -147,10 +149,14 @@ class _StartingScreenState extends State<StartingScreen> {
         return GestureDetector(
           onTap: () {
             print(_categoriesList[index].nameEs);
-            Navigator.pushNamed(context, NavigatorRoutes.listBookCategory,
-                arguments: _categoriesList[index]);
+            /*Navigator.pushNamed(context, NavigatorRoutes.listBookCategory,
+                arguments: _categoriesList[index].id);*/
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ListBookCategory(bookIdCategory:_categoriesList[index].id!, categoryName: _categoriesList[index].nameEs!,)),
+            );
           },
-          child: _carrouselItemCategory(index),
+          child: _carrouselItemCategory(index, _categoriesList),
         );
       },
       options: CarouselOptions(
@@ -162,8 +168,9 @@ class _StartingScreenState extends State<StartingScreen> {
     );
   }
 
-  Card _carrouselItemCategory(int index) {
+  Card _carrouselItemCategory(int index, List<Categories> categoriesList) {
     return Card(
+      color: categoriesList.isEmpty ? AppColors.defaultCategoryColor : AppColors.colorByCategoryBG(categoriesList[index].nameEs!),
       elevation: 5,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -276,13 +283,13 @@ _customAppBar(BuildContext context, List<Categories> booksNovetatsList) {
 _bookItem(Book book, BuildContext context) {
   return GestureDetector(
       onTap: () {
-        print(book);
         Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
             arguments: book);
       },
       child: Container(
         width: 170,
         child: Card(
+          color: book.categories.isEmpty ? AppColors.defaultCategoryColor : AppColors.colorByCategoryBG(book.categories[0].nameEs!),
           child: Column(
             children: [
               ///imagen
