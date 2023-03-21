@@ -104,13 +104,13 @@ class _RatingBookState extends State<RatingBook> {
                 padding: const EdgeInsets.all(5.0),
                 child: Text(bookRating.author.toString()),
               ),
-              /*Padding(
+              Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: SizedBox(
                   width: 200,
                   height: 280,
                   child: Image.network(
-                    bookRating.caratula![0].img!,
+                    bookRating.bookImgs![0].img!,
                     fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception,
                         StackTrace? stackTrace) {
@@ -118,7 +118,7 @@ class _RatingBookState extends State<RatingBook> {
                     },
                   ),
                 ),
-              ),*/
+              ),
               _ratingNumber(),
               _ratingStars(),
               _bookComment(),
