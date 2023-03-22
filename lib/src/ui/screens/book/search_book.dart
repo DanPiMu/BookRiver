@@ -1,4 +1,5 @@
 import 'package:book_river/src/config/app_colors.dart';
+import 'package:book_river/src/config/app_localizations.dart';
 import 'package:book_river/src/model/User.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -110,7 +111,7 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
           return <Widget>[
             SliverAppBar(
               title: Text(
-                'Descobreix llibres i persones',
+                AppLocalizations.of(context)!.getString('books_and_persons'),
                 style: TextStyle(
                     fontSize: 15,
                     color: AppColors.colorByCategoryTitle(category)),
@@ -164,10 +165,11 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
       controller: _tabController,
       tabs: <Widget>[
         Tab(
-          text: 'Llibres',
+          text: AppLocalizations.of(context)!.getString('books'),
         ),
         Tab(
-          text: 'Usuaris',
+          text: AppLocalizations.of(context)!.getString('users'),
+
         ),
       ],
     );

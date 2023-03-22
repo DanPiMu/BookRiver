@@ -1,3 +1,4 @@
+import 'package:book_river/src/config/app_localizations.dart';
 import 'package:book_river/src/model/shelves.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -36,7 +37,10 @@ class _DetailShelvesState extends State<DetailShelves> {
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -89,17 +93,16 @@ class _DetailShelvesState extends State<DetailShelves> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ///Bool si es publica la estanteria
                 _statusShelves(),
                 Text(
-                  'Descripcio',
+                  AppLocalizations.of(context)!.getString('description'),
                   style: TextStyle(color: AppColors.tertiary, fontSize: 20),
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(child: Text(shelvesObject.description!))),
                 Text(
-                  'Llibres',
+                  AppLocalizations.of(context)!.getString('books'),
                   style: TextStyle(color: AppColors.tertiary, fontSize: 20),
                 ),
                 _bookList(),
@@ -115,7 +118,7 @@ class _DetailShelvesState extends State<DetailShelves> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Prestatgeria pública'),
+          Text(AppLocalizations.of(context)!.getString('shelf_status')),
           Switch(
             activeColor: AppColors.tertiary,
             value: isPublic,

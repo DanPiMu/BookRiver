@@ -47,11 +47,61 @@
   "you": "Tú",
   "continue": "CONTINUAR",
   "send_confirmation" : "si, enviar",
-  "mail" : "Email",
   "gender": "Sexo",
+  "news" : "Novedades",
+  "categories" : "Categorías",
+  "to_cart": "Añadir al carrito",
+  "books_and_persons": "Descubre libros y personas",
+  "books": "Libros",
+  "users": "Usuarios",
+  "description": "Descripción",
+
+
+  "//": "Ratings",
+  "ratings": "Valoraciones",
+  "rate": "Valorar",
+  "rate_book": "Valorar este libro",
+  "review": "Reseña",
+  "hint_review": "Añade una reseña para este libro",
+
+"//": "SHELVES",
+  "read" : "Leido",
+  "wanna_read" : "Quiero leer",
+  "reading": "Leyendo",
+  "more": "Más",
+
+  "add_shelf": "Añadir una estanteria",
+  "add_image_shelf": "Añade una imagen para esta estanteria",
+  "shelf_name": "Nombre de la estanteria",
+  "hint_shelf_name": "Ingrese el nombre de la estanteria",
+  "shelf_description": "Descripción de la estanteria",
+  "hint_shelf_description": "Ingrese la descripción de la estanter",
+  "shelf_status": "Estanteria pública",
+  "shelf_warning": "*Todos los usuarios que visiten tu perfil verán esta estantería",
+
+  "select_image": "Seleccionar imagen",
+  "choose_image": "Con que quieres seleccionar una imagen?",
+
+  "edit_shelf": "Editar esta estanteria",
+
 
 "//": "AUTH",
   "login": "Iniciar sesión",
+  "sign_in": "Registrarse",
+  "email": "Correo electrónico",
+  "hint_email": "Ingrese un correo electrónico",
+  "password": "Contraseña",
+  "hint_password": "Ingrese una contraseña",
+  "username": "Nombre de usuario",
+
+  "forgot_password": "Olvidaste tu contraseña?",
+  "recover_password": "Recuperar",
+  "sign_in_here": "Registrate aquí",
+
+  "recovery_text1": "Ayudanos a recuperar tu contraseña",
+  "recovery_text2": "Introduce tu correo electrónico y te enviaremos las instrucciones para poder recuperarlo",
+
+  "terms_and_conditions": "He leído y acepto los términos y condiciones y la política de privacidad",
 
   "rc_1": "Ha ocurrido un error inesperado, por favor, inténtalo de nuevo más tarde.",
   "rc_3": "Ha ocurrido un error, la conexión no es segura, por favor, contacta con el administrador.",
@@ -148,9 +198,14 @@
   "rc_20001": "Ha habido un problema al intentar enviar el email",
   "rc_25008": "Error al subir el archivo",
 
+
+
   "rc_32004": "Este usuario ya ha sido invitado al grupo.",
 
   "session_expired_title": "¡Atención!",
   "session_expired_message": "Lo sentimos, tu sesión ha expirado y debes volver a iniciar sesión.",
-  "session_expired_accept": "Entendido"
+  "session_expired_accept": "Entendido",
+
+"//Shelves": "Shelves",
+  "rc_32003": "Este libro ya esta en la libreria"
 }

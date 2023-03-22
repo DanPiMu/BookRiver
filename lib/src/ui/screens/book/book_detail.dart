@@ -1,6 +1,7 @@
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:book_river/src/model/book.dart';
 import 'package:book_river/src/model/shelves.dart';
+import 'package:book_river/src/ui/screens/main_holder.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
+import '../../../config/app_localizations.dart';
 import '../../../config/routes/navigator_routes.dart';
 import '../../../provider/navigation_notifier.dart';
 
@@ -56,9 +58,12 @@ class _BookDetailState extends State<BookDetail> {
       return _shelvesList;
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
       rethrow;
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Parece que algo no esta yendo bien, intentalo mas tarde'),
+          ));
       print('Problemillas');
       rethrow;
     }
@@ -86,9 +91,16 @@ class _BookDetailState extends State<BookDetail> {
       await RequestProvider().postShelvesBook(widget.bookId, idShelves!);
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1")),
+          ));
       rethrow;
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('salta el catch'),
+          ));
       print('Problemillas');
       rethrow;
     }
@@ -215,7 +227,11 @@ class _BookDetailState extends State<BookDetail> {
               action: SnackBarAction(
                 label: 'Ir al carrito',
                 onPressed: () {
-                  Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context)=> MainHolder())
+                  );
+                  //Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
                 },
               ),
             );
@@ -223,7 +239,7 @@ class _BookDetailState extends State<BookDetail> {
 
             //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
           },
-          child: Text('A la cistella · ${detailedBookById.price}€'),
+          child: Text('${AppLocalizations.of(context)!.getString('to_cart')} · ${detailedBookById.price}€'),
         ),
       ),
     );
@@ -262,7 +278,7 @@ class _BookDetailState extends State<BookDetail> {
                 ),
               ),
             ),
-            Text('Llegit')
+            Text(AppLocalizations.of(context)!.getString('read'))
           ],
         ),
         Column(
@@ -295,7 +311,8 @@ class _BookDetailState extends State<BookDetail> {
                 ),
               ),
             ),
-            Text('Vull llegir')
+            Text(AppLocalizations.of(context)!.getString('wanna_read'))
+
           ],
         ),
         Column(
@@ -328,7 +345,8 @@ class _BookDetailState extends State<BookDetail> {
                 ),
               ),
             ),
-            Text('Llegint')
+            Text(AppLocalizations.of(context)!.getString('reading'))
+
           ],
         ),
         Column(
@@ -347,7 +365,8 @@ class _BookDetailState extends State<BookDetail> {
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(),
             ),
-            Text('Més')
+            Text(AppLocalizations.of(context)!.getString('more'))
+
           ],
         )
       ],
@@ -392,12 +411,12 @@ class _BookDetailState extends State<BookDetail> {
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: const EdgeInsets.only(top: 25, bottom: 10),
             child: Column(
               children: [
                 Text(
                   detailedBookById.title!,
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black, fontSize: 18, fontFamily:'Abril Fatface'),
                 ),
                 Text('${detailedBookById.author} · ${detailedBookById.price}€',
                     style: TextStyle(color: Colors.black))

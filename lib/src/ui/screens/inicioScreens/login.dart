@@ -30,7 +30,14 @@ class _LogInState extends State<LogIn> {
       });
       return aux;
     } on ApiException catch (ae) {
+      print('2q23456yu');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
+          );
       ae.printDetails();
+    }catch (e) {
+      print('xsrdctfvygbhunjimk,');
     }
     return false;
   }
@@ -122,7 +129,7 @@ class _LogInState extends State<LogIn> {
           },
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(AppColors.white)),
-          child: const Text('Registrat aqui'),
+          child: Text(AppLocalizations.of(context)!.getString('sign_in_here')),
         ),
       ],
     );
@@ -146,12 +153,11 @@ class _LogInState extends State<LogIn> {
                         context, NavigatorRoutes.passwordRecovery);
                   },
                 ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              );ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           }
         },
-        child: Text('Iniciar sesion'));
+        child: Text(AppLocalizations.of(context)!.getString("login")));
   }
 
   _form() {
@@ -166,12 +172,12 @@ class _LogInState extends State<LogIn> {
               children: [
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     border: OutlineInputBorder(),
-                    hintText: 'Enter your Email',
-                    labelText: 'Email',
+                    hintText: AppLocalizations.of(context)!.getString('hint_email'),
+                    labelText: AppLocalizations.of(context)!.getString("email"),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -207,8 +213,8 @@ class _LogInState extends State<LogIn> {
                         setState(() {});
                       },
                     ),
-                    hintText: 'Enter your Password',
-                    labelText: 'Password',
+                    hintText: AppLocalizations.of(context)!.getString("hint_password"),
+                    labelText: AppLocalizations.of(context)!.getString("password"),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -225,8 +231,8 @@ class _LogInState extends State<LogIn> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text(
-                      'He oblidat la contraseña',
+                    Text(
+                      AppLocalizations.of(context)!.getString("forgot_password"),
                       style: TextStyle(fontSize: 12),
                     ),
                     TextButton(
@@ -237,7 +243,7 @@ class _LogInState extends State<LogIn> {
                                   context, NavigatorRoutes.passwordRecovery);
                             },
                             child: Text(
-                              'Recuperar',
+                              AppLocalizations.of(context)!.getString('recover_password'),
                               style: TextStyle(
                                   color: AppColors.tertiary,
                                   fontWeight: FontWeight.bold,

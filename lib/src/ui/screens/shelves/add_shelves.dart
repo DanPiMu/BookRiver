@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/config/app_colors.dart';
+import 'package:book_river/src/config/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -77,6 +78,10 @@ class _AddNewShelveState extends State<AddNewShelve> {
       }, image!);
       return aux;
     } on ApiException catch (ae) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
       ae.printDetails();
     }
     return false;
@@ -109,7 +114,7 @@ class _AddNewShelveState extends State<AddNewShelve> {
           surfaceTintColor: Colors.white,
           backgroundColor: Color.fromARGB(0, 0, 0, 0),
           title: Text(
-            'Afegeix una prestatgeria',
+            AppLocalizations.of(context)!.getString('add_shelf'),
             style: TextStyle(fontSize: 18),
           ),
           centerTitle: true),
@@ -120,7 +125,7 @@ class _AddNewShelveState extends State<AddNewShelve> {
             _nameAndDescription(),
             _statusShelves(),
             Text(
-              '*Tots els usuarios que visitin el teu perfil veuràn aquesta prestatgeria',
+              AppLocalizations.of(context)!.getString('shelf_warning'),
               style: TextStyle(fontSize: 10, color: AppColors.secondary),
             ),
             SizedBox(
@@ -146,7 +151,8 @@ class _AddNewShelveState extends State<AddNewShelve> {
             }
           }
         },
-        child: const Text('Afegir'));
+        child: Text(AppLocalizations.of(context)!.getString('add'))
+    );
   }
 
   Padding _statusShelves() {
@@ -155,7 +161,7 @@ class _AddNewShelveState extends State<AddNewShelve> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Prestatgeria pública'),
+          Text(AppLocalizations.of(context)!.getString('shelf_status')),
           Switch(
             activeColor: AppColors.tertiary,
             value: isPublicBool,
@@ -186,12 +192,12 @@ class _AddNewShelveState extends State<AddNewShelve> {
               controller: _nameController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
                   border: OutlineInputBorder(),
-                  hintText: 'Nom de la prestatgeria',
-                  labelText: 'Nom',
+                  hintText: AppLocalizations.of(context)!.getString('hint_shelf_name'),
+                  labelText: AppLocalizations.of(context)!.getString('shelf_name'),
                   labelStyle: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ),
@@ -206,11 +212,11 @@ class _AddNewShelveState extends State<AddNewShelve> {
                 expands: true,
                 maxLines: null,
                 textAlignVertical: TextAlignVertical.top,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                     //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                     border: OutlineInputBorder(),
-                    hintText: 'Escriu aqui la teva descripcio',
-                    labelText: 'Descripció',
+                    hintText: AppLocalizations.of(context)!.getString('hint_shelf_description'),
+                    labelText: AppLocalizations.of(context)!.getString('shelf_description'),
                     labelStyle: TextStyle(fontWeight: FontWeight.bold)),
               ),
             ),
@@ -254,7 +260,8 @@ class _AddNewShelveState extends State<AddNewShelve> {
                       size: 40,
                     ),
                     Text(
-                      'Afegeix una imatge per aquesta prestatgeria',
+                      AppLocalizations.of(context)!
+                          .getString('add_image_shelf'),
                       style: TextStyle(color: AppColors.tertiary),
                     )
                   ],
@@ -270,24 +277,25 @@ class _AddNewShelveState extends State<AddNewShelve> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Seleccionar foto'),
+          title: Text(AppLocalizations.of(context)!.getString('select_image')),
           content: SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
-                Text('Con que quieres escoger la foto.')
+              children: <Widget>[
+                Text(AppLocalizations.of(context)!.getString('choose_image')),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Galeria'),
+              child: Text(AppLocalizations.of(context)!.getString('gallery')),
               onPressed: () {
                 pickImage();
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Camara'),
+              child:
+                  Text(AppLocalizations.of(context)!.getString('camera')),
               onPressed: () {
                 pickImageC();
                 Navigator.of(context).pop();

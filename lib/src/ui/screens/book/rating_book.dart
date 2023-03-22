@@ -1,4 +1,5 @@
 import 'package:book_river/src/api/request_helper.dart';
+import 'package:book_river/src/config/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -90,7 +91,7 @@ class _RatingBookState extends State<RatingBook> {
           surfaceTintColor: Colors.white,
           backgroundColor: Color.fromARGB(0, 0, 0, 0),
           title: Text(
-            'Valora aquest llibre',
+            AppLocalizations.of(context)!.getString('rate_book'),
             style: TextStyle(fontSize: 20),
           ),
           centerTitle: true,
@@ -132,14 +133,17 @@ class _RatingBookState extends State<RatingBook> {
                     //Navigator.pushNamed(context, NavigatorRoutes.bookDetails,arguments: bookRating);
                   } on ApiException catch (ae) {
                     ae.printDetails();
-                    SnackBar(content: Text(ae.message!));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Esta saltando la apiExeption${ae.message!}'),
+                        ));
                     rethrow;
                   } catch (e) {
                     print('Problemillas');
                     rethrow;
                   }
                 },
-                child: Text('Valorar'),
+                child: Text(AppLocalizations.of(context)!.getString('publish')),
               )
             ],
           ),
@@ -160,11 +164,11 @@ class _RatingBookState extends State<RatingBook> {
             expands: true,
             maxLines: null,
             textAlignVertical: TextAlignVertical.top,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
               border: OutlineInputBorder(),
-              hintText: 'Escriu aqui la teva ressenya',
-              labelText: 'Ressenya',
+              hintText: AppLocalizations.of(context)!.getString('hint_review'),
+              labelText: AppLocalizations.of(context)!.getString('review'),
             ),
           ),
         ),

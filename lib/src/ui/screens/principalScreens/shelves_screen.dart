@@ -1,3 +1,4 @@
+import 'package:book_river/src/config/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -34,7 +35,10 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
       return _shelvesList;
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -164,7 +168,7 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
           });
         },
         label: Text(
-          'Afegir',
+          AppLocalizations.of(context)!.getString('add'),
           style: TextStyle(
               color: AppColors.secondary, fontWeight: FontWeight.bold),
         ),

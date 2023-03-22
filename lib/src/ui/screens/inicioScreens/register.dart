@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../config/app_colors.dart';
+import '../../../config/app_localizations.dart';
+import '../../../config/routes/navigator_routes.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -34,6 +36,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return aux;
     } on ApiException catch (ae) {
       ae.printDetails();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
+      );
     }
     return false;
   }
@@ -110,13 +116,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (_formKey.currentState!.validate() && isChecked == true) {
             bool aux = await _savePreferences();
             if (aux) {
-              print("dentro");
+              Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
             } else {
-              print("no entro");
+              final snackBar = SnackBar(
+                content:
+                Text('Contraseña incorrecta, has olvidado tu contraseña?'),
+                action: SnackBarAction(
+                  label: 'Aqui!',
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, NavigatorRoutes.passwordRecovery);
+                  },
+                ),
+              );ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           }
         },
-        child: const Text('Entrar'));
+        child: Text(AppLocalizations.of(context)!.getString('enter')),);
   }
 
   Container _form() {
@@ -130,12 +146,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                     border: OutlineInputBorder(),
-                    hintText: 'Enter your Email',
-                    labelText: 'Email',
+                    hintText: AppLocalizations.of(context)!.getString('hint_email'),
+                    labelText: AppLocalizations.of(context)!.getString('email'),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -157,10 +173,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obscuringCharacter: "*",
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
+                    contentPadding:  const EdgeInsets.symmetric(
                         vertical: 15.0, horizontal: 10.0),
                     border: OutlineInputBorder(),
-                    //en un futuro hacerlo funcional
                     suffixIcon: IconButton(
                       icon: _passVisibility
                           ? Icon(Icons.visibility_off)
@@ -171,8 +186,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         setState(() {});
                       },
                     ),
-                    hintText: 'Enter your Password',
-                    labelText: 'Password',
+                    hintText: AppLocalizations.of(context)!.getString('hint_password'),
+                    labelText: AppLocalizations.of(context)!.getString('password'),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -190,12 +205,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 TextFormField(
                   controller: _usernameController,
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
+                  decoration: InputDecoration(
+                      contentPadding:const  EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 10.0),
                       border: OutlineInputBorder(),
                       hintText: 'samilton',
-                      labelText: 'Username',
+                      labelText: AppLocalizations.of(context)!.getString('username'),
                       prefixText: '@',
                       prefixStyle: TextStyle(color: Colors.red)),
                   validator: (value) {
@@ -218,8 +233,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: CheckboxListTile(
                         contentPadding:
                             const EdgeInsets.only(right: 0, left: 0),
-                        title: const Text(
-                          'He llegit i accepto els termes i condicions i la política de privacitat',
+                        title: Text(
+                          AppLocalizations.of(context)!.getString("terms_and_conditions"),
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,

@@ -113,10 +113,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
         ),
         centerTitle: true,
         backgroundColor: AppColors.colorByCategoryBG(category),
-        actions: [
-          ///Debugger prooo
-          IconButton(onPressed: () {}, icon: Icon(Icons.abc_rounded))
-        ],
+
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

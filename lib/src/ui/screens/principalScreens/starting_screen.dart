@@ -1,5 +1,6 @@
 import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/api/request_helper.dart';
+import 'package:book_river/src/config/app_localizations.dart';
 import 'package:book_river/src/config/routes/navigator_routes.dart';
 import 'package:book_river/src/model/book.dart';
 import 'package:book_river/src/ui/screens/book/book_detail.dart';
@@ -41,9 +42,16 @@ class _StartingScreenState extends State<StartingScreen> {
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
       rethrow;
     } catch (e) {
+     ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Parece que algo no esta yendo bien, intentalo mas tarde'),
+          ));
       print('Problemillas');
       rethrow;
     }
@@ -89,9 +97,9 @@ class _StartingScreenState extends State<StartingScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'Novetats',
-                  style: TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),
+                Text(
+                  AppLocalizations.of(context)!.getString("news"),
+                  style: const TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),
                 ),
                 _novetatsList(),
                 const SizedBox(
@@ -100,7 +108,7 @@ class _StartingScreenState extends State<StartingScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Categories',
+                    Text(AppLocalizations.of(context)!.getString("categories"),
                       style: TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),),
                     Row(
                       children: [
@@ -126,7 +134,8 @@ class _StartingScreenState extends State<StartingScreen> {
               ],
             ),
           ),
-        ));
+        ),
+    );
   }
 
   _novetatsList() {

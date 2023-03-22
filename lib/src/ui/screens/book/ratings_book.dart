@@ -1,4 +1,5 @@
 import 'package:book_river/src/config/app_colors.dart';
+import 'package:book_river/src/config/app_localizations.dart';
 import 'package:book_river/src/model/ratings.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -161,7 +162,7 @@ class _RatingsBookState extends State<RatingsBook> {
                   });
         },
         label: Text(
-          'Valorar',
+          AppLocalizations.of(context)!.getString('rate'),
           style: TextStyle(color: AppColors.secondary),
         ),
         icon: Icon(
@@ -231,10 +232,10 @@ class _RatingsBookState extends State<RatingsBook> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: Text(
-                  'Valoracions',
+                  AppLocalizations.of(context)!.getString('ratings'),
                   style: TextStyle(fontSize: 20),
                 ),
               ),

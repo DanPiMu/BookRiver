@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../api/api_exception.dart';
+import '../../../config/app_localizations.dart';
 import '../../../config/routes/navigator_routes.dart';
 import '../../../utils/user_helper_plantilla.dart';
 
@@ -27,6 +28,10 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
       return aux;
     } on ApiException catch (ae) {
       ae.printDetails();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
+      );
     }
     return false;
   }
@@ -123,7 +128,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
             print("no entro");
           }
         }
-      }, child: const Text('Enviar'));
+      }, child:  Text(AppLocalizations.of(context)!.getString('send')));
 
   Container _form() {
     return Container(
@@ -135,10 +140,10 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(
+                 SizedBox(
                   width: 250,
-                  child: const Text(
-                    'Ajúda’ns a recuperar la teva contrassenya',
+                  child: Text(
+                    AppLocalizations.of(context)!.getString('recovery_text1'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -148,8 +153,8 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  'Introdueix el teu correu i t’enviarem les instruccions per a poder recuperar-la.',
+                 Text(
+                  AppLocalizations.of(context)!.getString('recovery_text2'),
                   style: TextStyle(fontSize: 15),
                 ),
                 const SizedBox(
@@ -157,12 +162,12 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                 ),
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                     border: OutlineInputBorder(),
-                    hintText: 'Enter your Email',
-                    labelText: 'Email',
+                    hintText: AppLocalizations.of(context)!.getString('hint_email'),
+                    labelText: AppLocalizations.of(context)!.getString('email'),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
