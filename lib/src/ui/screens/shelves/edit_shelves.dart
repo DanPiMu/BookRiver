@@ -55,6 +55,10 @@ class _EditShelvesState extends State<EditShelves> {
       return aux;
     } on ApiException catch (ae) {
       ae.printDetails();
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
     }
     return false;
   }

@@ -1,7 +1,7 @@
 import 'package:book_river/src/config/app_colors.dart';
+import 'package:book_river/src/config/enums.dart';
 import 'package:book_river/src/model/book.dart';
 import 'package:book_river/src/model/shelves.dart';
-import 'package:book_river/src/ui/screens/main_holder.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -33,13 +33,7 @@ class _BookDetailState extends State<BookDetail> {
   ///El objeto del libro detallado
   late Book detailedBookById;
 
-  int? _selectedOption;
-
   int? idShelves;
-
-  bool _isButtonPressedLlegit = false;
-  bool _isButtonPressedVullLlegir = false;
-  bool _isButtonPressedLlegint = false;
 
   List<Shelves> _shelvesList = [];
 
@@ -58,12 +52,11 @@ class _BookDetailState extends State<BookDetail> {
       return _shelvesList;
     } on ApiException catch (ae) {
       ae.printDetails();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Parece que algo no esta yendo bien, intentalo mas tarde'),
-          ));
       print('Problemillas');
       rethrow;
     }
@@ -78,7 +71,9 @@ class _BookDetailState extends State<BookDetail> {
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -91,16 +86,15 @@ class _BookDetailState extends State<BookDetail> {
       await RequestProvider().postShelvesBook(widget.bookId, idShelves!);
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1")),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:
+            Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1")),
+      ));
       rethrow;
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('salta el catch'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('salta el catch'),
+      ));
       print('Problemillas');
       rethrow;
     }
@@ -193,7 +187,7 @@ class _BookDetailState extends State<BookDetail> {
                     ),
 
                     ///Icons Row
-                    _rowButtons(),
+                    _rowShelvesButtons(),
                   ],
                 ),
               ),
@@ -215,6 +209,7 @@ class _BookDetailState extends State<BookDetail> {
   }
 
   Widget _cartButton() {
+    final navigationProvider = Provider.of<NavigationNotifier>(context);
     return Container(
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -227,10 +222,8 @@ class _BookDetailState extends State<BookDetail> {
               action: SnackBarAction(
                 label: 'Ir al carrito',
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context)=> MainHolder())
-                  );
+                  Navigator.pop(context);
+                  navigationProvider.selectedOption = NavigationOption.Cistella;
                   //Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
                 },
               ),
@@ -239,13 +232,14 @@ class _BookDetailState extends State<BookDetail> {
 
             //print(Provider.of<NavigationNotifier>(context, listen: false).books.length);
           },
-          child: Text('${AppLocalizations.of(context)!.getString('to_cart')} · ${detailedBookById.price}€'),
+          child: Text(
+              '${AppLocalizations.of(context)!.getString('to_cart')} · ${detailedBookById.price}€'),
         ),
       ),
     );
   }
 
-  Row _rowButtons() {
+  Row _rowShelvesButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -256,26 +250,22 @@ class _BookDetailState extends State<BookDetail> {
                 idShelves = _shelvesList[2].id;
                 _addBookToShelves();
                 setState(() {
-                  //_isButtonPressedVullLlegir = false;
-                  //_isButtonPressedLlegint = false;
-                  print('antes Llegit${_inTheLibrary2}');
+                  readResponseShelvesList();
                   _inTheLibrary2();
-                  print('despues Llegit ${_inTheLibrary2}');
-                  _isButtonPressedLlegit = !_isButtonPressedLlegit;
                 });
               },
               elevation: 2.0,
               fillColor: Colors.white,
-              child: Icon(
-                Icons.bookmark_added,
-                color: _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
-                size: 35.0,
-              ),
               padding: EdgeInsets.all(15.0),
               shape: CircleBorder(
                 side: BorderSide(
                   color: _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
                 ),
+              ),
+              child: Icon(
+                Icons.bookmark_added,
+                color: _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
+                size: 35.0,
               ),
             ),
             Text(AppLocalizations.of(context)!.getString('read'))
@@ -289,12 +279,8 @@ class _BookDetailState extends State<BookDetail> {
                 _addBookToShelves();
 
                 setState(() {
-                  //_isButtonPressedLlegit = false;
-                  //_isButtonPressedLlegint = false;
-                  print('antes vullLlegit${_inTheLibrary}');
+                  readResponseShelvesList();
                   _inTheLibrary();
-                  print('despues vullLlegit${_inTheLibrary}');
-                  _isButtonPressedVullLlegir = !_isButtonPressedVullLlegir;
                 });
               },
               elevation: 2.0,
@@ -312,7 +298,6 @@ class _BookDetailState extends State<BookDetail> {
               ),
             ),
             Text(AppLocalizations.of(context)!.getString('wanna_read'))
-
           ],
         ),
         Column(
@@ -323,12 +308,8 @@ class _BookDetailState extends State<BookDetail> {
                 _addBookToShelves();
 
                 setState(() {
-                  //_isButtonPressedLlegit = false;
-                  //_isButtonPressedVullLlegir = false;
-                  print('antes vullLlegnir${_inTheLibrary1}');
+                  readResponseShelvesList();
                   _inTheLibrary1();
-                  print('despues vullLlegnir${_inTheLibrary1}');
-                  _isButtonPressedLlegint = !_isButtonPressedLlegint;
                 });
               },
               elevation: 2.0,
@@ -346,7 +327,6 @@ class _BookDetailState extends State<BookDetail> {
               ),
             ),
             Text(AppLocalizations.of(context)!.getString('reading'))
-
           ],
         ),
         Column(
@@ -366,7 +346,6 @@ class _BookDetailState extends State<BookDetail> {
               shape: CircleBorder(),
             ),
             Text(AppLocalizations.of(context)!.getString('more'))
-
           ],
         )
       ],
@@ -411,12 +390,15 @@ class _BookDetailState extends State<BookDetail> {
         // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 25, bottom: 10),
+            padding: const EdgeInsets.only(top: 8, bottom: 10),
             child: Column(
               children: [
                 Text(
                   detailedBookById.title!,
-                  style: TextStyle(color: Colors.black, fontSize: 18, fontFamily:'Abril Fatface'),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontFamily: 'Abril Fatface'),
                 ),
                 Text('${detailedBookById.author} · ${detailedBookById.price}€',
                     style: TextStyle(color: Colors.black))
@@ -426,7 +408,7 @@ class _BookDetailState extends State<BookDetail> {
           Positioned(
             right: 10,
             child: Padding(
-                padding: const EdgeInsets.only(right: 5.0, top: 20),
+                padding: const EdgeInsets.only(right: 5.0, top: 8),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, NavigatorRoutes.ratingsBook,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
+import '../../../config/app_localizations.dart';
 
 class EditPasswordScreen extends StatefulWidget {
   const EditPasswordScreen({Key? key}) : super(key: key);
@@ -25,6 +26,10 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       });
       return aux;
     } on ApiException catch (ae) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
       ae.printDetails();
     }
     return false;
@@ -38,7 +43,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   Scaffold _content(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Canviar contrasenya'),
+        title: Text(AppLocalizations.of(context)!.getString("edit_password")),
         centerTitle: true,
       ),
       body: Padding(
@@ -72,7 +77,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
     return Container(
         padding: const EdgeInsets.only(left: 0, top: 40.0),
         child: ElevatedButton(
-          child: const Text('Desa els canvis'),
+          child:  Text(AppLocalizations.of(context)!.getString("save_changes")),
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               bool aux = await _updatePass();
@@ -93,13 +98,13 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       controller: _confirmPassController,
       obscureText: true,
       obscuringCharacter: "*",
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         border: OutlineInputBorder(),
         //en un futuro hacerlo funcional
         suffixIcon: Icon(Icons.visibility),
-        labelText: 'Confirmar constrasenya',
+        labelText: AppLocalizations.of(context)!.getString("hint_confirm_password"),
         //alignLabelWithHint: true
       ),
       validator: (value) {
@@ -120,13 +125,13 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       controller: _newPassController,
       obscureText: true,
       obscuringCharacter: "*",
-      decoration: const InputDecoration(
+      decoration:  InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         border: OutlineInputBorder(),
         //en un futuro hacerlo funcional
         suffixIcon: Icon(Icons.visibility),
-        labelText: 'Nueva contraseña',
+        labelText: AppLocalizations.of(context)!.getString("hint_new_password"),
       ),
       validator: (value) {
         if (value?.isEmpty ?? true) {
@@ -146,13 +151,13 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       controller: _oldPassController,
       obscureText: true,
       obscuringCharacter: "*",
-      decoration: const InputDecoration(
+      decoration:  InputDecoration(
         contentPadding:
-            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+             EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         border: OutlineInputBorder(),
         //en un futuro hacerlo funcional
         suffixIcon: Icon(Icons.visibility),
-        labelText: 'Contrasenya anterior',
+        labelText: AppLocalizations.of(context)!.getString("hint_old_password"),
       ),
       validator: (value) {
         if (value?.isEmpty ?? true) {

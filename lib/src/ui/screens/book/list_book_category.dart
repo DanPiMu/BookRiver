@@ -44,7 +44,10 @@ class _ListBookCategoryState extends State<ListBookCategory> {
       return _bookListByCategory;
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -70,11 +73,14 @@ class _ListBookCategoryState extends State<ListBookCategory> {
     'Preu ascendent',
     'Preu descendent',
     'Valoració ascendent',
-    'Valoració descentent'
+    'Valoració descendent'
   ];
 
   Future<void> updateBookListByCategory(String selectedOption) async {
     switch (selectedOption) {
+      case 'Més recents':
+        _bookListByCategory = await readResponseBookList(1);
+        break;
       case 'Preu ascendent':
         _bookListByCategory = await readResponseBookList(3);
         break;

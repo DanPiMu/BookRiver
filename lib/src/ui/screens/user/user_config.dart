@@ -1,9 +1,9 @@
-import 'package:book_river/src/api/api_client.dart';
 import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/api_exception.dart';
+import '../../../config/app_localizations.dart';
 import '../../../config/routes/navigator_routes.dart';
 
 class UserSettingsScreen extends StatefulWidget {
@@ -39,7 +39,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        title: Text('Configuració'),
+        title: Text(AppLocalizations.of(context)!.getString("configuration")),
         centerTitle: true,
       ),
       body: Padding(
@@ -54,7 +54,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Editar perfil'),
+                  Text(AppLocalizations.of(context)!.getString("edit_profile")),
                   Icon(
                     Icons.arrow_forward_ios,
                     color: AppColors.secondary,
@@ -74,7 +74,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Canviar contrasenya'),
+                  Text(AppLocalizations.of(context)!.getString("edit_password")),
                   Icon(Icons.arrow_forward_ios, color: AppColors.secondary)
                 ],
               ),
@@ -90,7 +90,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                     ae.printDetails();
                   }
                 },
-                child: Text('Tancar Sessió'),
+                child: Text(AppLocalizations.of(context)!.getString("sign_out")),
               ),
             )
           ],

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/model/book.dart';
 
+import '../model/categories.dart';
 import 'api_client.dart';
 
 class RequestProvider {
@@ -13,11 +14,35 @@ class RequestProvider {
 
   ApiClient _apiClient = ApiClient();
 
-  Future getBooks() async {
+  Future getBooksNovetats() async {
+    List<Book> _booksNovetatsList = [];
+
     try {
       dynamic _response = await _apiClient.booksHome();
       if (_response != null) {
-        return _response;
+
+        List<dynamic> bookListData = _response['data']['books'];
+        _booksNovetatsList =
+            bookListData.map((bookData) => Book.fromJson(bookData)).toList();
+        return _booksNovetatsList;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+  }Future getBooksCategory() async {
+    List<Categories> _categoriesList = [];
+
+    try {
+      dynamic _response = await _apiClient.booksHome();
+      if (_response != null) {
+
+        List<dynamic> categoryListData = _response['data']['categories'];
+        _categoriesList = categoryListData
+            .map((categoryData) => Categories.fromJson(categoryData))
+            .toList();
+        return _categoriesList;
       } else {
         print('algo ha salido mal');
       }
@@ -124,7 +149,8 @@ class RequestProvider {
     }
   }
 
-  static Future<bool> addNewShelves(Map<String, dynamic> params, File image) async {
+  static Future<bool> addNewShelves(
+      Map<String, dynamic> params, File image) async {
     try {
       dynamic _response = await ApiClient().postNewShelves(params, image);
       if (_response != null) {

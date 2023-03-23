@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
+import '../../../config/app_localizations.dart';
 import '../../../config/routes/navigator_routes.dart';
 import '../../../model/User.dart';
 import '../../../model/shelves.dart';
@@ -38,7 +39,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return _shelvesList;
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -82,13 +86,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Container(
           color: Colors.white,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
         ),
         Image.asset(
           "assets/images/fondo_5.png",
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           fit: BoxFit.cover,
         ),
         _content(context)
@@ -114,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               arguments: myUser);
         },
         label: Text(
-          'Valoracions',
+          AppLocalizations.of(context)!.getString('ratings'),
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         icon: Icon(
@@ -127,21 +143,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Expanded _myShelvesList() {
     return Expanded(
         child: Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15),
-      child: GridView.builder(
-        shrinkWrap: true,
-        itemCount: _shelvesList.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 15.0,
-          mainAxisSpacing: 15.0,
-        ),
-        itemBuilder: (context, index) {
-          return _shelveItem(index);
-        },
-      ),
-    ));
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          child: GridView.builder(
+            shrinkWrap: true,
+            itemCount: _shelvesList.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+              crossAxisSpacing: 15.0,
+              mainAxisSpacing: 15.0,
+            ),
+            itemBuilder: (context, index) {
+              return _shelveItem(index);
+            },
+          ),
+        ));
   }
 
   Widget _shelveItem(int index) {
@@ -167,14 +183,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Icon(
               size: 50,
               _shelvesList[index].name == 'Vull Llegir' ||
-                      _shelvesList[index].name == 'Llegint' ||
-                      _shelvesList[index].name == 'Llegit'
+                  _shelvesList[index].name == 'Llegint' ||
+                  _shelvesList[index].name == 'Llegit'
                   ? Icons.book_sharp // icono de estanteria predefinida
                   : Icons.personal_injury, // icono de estanteria creada
-            color: AppColors.colorByCategoryShelvesByTittle(_shelvesList[index].name!),),
+              color: AppColors.colorByCategoryShelvesByTittle(
+                  _shelvesList[index].name!),),
             Text(_shelvesList[index].name!, style: TextStyle(
-              fontFamily: 'Abril Fatface',
-              color: AppColors.colorByCategoryShelvesByTittle(_shelvesList[index].name!)
+                fontFamily: 'Abril Fatface',
+                color: AppColors.colorByCategoryShelvesByTittle(
+                    _shelvesList[index].name!)
             ),),
             Container(
               height: 70,
@@ -195,8 +213,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .caratula![0]
                                   .img!,
                               fit: BoxFit.cover, errorBuilder:
-                                  (BuildContext context, Object exception,
-                                      StackTrace? stackTrace) {
+                              (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
                             return Image.asset('assets/images/portada.jpeg');
                           }),
                         );
@@ -282,7 +300,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, NavigatorRoutes.userSettings);
+              Navigator.pushNamed(context, NavigatorRoutes.userSettings).then((_) => {
+                setState(() => {_myUser()})
+              });
             },
             icon: Icon(
               Icons.settings,

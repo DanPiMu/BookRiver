@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/book.dart';
-import '../../../model/pruebas+/book_prueba.dart';
+
 import '../../../provider/navigation_notifier.dart';
 
 class CartScreen extends StatefulWidget {

@@ -56,8 +56,24 @@
   "users": "Usuarios",
   "description": "Descripción",
 
+"//": "User",
+  "configuration": "Configuración",
+  "edit_profile": "Editar perfil",
+  "edit_password": "Editar contraseña",
+  "sign_out": "Cerrar sesión",
+  "date_of_birth": "Fecha de nacimiento",
+  "select_date": "Seleccione una fecha",
 
-  "//": "Ratings",
+  "old_password": "Contraseña anterior",
+  "hint_old_password": "Ingrese contraseña anterior",
+  "new_password": "Nueva contraseña",
+  "hint_new_password": "Ingrese nueva contraseña",
+  "confirm_password": "Confirmar contraseña",
+  "hint_confirm_password": "Ingrese confirmación de contraseña",
+
+
+
+"//": "Ratings",
   "ratings": "Valoraciones",
   "rate": "Valorar",
   "rate_book": "Valorar este libro",
@@ -93,6 +109,7 @@
   "password": "Contraseña",
   "hint_password": "Ingrese una contraseña",
   "username": "Nombre de usuario",
+  "hint_username": "Ingrese el nombre de usuario",
 
   "forgot_password": "Olvidaste tu contraseña?",
   "recover_password": "Recuperar",

@@ -3,7 +3,6 @@ import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/config/app_localizations.dart';
 import 'package:book_river/src/config/routes/navigator_routes.dart';
 import 'package:book_river/src/model/book.dart';
-import 'package:book_river/src/ui/screens/book/book_detail.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -32,27 +31,22 @@ class _StartingScreenState extends State<StartingScreen> {
 
   Future<void> readResponseBooks() async {
     try {
-      final data = await RequestProvider().getBooks();
+      _booksNovetatsList = await RequestProvider().getBooksNovetats();
 
-      List<dynamic> bookListData = data['data']['books'];
-      _booksNovetatsList =
-          bookListData.map((bookData) => Book.fromJson(bookData)).toList();
       setState(() {
         novetatLoading = false;
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
-     ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Parece que algo no esta yendo bien, intentalo mas tarde'),
-          ));
-      print('Problemillas');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content:
+            Text('Parece que algo no esta yendo bien, intentalo mas tarde'),
+      ));
       rethrow;
     }
   }
@@ -61,12 +55,8 @@ class _StartingScreenState extends State<StartingScreen> {
   List<Categories> _categoriesList = [];
 
   Future<void> readResponseCategory() async {
-    final data = await RequestProvider().getBooks();
+    _categoriesList = await RequestProvider().getBooksCategory();
 
-    List<dynamic> categoryListData = data['data']['categories'];
-    _categoriesList = categoryListData
-        .map((categoryData) => Categories.fromJson(categoryData))
-        .toList();
     setState(() {
       categoryLoading = false;
     });
@@ -90,51 +80,53 @@ class _StartingScreenState extends State<StartingScreen> {
 
   Widget _content() {
     return Scaffold(
-        appBar: _customAppBar(context, _categoriesList),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20.0,right:20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.getString("news"),
-                  style: const TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),
-                ),
-                _novetatsList(),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(AppLocalizations.of(context)!.getString("categories"),
-                      style: TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () =>
-                              buttonCarouselController.previousPage(
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.linear),
-                          icon: Icon(Icons.arrow_back_ios_sharp),
-                        ),
-                        Image.asset('assets/images/Vectorstar.png'),
-                        IconButton(
-                          onPressed: () => buttonCarouselController.nextPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.linear),
-                          icon: Icon(Icons.arrow_forward_ios_sharp),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                _carouselCategories(),
-              ],
-            ),
+      appBar: _customAppBar(context, _categoriesList),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.getString("news"),
+                style:
+                    const TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),
+              ),
+              _novetatsList(),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.getString("categories"),
+                    style: const TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => buttonCarouselController.previousPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.linear),
+                        icon: const Icon(Icons.arrow_back_ios_sharp),
+                      ),
+                      Image.asset('assets/images/Vectorstar.png'),
+                      IconButton(
+                        onPressed: () => buttonCarouselController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.linear),
+                        icon: const Icon(Icons.arrow_forward_ios_sharp),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              _carouselCategories(),
+            ],
           ),
         ),
+      ),
     );
   }
 
@@ -157,12 +149,13 @@ class _StartingScreenState extends State<StartingScreen> {
       itemBuilder: (BuildContext context, int index, int a) {
         return GestureDetector(
           onTap: () {
-            print(_categoriesList[index].nameEs);
-            /*Navigator.pushNamed(context, NavigatorRoutes.listBookCategory,
-                arguments: _categoriesList[index].id);*/
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ListBookCategory(bookIdCategory:_categoriesList[index].id!, categoryName: _categoriesList[index].nameEs!,)),
+              MaterialPageRoute(
+                  builder: (context) => ListBookCategory(
+                        bookIdCategory: _categoriesList[index].id!,
+                        categoryName: _categoriesList[index].nameEs!,
+                      )),
             );
           },
           child: _carrouselItemCategory(index, _categoriesList),
@@ -179,7 +172,9 @@ class _StartingScreenState extends State<StartingScreen> {
 
   Card _carrouselItemCategory(int index, List<Categories> categoriesList) {
     return Card(
-      color: categoriesList.isEmpty ? AppColors.defaultCategoryColor : AppColors.colorByCategoryBG(categoriesList[index].nameEs!),
+      color: categoriesList.isEmpty
+          ? AppColors.defaultCategoryColor
+          : AppColors.colorByCategoryBG(categoriesList[index].nameEs!),
       elevation: 5,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -219,7 +214,7 @@ class _StartingScreenState extends State<StartingScreen> {
 
   ListTile _carouselBookItem(int index, int bookIndex, num bookRating) {
     return ListTile(
-      leading: Container(
+      leading: SizedBox(
         height: 100,
         width: 40,
         child: Image.network(
@@ -295,10 +290,12 @@ _bookItem(Book book, BuildContext context) {
         Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
             arguments: book);
       },
-      child: Container(
+      child: SizedBox(
         width: 170,
         child: Card(
-          color: book.categories.isEmpty ? AppColors.defaultCategoryColor : AppColors.colorByCategoryBG(book.categories[0].nameEs!),
+          color: book.categories.isEmpty
+              ? AppColors.defaultCategoryColor
+              : AppColors.colorByCategoryBG(book.categories[0].nameEs!),
           child: Column(
             children: [
               ///imagen
@@ -327,33 +324,36 @@ Padding _imageBook(Book book) {
   );
 }
 
-Column _caption(Book book, BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Text(
-        book.title!,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-      ),
-      Text(
-        book.author!,
-        style: const TextStyle(fontSize: 14),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          book.categories.isNotEmpty
-              ? Text(
-                  book.categories[0].nameEs.toString(),
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                )
-              : const Text(
-                  'No tiene categoria',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-          Text('${book.price.toString()}€')
-        ],
-      )
-    ],
+Widget _caption(Book book, BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          book.title!,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        ),
+        Text(
+          book.author!,
+          style: const TextStyle(fontSize: 10),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            book.categories.isNotEmpty
+                ? Text(
+                    book.categories[0].nameEs.toString(),
+                    style: const TextStyle(color: Colors.grey, fontSize: 9),
+                  )
+                : const Text(
+                    'No tiene categoria',
+                    style: TextStyle(color: Colors.grey, fontSize: 10),
+                  ),
+            Text('${book.price.toString()}€')
+          ],
+        )
+      ],
+    ),
   );
 }

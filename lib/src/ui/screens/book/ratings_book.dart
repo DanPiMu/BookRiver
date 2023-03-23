@@ -4,6 +4,7 @@ import 'package:book_river/src/model/ratings.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
 import '../../../config/routes/navigator_routes.dart';
 
@@ -23,15 +24,22 @@ class _RatingsBookState extends State<RatingsBook> {
   List<Ratings> _booksRatingsList = [];
 
   Future<void> readResponseBooks() async {
-    final data = await RequestProvider().getRatingsBookList(widget.bookId);
+    try {
+      final data = await RequestProvider().getRatingsBookList(widget.bookId);
 
-    List<dynamic> bookListData = data;
-    _booksRatingsList =
-        bookListData.map((bookData) => Ratings.fromJson(bookData)).toList();
-    setState(() {
-      _isLoading = false;
-      print(_booksRatingsList.length);
-    });
+      List<dynamic> bookListData = data;
+      _booksRatingsList =
+          bookListData.map((bookData) => Ratings.fromJson(bookData)).toList();
+      setState(() {
+        _isLoading = false;
+        print(_booksRatingsList.length);
+      });
+    } on ApiException catch (ae) {
+      print(ae);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
+    }
   }
 
   @override

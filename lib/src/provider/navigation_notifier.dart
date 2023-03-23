@@ -1,4 +1,4 @@
-import 'package:book_river/src/model/pruebas+/book_prueba.dart';
+
 import 'package:flutter/material.dart';
 
 import '../config/enums.dart';

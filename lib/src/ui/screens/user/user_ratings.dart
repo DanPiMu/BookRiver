@@ -1,8 +1,10 @@
+import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/model/shelves.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/request_helper.dart';
 import '../../../config/app_colors.dart';
+import '../../../config/app_localizations.dart';
 import '../../../model/User.dart';
 import '../../../model/ratings.dart';
 
@@ -22,15 +24,24 @@ class _UserRatingsState extends State<UserRatings> {
   List<Ratings> _booksRatingsList = [];
 
   Future<void> readResponseBooksRatings() async {
-    final data = await RequestProvider().getOtheruser(widget.user.id!);
+    try {
+      final data = await RequestProvider().getOtheruser(widget.user.id!);
 
-    List<dynamic> bookListData = data['ratings'];
-    _booksRatingsList =
-        bookListData.map((bookData) => Ratings.fromJson(bookData)).toList();
-    setState(() {
-      _isLoading = false;
-      print(_booksRatingsList.length);
-    });
+      List<dynamic> bookListData = data['ratings'];
+      _booksRatingsList =
+          bookListData.map((bookData) => Ratings.fromJson(bookData)).toList();
+      setState(() {
+        _isLoading = false;
+        print(_booksRatingsList.length);
+      });
+    }on ApiException catch (ae) {
+      print(ae);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
+    }
+
   }
 
   @override
@@ -52,7 +63,7 @@ class _UserRatingsState extends State<UserRatings> {
   Scaffold _content() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Valoracions'),
+        title: Text(AppLocalizations.of(context)!.getString("ratings")),
         centerTitle: true,
       ),
       body: Padding(

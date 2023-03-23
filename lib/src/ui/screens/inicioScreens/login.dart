@@ -143,17 +143,7 @@ class _LogInState extends State<LogIn> {
             if (aux) {
               Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
             } else {
-              final snackBar = SnackBar(
-                content:
-                    Text('Contraseña incorrecta, has olvidado tu contraseña?'),
-                action: SnackBarAction(
-                  label: 'Aqui!',
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, NavigatorRoutes.passwordRecovery);
-                  },
-                ),
-              );ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
             }
           }
         },

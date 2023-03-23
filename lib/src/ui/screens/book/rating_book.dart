@@ -33,7 +33,10 @@ class _RatingBookState extends State<RatingBook> {
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      SnackBar(content: Text(ae.message!));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Esta saltando la apiExeption${ae.message!}'),
+          ));
       rethrow;
     } catch (e) {
       print('Problemillas');

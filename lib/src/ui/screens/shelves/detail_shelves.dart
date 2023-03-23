@@ -7,7 +7,6 @@ import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
 import '../../../config/app_colors.dart';
 import '../../../config/routes/navigator_routes.dart';
-import '../../../model/pruebas+/book_prueba.dart';
 
 class DetailShelves extends StatefulWidget {
   DetailShelves({Key? key, required int this.shelvesId}) : super(key: key);
