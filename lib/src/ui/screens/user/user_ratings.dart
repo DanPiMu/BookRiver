@@ -25,23 +25,17 @@ class _UserRatingsState extends State<UserRatings> {
 
   Future<void> readResponseBooksRatings() async {
     try {
-      final data = await RequestProvider().getOtheruser(widget.user.id!);
-
-      List<dynamic> bookListData = data['ratings'];
       _booksRatingsList =
-          bookListData.map((bookData) => Ratings.fromJson(bookData)).toList();
+          await RequestProvider().getUserRatings(widget.user.id!);
       setState(() {
         _isLoading = false;
-        print(_booksRatingsList.length);
       });
-    }on ApiException catch (ae) {
+    } on ApiException catch (ae) {
       print(ae);
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
     }
-
   }
 
   @override

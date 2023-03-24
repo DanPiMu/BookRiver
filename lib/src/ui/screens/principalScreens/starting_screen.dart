@@ -36,6 +36,7 @@ class _StartingScreenState extends State<StartingScreen> {
       setState(() {
         novetatLoading = false;
       });
+
     } on ApiException catch (ae) {
       ae.printDetails();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

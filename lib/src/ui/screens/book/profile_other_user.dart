@@ -22,17 +22,16 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
 
   Future<void> _otherUserById() async {
     try {
-      final data = await RequestProvider().getOtheruser(widget.userID);
-      publicUser = User.fromJson(data);
+      publicUser = await RequestProvider().getOtheruser(widget.userID);
+
       setState(() {
         _isLoading = false;
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -180,17 +179,20 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              size: 50,
-              publicUser.libraries[index].name == 'Vull Llegir' ||
-                      publicUser.libraries[index].name == 'Llegint' ||
-                      publicUser.libraries[index].name == 'Llegit'
-                  ? Icons.book_sharp // icono de estanteria predefinida
-                  : Icons.book_outlined, // icono de estanteria creada
+                size: 50,
+                publicUser.libraries[index].name == 'Vull Llegir' ||
+                        publicUser.libraries[index].name == 'Llegint' ||
+                        publicUser.libraries[index].name == 'Llegit'
+                    ? Icons.book_sharp // icono de estanteria predefinida
+                    : Icons.book_outlined, // icono de estanteria creada
 
-
-                color: AppColors.colorByCategoryShelvesByTittle(publicUser.libraries[index].name!)),
-            Text(publicUser.libraries[index].name!, style: TextStyle(fontFamily: 'Abril Fatface',
-                color: AppColors.colorByCategoryShelvesByTittle(publicUser.libraries[index].name!))),
+                color: AppColors.colorByCategoryShelvesByTittle(
+                    publicUser.libraries[index].name!)),
+            Text(publicUser.libraries[index].name!,
+                style: TextStyle(
+                    fontFamily: 'Abril Fatface',
+                    color: AppColors.colorByCategoryShelvesByTittle(
+                        publicUser.libraries[index].name!))),
             Container(
               height: 70,
               child: Row(

@@ -25,14 +25,10 @@ class _RatingsBookState extends State<RatingsBook> {
 
   Future<void> readResponseBooks() async {
     try {
-      final data = await RequestProvider().getRatingsBookList(widget.bookId);
+      _booksRatingsList = await RequestProvider().getRatingsBookList(widget.bookId);
 
-      List<dynamic> bookListData = data;
-      _booksRatingsList =
-          bookListData.map((bookData) => Ratings.fromJson(bookData)).toList();
       setState(() {
         _isLoading = false;
-        print(_booksRatingsList.length);
       });
     } on ApiException catch (ae) {
       print(ae);

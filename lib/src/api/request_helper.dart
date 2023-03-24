@@ -4,7 +4,10 @@ import 'dart:io';
 import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/model/book.dart';
 
+import '../model/User.dart';
 import '../model/categories.dart';
+import '../model/ratings.dart';
+import '../model/shelves.dart';
 import 'api_client.dart';
 
 class RequestProvider {
@@ -52,10 +55,12 @@ class RequestProvider {
   }
 
   Future getBookById(int bookId) async {
+    Book _book;
     try {
       dynamic _response = await _apiClient.getBookById(bookId);
       if (_response != null) {
-        return _response;
+        _book = Book.fromJson(_response);
+        return _book;
       } else {
         print('algo ha salido mal');
       }
@@ -65,11 +70,15 @@ class RequestProvider {
   }
 
   Future getBookListByCategory(int categoryId, int orden) async {
+    List<Book> _bookListByCategory = [];
     try {
       dynamic _response =
           await _apiClient.getBooksListByCategory(categoryId, orden);
       if (_response != null) {
-        return _response;
+        List<dynamic> bookListData = _response;
+        _bookListByCategory =
+            bookListData.map((listData) => Book.fromJson(listData)).toList();
+        return _bookListByCategory;
       } else {
         print('algo ha salido mal');
       }
@@ -80,10 +89,14 @@ class RequestProvider {
   }
 
   Future getRatingsBookList(int categoryId) async {
+    List<Ratings> _booksRatingsList = [];
     try {
       dynamic _response = await _apiClient.getRatingBooksList(categoryId);
       if (_response != null) {
-        return _response;
+        List<dynamic> bookListData = _response;
+        _booksRatingsList =
+            bookListData.map((bookData) => Ratings.fromJson(bookData)).toList();
+        return _booksRatingsList;
       } else {
         print('algo ha salido mal');
       }
@@ -108,10 +121,28 @@ class RequestProvider {
   }
 
   Future getOtheruser(int userID) async {
+    User publicUser;
     try {
       dynamic _response = await _apiClient.getInfoOtherUser(userID);
       if (_response != null) {
-        return _response;
+        publicUser = User.fromJson(_response);
+        return publicUser;
+      } else {
+        print('algo ha salido mal');
+      }
+    } on ApiException catch (ae) {
+      rethrow;
+      ae.printDetails();
+    }
+  }Future getUserRatings(int userID) async {
+    List<Ratings> _booksRatingsList = [];
+    try {
+      dynamic _response = await _apiClient.getInfoOtherUser(userID);
+      if (_response != null) {
+        List<dynamic> bookListData = _response['ratings'];
+        _booksRatingsList =
+            bookListData.map((bookData) => Ratings.fromJson(bookData)).toList();
+        return _booksRatingsList;
       } else {
         print('algo ha salido mal');
       }
@@ -122,10 +153,15 @@ class RequestProvider {
   }
 
   Future getShelves() async {
+    List<Shelves> _shelvesList = [];
     try {
       dynamic _response = await _apiClient.getShelves();
       if (_response != null) {
-        return _response;
+        List<dynamic> shelvesListData = _response;
+        _shelvesList = shelvesListData
+            .map((listData) => Shelves.fromJson(listData))
+            .toList();
+        return _shelvesList;
       } else {
         print('algo ha salido mal');
       }
@@ -165,10 +201,12 @@ class RequestProvider {
 
   ///Obtenemos estanteria por id
   Future getShelvesById(int shelveID) async {
+    Shelves shelvesObject;
     try {
       dynamic _response = await _apiClient.getShelvesById(shelveID);
       if (_response != null) {
-        return _response;
+        shelvesObject = Shelves.fromJson(_response);
+        return shelvesObject;
       } else {
         print('algo ha salido mal');
       }
@@ -194,10 +232,12 @@ class RequestProvider {
   }
 
   Future getUser() async {
+    User myUser;
     try {
       dynamic _response = await _apiClient.getUser();
       if (_response != null) {
-        return _response;
+        myUser = User.fromJson(_response);
+        return myUser;
       } else {
         print('algo ha salido mal');
       }

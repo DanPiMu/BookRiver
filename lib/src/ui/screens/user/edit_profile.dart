@@ -135,7 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ).then((date) {
           setState(() {
             _selectedDate = date;
-            _formKey.currentState?.validate();
+            //_formKey.currentState?.validate();
           });
         });
       },

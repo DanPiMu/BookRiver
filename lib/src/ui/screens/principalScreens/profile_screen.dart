@@ -25,14 +25,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<List<Shelves>> readResponseShelvesList() async {
     try {
-      final data = await RequestProvider().getShelves();
-      List<dynamic> shelvesListData = data;
+      _shelvesList = await RequestProvider().getShelves();
 
       setState(() {
-        _shelvesList = shelvesListData
-            .map((listData) => Shelves.fromJson(listData))
-            .toList();
-        print('hecho');
         _isLoadingShelves = false;
       });
 
@@ -52,8 +47,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _myUser() async {
     try {
-      final data = await RequestProvider().getUser();
-      myUser = User.fromJson(data);
+      myUser = await RequestProvider().getUser();
+
       setState(() {
         _isLoading = false;
       });

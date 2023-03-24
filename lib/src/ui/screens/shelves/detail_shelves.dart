@@ -24,8 +24,8 @@ class _DetailShelvesState extends State<DetailShelves> {
 
   Future<void> _shelvesById() async {
     try {
-      final data = await RequestProvider().getShelvesById(widget.shelvesId);
-      shelvesObject = Shelves.fromJson(data);
+      shelvesObject = await RequestProvider().getShelvesById(widget.shelvesId);
+
       setState(() {
         _isLoading = false;
         if (shelvesObject.privacity == 1) {
@@ -133,34 +133,41 @@ class _DetailShelvesState extends State<DetailShelves> {
       shrinkWrap: true,
       itemCount: shelvesObject.books.length,
       itemBuilder: (context, index) {
-        return ListTile(
-            leading: Container(
-              width: 40,
-              child: Image.network(
-                shelvesObject.books[index].caratula![0].img!,
-                fit: BoxFit.cover,
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace? stackTrace) {
-                  return Image.asset(
-                    'assets/images/portada.jpeg',
-                    fit: BoxFit.cover,
-                  );
-                },
+        return GestureDetector(
+          onTap: (){
+            Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
+                arguments: shelvesObject.books[index]);
+          },
+
+          child: ListTile(
+              leading: Container(
+                width: 40,
+                child: Image.network(
+                  shelvesObject.books[index].caratula![0].img!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return Image.asset(
+                      'assets/images/portada.jpeg',
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
               ),
-            ),
-            title: Text(shelvesObject.books[index].title!),
-            subtitle: Text('Precio: €${shelvesObject.books[index].price}'),
-            trailing: CircularPercentIndicator(
-              radius: 20.0,
-              lineWidth: 3.0,
-              percent: shelvesObject.books[index].avgRating! / 5,
-              center: Text("${shelvesObject.books[index].avgRating}",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13.0,
-                      color: AppColors.secondary)),
-              progressColor: AppColors.secondary,
-            ));
+              title: Text(shelvesObject.books[index].title!),
+              subtitle: Text('Precio: €${shelvesObject.books[index].price}'),
+              trailing: CircularPercentIndicator(
+                radius: 20.0,
+                lineWidth: 3.0,
+                percent: shelvesObject.books[index].avgRating! / 5,
+                center: Text("${shelvesObject.books[index].avgRating}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13.0,
+                        color: AppColors.secondary)),
+                progressColor: AppColors.secondary,
+              )),
+        );
       },
     );
   }

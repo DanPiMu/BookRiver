@@ -39,13 +39,8 @@ class _BookDetailState extends State<BookDetail> {
 
   Future<List<Shelves>> readResponseShelvesList() async {
     try {
-      final data = await RequestProvider().getShelves();
-      List<dynamic> shelvesListData = data;
-
+      _shelvesList= await RequestProvider().getShelves();
       setState(() {
-        _shelvesList = shelvesListData
-            .map((listData) => Shelves.fromJson(listData))
-            .toList();
         _isLoadingShelves = false;
       });
 
@@ -64,8 +59,7 @@ class _BookDetailState extends State<BookDetail> {
 
   Future<void> _bookById() async {
     try {
-      final data = await RequestProvider().getBookById(widget.bookId);
-      detailedBookById = Book.fromJson(data);
+      detailedBookById = await RequestProvider().getBookById(widget.bookId);
       setState(() {
         _isLoading = false;
       });
@@ -133,6 +127,8 @@ class _BookDetailState extends State<BookDetail> {
     return bookFound;
   }
 
+  late num? rating = detailedBookById.avgRating;
+  late double percentage = rating! / 5;
   @override
   void initState() {
     super.initState();
@@ -147,12 +143,11 @@ class _BookDetailState extends State<BookDetail> {
         child: CircularProgressIndicator(),
       );
     }
-    num? rating = detailedBookById.avgRating;
-    double percentage = rating! / 5;
-    return _content(percentage, rating.toDouble());
+
+    return _content();
   }
 
-  _content(double percentage, double rating) {
+  _content() {
     return Scaffold(
         body: CustomScrollView(slivers: [
           SliverAppBar(
@@ -178,7 +173,7 @@ class _BookDetailState extends State<BookDetail> {
                 child: Column(
                   children: [
                     ///TopBar
-                    _topBar(percentage, rating),
+                    _topBar(),
 
                     ///Carousel de las imagenes
                     _carouselImage(),
@@ -196,13 +191,13 @@ class _BookDetailState extends State<BookDetail> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Sinopsi'),
+              child: Text('Sinopsi', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
             ),
           ),
           SliverToBoxAdapter(
             child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(detailedBookById.description!)),
+                child: Text(detailedBookById.description!, style: TextStyle(fontSize: 15),)),
           ),
         ]),
         floatingActionButton: _cartButton());
@@ -382,7 +377,7 @@ class _BookDetailState extends State<BookDetail> {
     );
   }
 
-  Widget _topBar(double percentage, double rating) {
+  Widget _topBar() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Stack(

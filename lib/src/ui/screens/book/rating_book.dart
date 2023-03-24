@@ -26,8 +26,7 @@ class _RatingBookState extends State<RatingBook> {
   late Book bookRating;
   Future<void> _bookById() async {
     try {
-      final data = await RequestProvider().getBookById(widget.bookID);
-      bookRating = Book.fromJson(data);
+      bookRating = await RequestProvider().getBookById(widget.bookID);
       setState(() {
         _isLoading = false;
       });

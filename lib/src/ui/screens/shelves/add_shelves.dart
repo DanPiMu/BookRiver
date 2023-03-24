@@ -5,9 +5,7 @@ import 'package:book_river/src/config/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../api/api_exception.dart';
-import '../../../config/routes/navigator_routes.dart';
 
 class AddNewShelve extends StatefulWidget {
   const AddNewShelve({Key? key}) : super(key: key);

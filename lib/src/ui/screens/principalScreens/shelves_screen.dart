@@ -21,14 +21,10 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
 
   Future<List<Shelves>> readResponseShelvesList() async {
     try {
-      final data = await RequestProvider().getShelves();
-      List<dynamic> shelvesListData = data;
+      _shelvesList = await RequestProvider().getShelves();
+
 
       setState(() {
-        _shelvesList = shelvesListData
-            .map((listData) => Shelves.fromJson(listData))
-            .toList();
-        print('hecho');
         _isLoadingShelves = false;
       });
 
@@ -93,7 +89,11 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, NavigatorRoutes.detailShelves,
-            arguments: _shelvesList[index]);
+            arguments: _shelvesList[index]).then((value) => {
+              setState(() => ({
+                readResponseShelvesList()
+              }))
+        });
       },
       child: Container(
         height: 200,
