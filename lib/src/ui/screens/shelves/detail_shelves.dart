@@ -9,7 +9,7 @@ import '../../../config/app_colors.dart';
 import '../../../config/routes/navigator_routes.dart';
 
 class DetailShelves extends StatefulWidget {
-  DetailShelves({Key? key, required int this.shelvesId}) : super(key: key);
+  DetailShelves({Key? key, required this.shelvesId}) : super(key: key);
 
   int shelvesId;
 
@@ -36,10 +36,9 @@ class _DetailShelvesState extends State<DetailShelves> {
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -71,7 +70,6 @@ class _DetailShelvesState extends State<DetailShelves> {
           actions: [
             IconButton(
                 onPressed: () {
-                  print('apretao');
                   Navigator.pushNamed(context, NavigatorRoutes.editShelves,
                           arguments: shelvesObject)
                       .then((value) {
@@ -99,7 +97,7 @@ class _DetailShelvesState extends State<DetailShelves> {
                 ),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(child: Text(shelvesObject.description!))),
+                    child: Text(shelvesObject.description!)),
                 Text(
                   AppLocalizations.of(context)!.getString('books'),
                   style: TextStyle(color: AppColors.tertiary, fontSize: 20),
@@ -134,13 +132,12 @@ class _DetailShelvesState extends State<DetailShelves> {
       itemCount: shelvesObject.books.length,
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
                 arguments: shelvesObject.books[index]);
           },
-
           child: ListTile(
-              leading: Container(
+              leading: SizedBox(
                 width: 40,
                 child: Image.network(
                   shelvesObject.books[index].caratula![0].img!,

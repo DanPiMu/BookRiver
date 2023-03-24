@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
-import '../../../config/routes/navigator_routes.dart';
 import '../../../model/User.dart';
 
 class ProfileOtherUser extends StatefulWidget {
-  ProfileOtherUser({Key? key, required int this.userID}) : super(key: key);
+  ProfileOtherUser({Key? key, required this.userID}) : super(key: key);
 
   int userID;
 
@@ -59,13 +58,11 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
         ),
-        Container(
-          child: Image.asset(
-            "assets/images/fondo_3.png",
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
+        Image.asset(
+          "assets/images/fondo_3.png",
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
         ),
         _content()
       ],
@@ -78,17 +75,14 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
       appBar: AppBar(
           surfaceTintColor: Colors.white,
           backgroundColor: AppColors.transparent),
-      body: Container(
-        //color: Colors.transparent,
-        child: Column(
-          children: [
-            ///User photo
-            _userInfo(),
+      body: Column(
+        children: [
+          ///User photo
+          _userInfo(),
 
-            ///Prestatgeries
-            _userShelves()
-          ],
-        ),
+          ///Prestatgeries
+          _userShelves()
+        ],
       ),
     );
   }
@@ -112,7 +106,7 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
                   fit: BoxFit.cover,
                   errorBuilder: (BuildContext context, Object exception,
                       StackTrace? stackTrace) {
-                    return CircleAvatar(
+                    return const CircleAvatar(
                       backgroundImage: AssetImage('assets/images/pepe.jpeg'),
                     );
                   },
@@ -124,7 +118,7 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
             padding: const EdgeInsets.only(top: 10.0),
             child: Text(
               '@${publicUser.username!}',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
             ),
           ),
         ],
@@ -137,7 +131,7 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
         child: Padding(
       padding: const EdgeInsets.only(left: 15, right: 15),
       child: publicUser.libraries.isEmpty
-          ? Text(
+          ? const Text(
               'No tiene librerias publicas',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -148,7 +142,7 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
               //physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: publicUser.libraries.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 1.0,
                 crossAxisSpacing: 15.0,
@@ -193,19 +187,19 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
                     fontFamily: 'Abril Fatface',
                     color: AppColors.colorByCategoryShelvesByTittle(
                         publicUser.libraries[index].name!))),
-            Container(
+            SizedBox(
               height: 70,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Expanded(
                     child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: publicUser.libraries[index].books.length,
                       itemBuilder: (BuildContext context, int index1) {
                         return Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Image.network(
                               publicUser.libraries[index].books[index1]
                                   .caratula![0].img!,

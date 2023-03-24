@@ -56,10 +56,9 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
       return _bookList;
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -139,14 +138,14 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
           children: [
             // Widget del Tab 1
             if (_cargandoLibros)
-              Center(
+              const Center(
                 child: CircularProgressIndicator(),
               )
             else
               SearchResultBookList(books: _bookList),
             // Widget del Tab 2
             if (_cargandoAutores)
-              Center(
+              const Center(
                 child: CircularProgressIndicator(),
               )
             else
@@ -172,7 +171,6 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
         ),
         Tab(
           text: AppLocalizations.of(context)!.getString('users'),
-
         ),
       ],
     );
@@ -245,13 +243,14 @@ class SearchResultUserList extends StatelessWidget {
         final user = users[index];
         return GestureDetector(
           onTap: () => {
-          Navigator.pushNamed(
-          context, NavigatorRoutes.profileOtherUser, arguments: user)
+            Navigator.pushNamed(context, NavigatorRoutes.profileOtherUser,
+                arguments: user)
           },
           child: ListTile(
-            leading: Image.network(user.userImg!, fit: BoxFit.cover, errorBuilder:
-                (BuildContext context, Object exception, StackTrace? stackTrace) {
-              return CircleAvatar(
+            leading: Image.network(user.userImg!, fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+              return const CircleAvatar(
                 backgroundImage: AssetImage('assets/images/pepe.jpeg'),
               );
             }),
@@ -276,14 +275,14 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 55, left: 10, right: 10),
+      padding: const EdgeInsets.only(bottom: 55, left: 10, right: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextField(
             controller: textController,
             decoration: InputDecoration(
-              prefixIcon: Icon(
+              prefixIcon: const Icon(
                 Icons.search,
                 //color: AppColors.colorByCategoryTitle(category),
               ),
@@ -291,7 +290,7 @@ class SearchBar extends StatelessWidget {
               //hintStyle: TextStyle(color: AppColors.colorByCategoryTitle(category)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: const BorderSide(color: Colors.white),
               ),
             ),
             onChanged: onTextChanged,

@@ -34,10 +34,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return _shelvesList;
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -81,25 +80,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Container(
           color: Colors.white,
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
         ),
         Image.asset(
           "assets/images/fondo_5.png",
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
         _content(context)
@@ -126,9 +113,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
         label: Text(
           AppLocalizations.of(context)!.getString('ratings'),
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        icon: Icon(
+        icon: const Icon(
           Icons.star,
           color: Colors.white,
         ),
@@ -138,21 +126,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Expanded _myShelvesList() {
     return Expanded(
         child: Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15),
-          child: GridView.builder(
-            shrinkWrap: true,
-            itemCount: _shelvesList.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1.0,
-              crossAxisSpacing: 15.0,
-              mainAxisSpacing: 15.0,
-            ),
-            itemBuilder: (context, index) {
-              return _shelveItem(index);
-            },
-          ),
-        ));
+      padding: const EdgeInsets.only(left: 15, right: 15),
+      child: GridView.builder(
+        shrinkWrap: true,
+        itemCount: _shelvesList.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 15.0,
+          mainAxisSpacing: 15.0,
+        ),
+        itemBuilder: (context, index) {
+          return _shelveItem(index);
+        },
+      ),
+    ));
   }
 
   Widget _shelveItem(int index) {
@@ -178,38 +166,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Icon(
               size: 50,
               _shelvesList[index].name == 'Vull Llegir' ||
-                  _shelvesList[index].name == 'Llegint' ||
-                  _shelvesList[index].name == 'Llegit'
+                      _shelvesList[index].name == 'Llegint' ||
+                      _shelvesList[index].name == 'Llegit'
                   ? Icons.book_sharp // icono de estanteria predefinida
                   : Icons.personal_injury, // icono de estanteria creada
               color: AppColors.colorByCategoryShelvesByTittle(
-                  _shelvesList[index].name!),),
-            Text(_shelvesList[index].name!, style: TextStyle(
-                fontFamily: 'Abril Fatface',
-                color: AppColors.colorByCategoryShelvesByTittle(
-                    _shelvesList[index].name!)
-            ),),
-            Container(
+                  _shelvesList[index].name!),
+            ),
+            Text(
+              _shelvesList[index].name!,
+              style: TextStyle(
+                  fontFamily: 'Abril Fatface',
+                  color: AppColors.colorByCategoryShelvesByTittle(
+                      _shelvesList[index].name!)),
+            ),
+            SizedBox(
               height: 70,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Expanded(
                     child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: _shelvesList[index].books.length,
                       itemBuilder: (BuildContext context, int index1) {
                         return Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Image.network(
                               _shelvesList[index]
                                   .books[index1]
                                   .caratula![0]
                                   .img!,
                               fit: BoxFit.cover, errorBuilder:
-                              (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
+                                  (BuildContext context, Object exception,
+                                      StackTrace? stackTrace) {
                             return Image.asset('assets/images/portada.jpeg');
                           }),
                         );
@@ -235,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           //imagen perfil
-          Container(
+          SizedBox(
             height: 150,
             width: 150,
             child: Image.network(
@@ -243,7 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               fit: BoxFit.cover,
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace? stackTrace) {
-                return CircleAvatar(
+                return const CircleAvatar(
                   backgroundImage: AssetImage('assets/images/pepe.jpeg'),
                 );
               },
@@ -252,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
               "@${myUser.username}",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             Row(
               children: [
@@ -264,7 +255,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Icon(Icons.cake, color: AppColors.secondary),
                 myUser.birthDate == null
-                    ? Text('----')
+                    ? const Text('----')
                     : Text(myUser.birthDate.toString())
               ],
             )
@@ -278,26 +269,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return AppBar(
       surfaceTintColor: Colors.white,
       automaticallyImplyLeading: false,
-      title: Container(
-        child: Row(
-          children: [
-            Image.asset(
-              "assets/images/BookRiver_logo_horizontal.png",
-              height: 30,
-              width: 150,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
-        ),
+      title: Row(
+        children: [
+          Image.asset(
+            "assets/images/BookRiver_logo_horizontal.png",
+            height: 30,
+            width: 150,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+        ],
       ),
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, NavigatorRoutes.userSettings).then((_) => {
-                setState(() => {_myUser()})
-              });
+              Navigator.pushNamed(context, NavigatorRoutes.userSettings)
+                  .then((_) => {
+                        setState(() => {_myUser()})
+                      });
             },
             icon: Icon(
               Icons.settings,

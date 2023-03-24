@@ -76,10 +76,9 @@ class _AddNewShelveState extends State<AddNewShelve> {
       }, image!);
       return aux;
     } on ApiException catch (ae) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       ae.printDetails();
     }
     return false;
@@ -110,10 +109,10 @@ class _AddNewShelveState extends State<AddNewShelve> {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
           surfaceTintColor: Colors.white,
-          backgroundColor: Color.fromARGB(0, 0, 0, 0),
+          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
           title: Text(
             AppLocalizations.of(context)!.getString('add_shelf'),
-            style: TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 18),
           ),
           centerTitle: true),
       body: SingleChildScrollView(
@@ -126,7 +125,7 @@ class _AddNewShelveState extends State<AddNewShelve> {
               AppLocalizations.of(context)!.getString('shelf_warning'),
               style: TextStyle(fontSize: 10, color: AppColors.secondary),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             _addButton(context)
@@ -144,13 +143,14 @@ class _AddNewShelveState extends State<AddNewShelve> {
             if (aux) {
               Navigator.pop(context);
             } else {
-              SnackBar(content: Text("No se añade"));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('priblemos'),
+              ));
               print("No se añade");
             }
           }
         },
-        child: Text(AppLocalizations.of(context)!.getString('add'))
-    );
+        child: Text(AppLocalizations.of(context)!.getString('add')));
   }
 
   Padding _statusShelves() {
@@ -191,12 +191,14 @@ class _AddNewShelveState extends State<AddNewShelve> {
               keyboardType: TextInputType.multiline,
               maxLines: null,
               decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                  border: OutlineInputBorder(),
-                  hintText: AppLocalizations.of(context)!.getString('hint_shelf_name'),
-                  labelText: AppLocalizations.of(context)!.getString('shelf_name'),
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 10.0),
+                  border: const OutlineInputBorder(),
+                  hintText: AppLocalizations.of(context)!
+                      .getString('hint_shelf_name'),
+                  labelText:
+                      AppLocalizations.of(context)!.getString('shelf_name'),
+                  labelStyle: const TextStyle(fontWeight: FontWeight.bold)),
             ),
           ),
           SizedBox(
@@ -210,12 +212,14 @@ class _AddNewShelveState extends State<AddNewShelve> {
                 expands: true,
                 maxLines: null,
                 textAlignVertical: TextAlignVertical.top,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                     //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: OutlineInputBorder(),
-                    hintText: AppLocalizations.of(context)!.getString('hint_shelf_description'),
-                    labelText: AppLocalizations.of(context)!.getString('shelf_description'),
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+                    border: const OutlineInputBorder(),
+                    hintText: AppLocalizations.of(context)!
+                        .getString('hint_shelf_description'),
+                    labelText: AppLocalizations.of(context)!
+                        .getString('shelf_description'),
+                    labelStyle: const TextStyle(fontWeight: FontWeight.bold)),
               ),
             ),
           ),
@@ -226,11 +230,10 @@ class _AddNewShelveState extends State<AddNewShelve> {
 
   Padding _imgShelves() {
     return Padding(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: GestureDetector(
         onTap: () {
           _showMyDialog();
-          print(image.toString());
         },
         child: image != null
             ? Container(
@@ -246,7 +249,7 @@ class _AddNewShelveState extends State<AddNewShelve> {
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 235, 251, 255)),
+                    color: const Color.fromARGB(255, 235, 251, 255)),
                 width: double.infinity,
                 height: 270,
                 child: Column(
@@ -292,8 +295,7 @@ class _AddNewShelveState extends State<AddNewShelve> {
               },
             ),
             TextButton(
-              child:
-                  Text(AppLocalizations.of(context)!.getString('camera')),
+              child: Text(AppLocalizations.of(context)!.getString('camera')),
               onPressed: () {
                 pickImageC();
                 Navigator.of(context).pop();

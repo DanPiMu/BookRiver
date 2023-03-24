@@ -60,11 +60,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _emailForm(),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 _nameForm(),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 _doB(context),
@@ -77,7 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Container _saveButton(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(left: 0, top: 40.0),
+        padding: const EdgeInsets.only(left: 0, top: 40.0),
         child: ElevatedButton(
           child: Text(AppLocalizations.of(context)!.getString("save_changes")),
           onPressed: () async {
@@ -90,7 +90,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               if (aux) {
                 Navigator.pop(context);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('no furrula'),
                 ));
                 print("No se actualiza");
@@ -107,13 +107,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       maxLines: null,
       decoration: InputDecoration(
           contentPadding:
-              EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-          border: OutlineInputBorder(),
+              const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+          border: const OutlineInputBorder(),
           hintText: AppLocalizations.of(context)!.getString("hint_username"),
           labelText: AppLocalizations.of(context)!.getString("username"),
-          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+          labelStyle: const TextStyle(fontWeight: FontWeight.bold),
           prefixText: '@',
-          prefixStyle: TextStyle(color: Colors.red)),
+          prefixStyle: const TextStyle(color: Colors.red)),
       validator: (value) {
         if (value?.isEmpty ?? true) {
           return 'Please enter some text';
@@ -143,10 +143,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         enabled: false,
         decoration: InputDecoration(
             contentPadding:
-                EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-            border: OutlineInputBorder(),
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+            border: const OutlineInputBorder(),
             labelText: AppLocalizations.of(context)!.getString("date_of_birth"),
-            labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold)),
         validator: (value) {
           return _selectedDate == null
               ? AppLocalizations.of(context)!.getString("select_date")
@@ -167,11 +167,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       maxLines: null,
       decoration: InputDecoration(
           contentPadding:
-              EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-          border: OutlineInputBorder(),
+              const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+          border: const OutlineInputBorder(),
           hintText: AppLocalizations.of(context)!.getString("hint_email"),
           labelText: AppLocalizations.of(context)!.getString("email"),
-          labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+          labelStyle: const TextStyle(fontWeight: FontWeight.bold)),
       validator: (value) {
         if (value?.isEmpty ?? true) {
           return 'Please enter valid Email';

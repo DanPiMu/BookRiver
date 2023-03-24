@@ -18,19 +18,18 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
 
   TextEditingController _emailController = TextEditingController();
 
-
   Future<bool> _recoveryPass() async {
     try {
       bool aux = await UserHelper.recovery({
         "email": _emailController.text,
-
       });
       return aux;
     } on ApiException catch (ae) {
       ae.printDetails();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
+            content: Text(
+                AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
       );
     }
     return false;
@@ -100,21 +99,17 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
           _sendButton(),
         ],
       )),
-
     );
-
   }
 
-  ElevatedButton _sendButton() =>
-      ElevatedButton(onPressed: () async {
-
-
-
+  ElevatedButton _sendButton() => ElevatedButton(
+      onPressed: () async {
         if (_formKey.currentState!.validate()) {
           bool aux = await _recoveryPass();
           if (aux) {
             final snackBar = SnackBar(
-              content: Text('Te hemos enviado un correo, revisa tu bandeja de entrada'),
+              content: const Text(
+                  'Te hemos enviado un correo, revisa tu bandeja de entrada'),
               action: SnackBarAction(
                 label: 'Iniciar sesion',
                 onPressed: () {
@@ -128,63 +123,62 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
             print("no entro");
           }
         }
-      }, child:  Text(AppLocalizations.of(context)!.getString('send')));
+      },
+      child: Text(AppLocalizations.of(context)!.getString('send')));
 
-  Container _form() {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-        child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                 SizedBox(
-                  width: 250,
-                  child: Text(
-                    AppLocalizations.of(context)!.getString('recovery_text1'),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+  Widget _form() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 250,
+                child: Text(
+                  AppLocalizations.of(context)!.getString('recovery_text1'),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                AppLocalizations.of(context)!.getString('recovery_text2'),
+                style: const TextStyle(fontSize: 15),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 10.0),
+                  border: const OutlineInputBorder(),
+                  hintText:
+                      AppLocalizations.of(context)!.getString('hint_email'),
+                  labelText: AppLocalizations.of(context)!.getString('email'),
                 ),
-                 Text(
-                  AppLocalizations.of(context)!.getString('recovery_text2'),
-                  style: TextStyle(fontSize: 15),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration:  InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    border: OutlineInputBorder(),
-                    hintText: AppLocalizations.of(context)!.getString('hint_email'),
-                    labelText: AppLocalizations.of(context)!.getString('email'),
-                  ),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Please enter valid Email';
-                    }
-                    if (!RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
-                        .hasMatch(value!)) {
-                      return 'Enter a valid email address: xxxxx@xxxx.zzz';
-                    }
-                    return null;
-                  },
-                  //onSaved: ,
-                ),
-              ],
-            )),
-      ),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Please enter valid Email';
+                  }
+                  if (!RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
+                      .hasMatch(value!)) {
+                    return 'Enter a valid email address: xxxxx@xxxx.zzz';
+                  }
+                  return null;
+                },
+                //onSaved: ,
+              ),
+            ],
+          )),
     );
   }
-
 }

@@ -25,7 +25,8 @@ class _RatingsBookState extends State<RatingsBook> {
 
   Future<void> readResponseBooks() async {
     try {
-      _booksRatingsList = await RequestProvider().getRatingsBookList(widget.bookId);
+      _booksRatingsList =
+          await RequestProvider().getRatingsBookList(widget.bookId);
 
       setState(() {
         _isLoading = false;
@@ -47,7 +48,7 @@ class _RatingsBookState extends State<RatingsBook> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -59,13 +60,11 @@ class _RatingsBookState extends State<RatingsBook> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
         ),
-        Container(
-          child: Image.asset(
-            "assets/images/fondo_3.png",
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
+        Image.asset(
+          "assets/images/fondo_3.png",
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
         ),
         _booksRatingsList.isEmpty
             ? Scaffold(
@@ -85,7 +84,7 @@ class _RatingsBookState extends State<RatingsBook> {
                               'Valoracions',
                               style: TextStyle(
                                 color: constraints.maxHeight > 70
-                                    ? Color.fromARGB(0, 0, 0, 0)
+                                    ? const Color.fromARGB(0, 0, 0, 0)
                                     : Colors.black,
                               ),
                             );
@@ -93,7 +92,7 @@ class _RatingsBookState extends State<RatingsBook> {
                           centerTitle: true,
                           background: _appBarCustom(0, 0)),
                     ),
-                    SliverToBoxAdapter(
+                    const SliverToBoxAdapter(
                       child: Center(
                         child: Text('Este libro aun no tiene valoraciones...'),
                       ),
@@ -129,7 +128,7 @@ class _RatingsBookState extends State<RatingsBook> {
                     'Valoracions',
                     style: TextStyle(
                       color: constraints.maxHeight > 70
-                          ? Color.fromARGB(0, 0, 0, 0)
+                          ? const Color.fromARGB(0, 0, 0, 0)
                           : Colors.black,
                     ),
                   );
@@ -178,11 +177,11 @@ class _RatingsBookState extends State<RatingsBook> {
 
   Container _ratingUserItem(int index) {
     return Container(
-      padding: EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.only(left: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             height: 50,
             width: 50,
             child: Image.network(
@@ -206,7 +205,7 @@ class _RatingsBookState extends State<RatingsBook> {
                 //nombre de el usuario
                 Text(
                   '@${_booksRatingsList[index].user!.username.toString()}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Row(
                   children: List.generate(5, (indexStart) {
@@ -237,10 +236,10 @@ class _RatingsBookState extends State<RatingsBook> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: Text(
                   AppLocalizations.of(context)!.getString('ratings'),
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
               ),
               Row(

@@ -13,11 +13,10 @@ Future<void> main() async {
   try {
     /// Obtenir usuari de shared preferences
     await UserHelper.getUserDataFromSharedPreferences();
-  } catch(e, s) {
+  } catch (e, s) {
     print("ERROR start $e");
     print("ERROR start $s");
   }
-
 
 //AppLocalizations.of(context).getString("value");
   /// Ens assegurem que l'app sempre es mostri en PORTRAIT.
@@ -27,12 +26,12 @@ Future<void> main() async {
   ]).then((_) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
-
-    runApp(
-      MultiProvider(providers: [ChangeNotifierProvider<NavigationNotifier>(create: (_)=> NavigationNotifier())],
-      child: const BookRiver(),)
-
-    );
+    runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<NavigationNotifier>(
+            create: (_) => NavigationNotifier())
+      ],
+      child: const BookRiver(),
+    ));
   });
-
 }

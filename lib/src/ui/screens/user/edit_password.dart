@@ -54,15 +54,15 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _oldPasswrd(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               _newPasswrd(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               _confirmPasswrd(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               _savePassword(context)
@@ -85,7 +85,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
               if (aux) {
                 Navigator.pop(context);
               } else {
-                SnackBar(content: Text("No se actualiza"));
+                const SnackBar(content: Text("No se actualiza"));
                 print("No se actualiza");
               }
             }
@@ -101,9 +101,9 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       decoration: InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         //en un futuro hacerlo funcional
-        suffixIcon: Icon(Icons.visibility),
+        suffixIcon: const Icon(Icons.visibility),
         labelText: AppLocalizations.of(context)!.getString("hint_confirm_password"),
         //alignLabelWithHint: true
       ),
@@ -128,9 +128,9 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       decoration:  InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         //en un futuro hacerlo funcional
-        suffixIcon: Icon(Icons.visibility),
+        suffixIcon: const Icon(Icons.visibility),
         labelText: AppLocalizations.of(context)!.getString("hint_new_password"),
       ),
       validator: (value) {
@@ -153,10 +153,10 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       obscuringCharacter: "*",
       decoration:  InputDecoration(
         contentPadding:
-             EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-        border: OutlineInputBorder(),
+             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        border: const OutlineInputBorder(),
         //en un futuro hacerlo funcional
-        suffixIcon: Icon(Icons.visibility),
+        suffixIcon: const Icon(Icons.visibility),
         labelText: AppLocalizations.of(context)!.getString("hint_old_password"),
       ),
       validator: (value) {

@@ -36,7 +36,6 @@ class _StartingScreenState extends State<StartingScreen> {
       setState(() {
         novetatLoading = false;
       });
-
     } on ApiException catch (ae) {
       ae.printDetails();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -102,7 +101,8 @@ class _StartingScreenState extends State<StartingScreen> {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.getString("categories"),
-                    style: const TextStyle(fontFamily: 'Abril Fatface', fontSize: 20),
+                    style: const TextStyle(
+                        fontFamily: 'Abril Fatface', fontSize: 20),
                   ),
                   Row(
                     children: [
@@ -254,27 +254,21 @@ class _StartingScreenState extends State<StartingScreen> {
 _customAppBar(BuildContext context, List<Categories> booksNovetatsList) {
   return AppBar(
     automaticallyImplyLeading: false,
-    title: Container(
-      child: Row(
-        children: [
-          Image.asset(
-            "assets/images/BookRiver_logo_horizontal.png",
-            height: 30,
-            width: 150,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
+    title: Row(
+      children: [
+        Image.asset(
+          "assets/images/BookRiver_logo_horizontal.png",
+          height: 30,
+          width: 150,
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+      ],
     ),
     actions: [
       IconButton(
           onPressed: () {
-            print(booksNovetatsList.length);
-            for (var books in booksNovetatsList) {
-              print('con id: ${books.id} y no nomnbre: ${books.nameEs}');
-            }
             Navigator.pushNamed(context, NavigatorRoutes.searchBook);
           },
           icon: Icon(

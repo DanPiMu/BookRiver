@@ -1,7 +1,5 @@
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../api/api_exception.dart';
 import '../../../config/app_localizations.dart';
 import '../../../config/routes/navigator_routes.dart';
@@ -32,18 +30,16 @@ class _LogInState extends State<LogIn> {
     } on ApiException catch (ae) {
       print('2q23456yu');
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
-          );
+        SnackBar(
+            content: Text(
+                AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
+      );
       ae.printDetails();
-    }catch (e) {
+    } catch (e) {
       print('xsrdctfvygbhunjimk,');
     }
     return false;
   }
-
-  @override
-  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +138,7 @@ class _LogInState extends State<LogIn> {
             bool aux = await _savePreferences();
             if (aux) {
               Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-            } else {
-
-            }
+            } else {}
           }
         },
         child: Text(AppLocalizations.of(context)!.getString("login")));
@@ -163,10 +157,11 @@ class _LogInState extends State<LogIn> {
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: OutlineInputBorder(),
-                    hintText: AppLocalizations.of(context)!.getString('hint_email'),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15.0, horizontal: 10.0),
+                    border: const OutlineInputBorder(),
+                    hintText:
+                        AppLocalizations.of(context)!.getString('hint_email'),
                     labelText: AppLocalizations.of(context)!.getString("email"),
                   ),
                   validator: (value) {
@@ -191,20 +186,22 @@ class _LogInState extends State<LogIn> {
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 15.0, horizontal: 10.0),
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     //en un futuro hacerlo funcional
                     suffixIcon: IconButton(
                       icon: _passVisibility
-                          ? Icon(Icons.visibility_off)
-                          : Icon(Icons.visibility),
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
                       onPressed: () {
                         _passVisibility = !_passVisibility;
 
                         setState(() {});
                       },
                     ),
-                    hintText: AppLocalizations.of(context)!.getString("hint_password"),
-                    labelText: AppLocalizations.of(context)!.getString("password"),
+                    hintText: AppLocalizations.of(context)!
+                        .getString("hint_password"),
+                    labelText:
+                        AppLocalizations.of(context)!.getString("password"),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -222,8 +219,9 @@ class _LogInState extends State<LogIn> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.getString("forgot_password"),
-                      style: TextStyle(fontSize: 12),
+                      AppLocalizations.of(context)!
+                          .getString("forgot_password"),
+                      style: const TextStyle(fontSize: 12),
                     ),
                     TextButton(
                         onPressed: () {},
@@ -233,7 +231,8 @@ class _LogInState extends State<LogIn> {
                                   context, NavigatorRoutes.passwordRecovery);
                             },
                             child: Text(
-                              AppLocalizations.of(context)!.getString('recover_password'),
+                              AppLocalizations.of(context)!
+                                  .getString('recover_password'),
                               style: TextStyle(
                                   color: AppColors.tertiary,
                                   fontWeight: FontWeight.bold,

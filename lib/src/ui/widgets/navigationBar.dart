@@ -13,7 +13,7 @@ class CustomNavigationBar extends StatelessWidget {
     final navigationProvider = Provider.of<NavigationNotifier>(context);
     return BottomNavigationBar(
       elevation: 20,
-      unselectedLabelStyle: TextStyle(color: Colors.black),
+      unselectedLabelStyle: const TextStyle(color: Colors.black),
         iconSize: 30,
         fixedColor: AppColors.tertiary,
 

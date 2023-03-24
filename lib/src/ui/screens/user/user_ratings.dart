@@ -1,5 +1,4 @@
 import 'package:book_river/src/api/api_exception.dart';
-import 'package:book_river/src/model/shelves.dart';
 import 'package:flutter/material.dart';
 
 import '../../../api/request_helper.dart';
@@ -9,7 +8,7 @@ import '../../../model/User.dart';
 import '../../../model/ratings.dart';
 
 class UserRatings extends StatefulWidget {
-  UserRatings({Key? key, required User this.user}) : super(key: key);
+  UserRatings({Key? key, required this.user}) : super(key: key);
 
   User user;
 
@@ -73,18 +72,18 @@ class _UserRatingsState extends State<UserRatings> {
 
   Container _ratingItem(int index) {
     return Container(
-      padding: EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.only(left: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             height: 50,
             width: 50,
             child: Image.network(
                 _booksRatingsList[index].user!.userImg.toString(),
                 fit: BoxFit.cover, errorBuilder: (BuildContext context,
                     Object exception, StackTrace? stackTrace) {
-              return CircleAvatar(
+              return const CircleAvatar(
                 backgroundImage: AssetImage('assets/images/pepe.jpeg'),
               );
             }),
@@ -101,24 +100,22 @@ class _UserRatingsState extends State<UserRatings> {
                   children: [
                     Text(_booksRatingsList[index].book!.title.toString(),
                         style: TextStyle(color: AppColors.tertiary)),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(5, (indexStart) {
-                          return Container(
-                            child: Icon(
-                              indexStart < _booksRatingsList[index].stars!
-                                  ? Icons.star
-                                  : Icons.star_border,
-                              color: AppColors.tertiary,
-                              size: 17,
-                            ),
-                          );
-                        }),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(5, (indexStart) {
+                        return Container(
+                          child: Icon(
+                            indexStart < _booksRatingsList[index].stars!
+                                ? Icons.star
+                                : Icons.star_border,
+                            color: AppColors.tertiary,
+                            size: 17,
+                          ),
+                        );
+                      }),
                     ),
                   ],
                 ),

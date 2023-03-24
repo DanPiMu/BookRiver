@@ -23,7 +23,6 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
     try {
       _shelvesList = await RequestProvider().getShelves();
 
-
       setState(() {
         _isLoadingShelves = false;
       });
@@ -31,10 +30,9 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
       return _shelvesList;
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -51,7 +49,7 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoadingShelves) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -73,7 +71,7 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
       //physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: _shelvesList.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 1.0,
         crossAxisSpacing: 15.0,
@@ -89,11 +87,10 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, NavigatorRoutes.detailShelves,
-            arguments: _shelvesList[index]).then((value) => {
-              setState(() => ({
-                readResponseShelvesList()
-              }))
-        });
+                arguments: _shelvesList[index])
+            .then((value) => {
+                  setState(() => ({readResponseShelvesList()}))
+                });
       },
       child: Container(
         height: 200,
@@ -110,30 +107,34 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              size: 50,
-              _shelvesList[index].name == 'Vull Llegir' ||
-                      _shelvesList[index].name == 'Llegint' ||
-                      _shelvesList[index].name == 'Llegit'
-                  ? Icons.book_sharp // icono de estanteria predefinida
-                  : Icons.book_outlined, // icono de estanteria creada
-                color: AppColors.colorByCategoryShelvesByTittle(_shelvesList[index].name!)),
-            Text(_shelvesList[index].name!, style: TextStyle(
-                fontFamily: 'Abril Fatface',
-                color: AppColors.colorByCategoryShelvesByTittle(_shelvesList[index].name!)
-            ),),
-            Container(
+                size: 50,
+                _shelvesList[index].name == 'Vull Llegir' ||
+                        _shelvesList[index].name == 'Llegint' ||
+                        _shelvesList[index].name == 'Llegit'
+                    ? Icons.book_sharp // icono de estanteria predefinida
+                    : Icons.book_outlined, // icono de estanteria creada
+                color: AppColors.colorByCategoryShelvesByTittle(
+                    _shelvesList[index].name!)),
+            Text(
+              _shelvesList[index].name!,
+              style: TextStyle(
+                  fontFamily: 'Abril Fatface',
+                  color: AppColors.colorByCategoryShelvesByTittle(
+                      _shelvesList[index].name!)),
+            ),
+            SizedBox(
               height: 70,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Expanded(
                     child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemCount: _shelvesList[index].books.length,
                       itemBuilder: (BuildContext context, int index1) {
                         return Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Image.network(
                               _shelvesList[index]
                                   .books[index1]
@@ -182,19 +183,17 @@ class _ShelvesScreenState extends State<ShelvesScreen> {
   _customAppBar(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: Container(
-        child: Row(
-          children: [
-            Image.asset(
-              "assets/images/BookRiver_logo_horizontal.png",
-              height: 30,
-              width: 150,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
-        ),
+      title: Row(
+        children: [
+          Image.asset(
+            "assets/images/BookRiver_logo_horizontal.png",
+            height: 30,
+            width: 150,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+        ],
       ),
     );
   }

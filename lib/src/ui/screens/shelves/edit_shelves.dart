@@ -11,7 +11,7 @@ import '../../../config/app_localizations.dart';
 import '../../../model/shelves.dart';
 
 class EditShelves extends StatefulWidget {
-  EditShelves({Key? key, required Shelves this.shelvesId}) : super(key: key);
+  EditShelves({Key? key, required this.shelvesId}) : super(key: key);
 
   Shelves shelvesId;
 
@@ -55,10 +55,9 @@ class _EditShelvesState extends State<EditShelves> {
       return aux;
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
     }
     return false;
   }
@@ -110,25 +109,13 @@ class _EditShelvesState extends State<EditShelves> {
       children: [
         Container(
           color: Colors.white,
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
         ),
         Image.asset(
           "assets/images/fondo_2.png",
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
         _content(context)
@@ -141,10 +128,10 @@ class _EditShelvesState extends State<EditShelves> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           surfaceTintColor: Colors.white,
-          backgroundColor: Color.fromARGB(0, 0, 0, 0),
+          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
           title: Text(AppLocalizations.of(context)!.getString('edit_shelf')),
           centerTitle: true,
-          actions: [Icon(Icons.delete)],
+          actions: const [Icon(Icons.delete)],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -156,7 +143,7 @@ class _EditShelvesState extends State<EditShelves> {
                 AppLocalizations.of(context)!.getString("shelf_warning"),
                 style: TextStyle(fontSize: 10, color: AppColors.secondary),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               _saveChanges(context)
@@ -173,14 +160,15 @@ class _EditShelvesState extends State<EditShelves> {
           if (aux) {
             Navigator.pop(context);
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text('No se ha podido editar.'),
             ));
             print("No se actualiza");
           }
         }
       },
-      child: Text(AppLocalizations.of(context)!.getString("save_changes")),);
+      child: Text(AppLocalizations.of(context)!.getString("save_changes")),
+    );
   }
 
   Padding _statusShelve() {
@@ -213,20 +201,20 @@ class _EditShelvesState extends State<EditShelves> {
         children: [
           Padding(
             padding:
-            const EdgeInsets.only(top: 15.0, bottom: 8, left: 8, right: 8),
+                const EdgeInsets.only(top: 15.0, bottom: 8, left: 8, right: 8),
             child: TextFormField(
               controller: _nameController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
               decoration: InputDecoration(
-                  contentPadding:
-                  EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                  border: OutlineInputBorder(),
-                  hintText: AppLocalizations.of(context)!.getString(
-                      'hint_shelf_name'),
-                  labelText: AppLocalizations.of(context)!.getString(
-                      'shelf_name'),
-                  labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 10.0),
+                  border: const OutlineInputBorder(),
+                  hintText: AppLocalizations.of(context)!
+                      .getString('hint_shelf_name'),
+                  labelText:
+                      AppLocalizations.of(context)!.getString('shelf_name'),
+                  labelStyle: const TextStyle(fontWeight: FontWeight.bold)),
             ),
           ),
           SizedBox(
@@ -241,13 +229,13 @@ class _EditShelvesState extends State<EditShelves> {
                 maxLines: null,
                 textAlignVertical: TextAlignVertical.top,
                 decoration: InputDecoration(
-                  //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                    border: OutlineInputBorder(),
-                    hintText: AppLocalizations.of(context)!.getString(
-                        'hint_shelf_description'),
-                    labelText: AppLocalizations.of(context)!.getString(
-                        'shelf_description'),
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+                    //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                    border: const OutlineInputBorder(),
+                    hintText: AppLocalizations.of(context)!
+                        .getString('hint_shelf_description'),
+                    labelText: AppLocalizations.of(context)!
+                        .getString('shelf_description'),
+                    labelStyle: const TextStyle(fontWeight: FontWeight.bold)),
               ),
             ),
           ),
@@ -258,44 +246,44 @@ class _EditShelvesState extends State<EditShelves> {
 
   Padding _imgShelve() {
     return Padding(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: GestureDetector(
         onTap: () {
           _showMyDialog();
-          print("OK");
         },
         child: image != null
             ? Container(
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(10)),
-            child: Image.file(
-              image!,
-              width: double.infinity,
-              height: 270,
-            ))
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Image.file(
+                  image!,
+                  width: double.infinity,
+                  height: 270,
+                ))
             : Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey[350]),
-          width: double.infinity,
-          height: 270,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.add_photo_alternate,
-                color: Colors.white,
-                size: 40,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey[350]),
+                width: double.infinity,
+                height: 270,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.add_photo_alternate,
+                      color: Colors.white,
+                      size: 40,
+                    ),
+                    Text(
+                      AppLocalizations.of(context)!
+                          .getString('add_image_shelf'),
+                      style: const TextStyle(color: Colors.white),
+                    )
+                  ],
+                ),
               ),
-              Text(
-                AppLocalizations.of(context)!.getString('add_image_shelf'),
-                style: TextStyle(color: Colors.white),
-              )
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -306,8 +294,7 @@ class _EditShelvesState extends State<EditShelves> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title:
-          Text(AppLocalizations.of(context)!.getString('select_image')),
+          title: Text(AppLocalizations.of(context)!.getString('select_image')),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -317,18 +304,14 @@ class _EditShelvesState extends State<EditShelves> {
           ),
           actions: <Widget>[
             TextButton(
-              child:
-              Text(AppLocalizations.of(context)!.getString('gallery')),
-
+              child: Text(AppLocalizations.of(context)!.getString('gallery')),
               onPressed: () {
                 pickImage();
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child:
-              Text(AppLocalizations.of(context)!.getString('camera')),
-
+              child: Text(AppLocalizations.of(context)!.getString('camera')),
               onPressed: () {
                 pickImageC();
                 Navigator.of(context).pop();

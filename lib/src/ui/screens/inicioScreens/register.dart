@@ -1,10 +1,6 @@
-import 'dart:ffi';
-
-import 'package:book_river/src/api/api_client.dart';
 import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/utils/user_helper_plantilla.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../config/app_colors.dart';
 import '../../../config/app_localizations.dart';
@@ -38,7 +34,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ae.printDetails();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
+            content: Text(
+                AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
       );
     }
     return false;
@@ -112,27 +109,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   ElevatedButton _registerButton() {
     return ElevatedButton(
-        onPressed: () async {
-          if (_formKey.currentState!.validate() && isChecked == true) {
-            bool aux = await _savePreferences();
-            if (aux) {
-              Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-            } else {
-              final snackBar = SnackBar(
-                content:
-                Text('Contraseña incorrecta, has olvidado tu contraseña?'),
-                action: SnackBarAction(
-                  label: 'Aqui!',
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, NavigatorRoutes.passwordRecovery);
-                  },
-                ),
-              );ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }
+      onPressed: () async {
+        if (_formKey.currentState!.validate() && isChecked == true) {
+          bool aux = await _savePreferences();
+          if (aux) {
+            Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
+          } else {
+            final snackBar = SnackBar(
+              content: const Text(
+                  'Contraseña incorrecta, has olvidado tu contraseña?'),
+              action: SnackBarAction(
+                label: 'Aqui!',
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, NavigatorRoutes.passwordRecovery);
+                },
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
-        },
-        child: Text(AppLocalizations.of(context)!.getString('enter')),);
+        }
+      },
+      child: Text(AppLocalizations.of(context)!.getString('enter')),
+    );
   }
 
   Container _form() {
@@ -146,11 +145,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 TextFormField(
                   controller: _emailController,
-                  decoration:  InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    border: OutlineInputBorder(),
-                    hintText: AppLocalizations.of(context)!.getString('hint_email'),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10.0),
+                    border: const OutlineInputBorder(),
+                    hintText:
+                        AppLocalizations.of(context)!.getString('hint_email'),
                     labelText: AppLocalizations.of(context)!.getString('email'),
                   ),
                   validator: (value) {
@@ -173,21 +173,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obscuringCharacter: "*",
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    contentPadding:  const EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                         vertical: 15.0, horizontal: 10.0),
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: _passVisibility
-                          ? Icon(Icons.visibility_off)
-                          : Icon(Icons.visibility),
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
                       onPressed: () {
                         _passVisibility = !_passVisibility;
 
                         setState(() {});
                       },
                     ),
-                    hintText: AppLocalizations.of(context)!.getString('hint_password'),
-                    labelText: AppLocalizations.of(context)!.getString('password'),
+                    hintText: AppLocalizations.of(context)!
+                        .getString('hint_password'),
+                    labelText:
+                        AppLocalizations.of(context)!.getString('password'),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -206,13 +208,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                      contentPadding:const  EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 10.0),
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: 'samilton',
-                      labelText: AppLocalizations.of(context)!.getString('username'),
+                      labelText:
+                          AppLocalizations.of(context)!.getString('username'),
                       prefixText: '@',
-                      prefixStyle: TextStyle(color: Colors.red)),
+                      prefixStyle: const TextStyle(color: Colors.red)),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter valid Email';
@@ -234,8 +237,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         contentPadding:
                             const EdgeInsets.only(right: 0, left: 0),
                         title: Text(
-                          AppLocalizations.of(context)!.getString("terms_and_conditions"),
-                          style: TextStyle(
+                          AppLocalizations.of(context)!
+                              .getString("terms_and_conditions"),
+                          style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Colors.black),
@@ -245,7 +249,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onChanged: (bool? value) {
                           setState(() {
                             isChecked = value!;
-                            print(isChecked);
                           });
                         },
                         controlAffinity: ListTileControlAffinity.leading,

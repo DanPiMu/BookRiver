@@ -10,8 +10,8 @@ import '../../../config/routes/navigator_routes.dart';
 class ListBookCategory extends StatefulWidget {
   ListBookCategory({
     Key? key,
-    required int this.bookIdCategory,
-    required String this.categoryName,
+    required this.bookIdCategory,
+    required this.categoryName,
   }) : super(key: key);
 
   int bookIdCategory;
@@ -139,7 +139,6 @@ class _ListBookCategoryState extends State<ListBookCategory> {
       itemBuilder: (context, index) {
         return GestureDetector(
             onTap: () {
-              print(_bookListByCategory[index].title);
               Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
                   arguments: _bookListByCategory[index]);
             },
@@ -181,7 +180,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
       padding: const EdgeInsets.all(15.0),
       child: Container(
           width: 240,
-          padding: EdgeInsets.only(left: 10),
+          padding: const EdgeInsets.only(left: 10),
           decoration: BoxDecoration(
             color: AppColors.secondaryCake,
             borderRadius: BorderRadius.circular(20),
@@ -202,7 +201,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
             items: options.map((option) {
               return DropdownMenuItem(
                 value: option,
-                child: Container(
+                child: SizedBox(
                   width: 180,
                   child: Text(
                     option,

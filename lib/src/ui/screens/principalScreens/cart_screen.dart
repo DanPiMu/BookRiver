@@ -34,13 +34,14 @@ class _CartScreenState extends State<CartScreen> {
                     ? ListView.builder(
                         itemCount: cartItems.length,
                         itemBuilder: (BuildContext context, int index) {
-                          // condicion ? true : false;
                           final item = cartItems[index];
                           return Padding(
-                            padding: EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.all(20.0),
                             child: Row(
                               children: [
                                 SizedBox(
+                                  height: 150,
+                                  width: 100,
                                   child: item.caratula?[0].img == null
                                       ? Image.asset(
                                           'assets/images/portada.jpeg')
@@ -54,27 +55,25 @@ class _CartScreenState extends State<CartScreen> {
                                                 'assets/images/portada.jpeg');
                                           },
                                         ),
-                                  height: 150,
-                                  width: 100,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 40,
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(item.title ?? '',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold)),
-                                    SizedBox(height: 8.0),
+                                    const SizedBox(height: 8.0),
                                     Text(item.author!),
-                                    SizedBox(height: 8.0),
+                                    const SizedBox(height: 8.0),
                                     Text(
                                       '${item.price.toString()}€',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(height: 8.0),
+                                    const SizedBox(height: 8.0),
                                     Container(
                                       decoration: BoxDecoration(
                                           borderRadius:
@@ -106,7 +105,6 @@ class _CartScreenState extends State<CartScreen> {
                                                       context,
                                                       listen: false)
                                                   .addUnitsToProduct(item, 1);
-                                              print('me añado');
                                             },
                                           ),
                                         ],
@@ -125,7 +123,7 @@ class _CartScreenState extends State<CartScreen> {
                         style: TextStyle(color: Colors.black),
                       )),
               ),
-              Divider(),
+              const Divider(),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -173,19 +171,17 @@ class _CartScreenState extends State<CartScreen> {
     return AppBar(
       surfaceTintColor: Colors.white,
       automaticallyImplyLeading: false,
-      title: Container(
-        child: Row(
-          children: [
-            Image.asset(
-              "assets/images/BookRiver_logo_horizontal.png",
-              height: 30,
-              width: 150,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
-        ),
+      title: Row(
+        children: [
+          Image.asset(
+            "assets/images/BookRiver_logo_horizontal.png",
+            height: 30,
+            width: 150,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+        ],
       ),
     );
   }

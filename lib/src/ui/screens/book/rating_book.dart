@@ -16,14 +16,13 @@ class RatingBook extends StatefulWidget {
 
   int bookID;
 
-
-
   @override
   State<RatingBook> createState() => _RatingBookState();
 }
 
 class _RatingBookState extends State<RatingBook> {
   late Book bookRating;
+
   Future<void> _bookById() async {
     try {
       bookRating = await RequestProvider().getBookById(widget.bookID);
@@ -32,10 +31,9 @@ class _RatingBookState extends State<RatingBook> {
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -63,7 +61,7 @@ class _RatingBookState extends State<RatingBook> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -80,7 +78,6 @@ class _RatingBookState extends State<RatingBook> {
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
-
         _content()
       ],
     );
@@ -91,10 +88,10 @@ class _RatingBookState extends State<RatingBook> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           surfaceTintColor: Colors.white,
-          backgroundColor: Color.fromARGB(0, 0, 0, 0),
+          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
           title: Text(
             AppLocalizations.of(context)!.getString('rate_book'),
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
           centerTitle: true,
         ),
@@ -102,7 +99,8 @@ class _RatingBookState extends State<RatingBook> {
           child: Column(
             children: [
               Text(bookRating.title.toString(),
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Text(bookRating.author.toString()),
@@ -135,10 +133,10 @@ class _RatingBookState extends State<RatingBook> {
                     //Navigator.pushNamed(context, NavigatorRoutes.bookDetails,arguments: bookRating);
                   } on ApiException catch (ae) {
                     ae.printDetails();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Esta saltando la apiExeption${ae.message!}'),
-                        ));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          Text('Esta saltando la apiExeption${ae.message!}'),
+                    ));
                     rethrow;
                   } catch (e) {
                     print('Problemillas');
@@ -168,7 +166,7 @@ class _RatingBookState extends State<RatingBook> {
             textAlignVertical: TextAlignVertical.top,
             decoration: InputDecoration(
               //contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
               hintText: AppLocalizations.of(context)!.getString('hint_review'),
               labelText: AppLocalizations.of(context)!.getString('review'),
             ),
