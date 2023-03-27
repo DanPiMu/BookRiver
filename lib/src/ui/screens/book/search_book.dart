@@ -66,29 +66,6 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
     }
   }
 
-//No se usa
-  Future<List<User>> readResponseUserList(String text) async {
-    try {
-      final data = await RequestProvider().getUsersByName(text);
-      List<dynamic> userListData = data;
-
-      setState(() {
-        _userList =
-            userListData.map((listData) => User.fromJson(listData)).toList();
-        _cargandoAutores = false;
-      });
-
-      return _userList;
-    } on ApiException catch (ae) {
-      ae.printDetails();
-      SnackBar(content: Text(ae.message!));
-      rethrow;
-    } catch (e) {
-      print('Problemillas');
-      rethrow;
-    }
-  }
-
   @override
   void initState() {
     super.initState();
