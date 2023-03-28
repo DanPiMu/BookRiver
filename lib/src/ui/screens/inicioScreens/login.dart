@@ -26,9 +26,9 @@ class _LogInState extends State<LogIn> {
         "email": _emailController.text,
         "password": _passwordController.text,
       });
+      print(aux);
       return aux;
     } on ApiException catch (ae) {
-      print('2q23456yu');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(

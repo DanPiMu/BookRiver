@@ -21,7 +21,8 @@ class _BookRiver extends State<BookRiver> {
       debugShowCheckedModeBanner: false,
       title: 'Sample App',
       theme: AppStyles.mainTheme,
-      initialRoute: UserHelper.hasUserSession() ? NavigatorRoutes.mainHolder : NavigatorRoutes.login,
+      //initialRoute: UserHelper.hasUserSession() ? NavigatorRoutes.mainHolder : NavigatorRoutes.login,
+      initialRoute:NavigatorRoutes.login,
       onGenerateRoute: AppRouter.generateRoute,
 
 
