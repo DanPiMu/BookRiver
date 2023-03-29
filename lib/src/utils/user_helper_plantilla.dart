@@ -66,6 +66,7 @@ class UserHelper {
       return false;
     } on ApiException catch (ae) {
       ae.printDetails();
+      rethrow;
     }
     return false;
   }

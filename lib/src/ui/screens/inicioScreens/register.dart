@@ -1,6 +1,7 @@
 import 'package:book_river/src/api/api_exception.dart';
 import 'package:book_river/src/utils/user_helper_plantilla.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/app_colors.dart';
 import '../../../config/app_localizations.dart';
@@ -14,6 +15,15 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final Uri _url = Uri.parse('https://flutter.dev');
+
+  final List<Uri> urls = [
+    Uri.parse('https://mbookriver.apiabalit2.com/pdf/terms.pdf'),
+    Uri.parse('https://mbookriver.apiabalit2.com/pdf/legal.pdf'),
+
+  ];
+
+
   bool _passVisibility = true;
 
   final _formKey = GlobalKey<FormState>();
@@ -47,13 +57,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
       children: [
         Container(
           color: Colors.white,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
         ),
         Image.asset(
           "assets/images/fondo.png",
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           fit: BoxFit.cover,
         ),
         GestureDetector(
@@ -79,31 +101,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
           child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: .0),
-            child: Image.asset(
-              'assets/images/BookRiver_logo.png',
-              height: 130,
-              width: 160,
-            ),
-          ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: .0),
+                child: Image.asset(
+                  'assets/images/BookRiver_logo.png',
+                  height: 130,
+                  width: 160,
+                ),
+              ),
 
-          Padding(
-            padding: const EdgeInsets.only(bottom: 0.0),
-            child: Image.asset(
-              'assets/images/RegisterText.png',
-            ),
-          ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0.0),
+                child: Image.asset(
+                  'assets/images/RegisterText.png',
+                ),
+              ),
 
-          ///Form
-          _form(),
-          const SizedBox(
-            height: 100,
-          ),
-          _registerButton(),
-        ],
-      )),
+              ///Form
+              _form(),
+              const SizedBox(
+                height: 100,
+              ),
+              _registerButton(),
+            ],
+          )),
     );
   }
 
@@ -114,8 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           bool aux = await _savePreferences();
           if (aux) {
             Navigator.pushNamed(context, NavigatorRoutes.mainHolder);
-          } else {
-          }
+          } else {}
         }
       },
       child: Text(AppLocalizations.of(context)!.getString('enter')),
@@ -138,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         vertical: 10.0, horizontal: 10.0),
                     border: const OutlineInputBorder(),
                     hintText:
-                        AppLocalizations.of(context)!.getString('hint_email'),
+                    AppLocalizations.of(context)!.getString('hint_email'),
                     labelText: AppLocalizations.of(context)!.getString('email'),
                   ),
                   validator: (value) {
@@ -177,7 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: AppLocalizations.of(context)!
                         .getString('hint_password'),
                     labelText:
-                        AppLocalizations.of(context)!.getString('password'),
+                    AppLocalizations.of(context)!.getString('password'),
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
@@ -201,7 +222,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       border: const OutlineInputBorder(),
                       hintText: 'samilton',
                       labelText:
-                          AppLocalizations.of(context)!.getString('username'),
+                      AppLocalizations.of(context)!.getString('username'),
                       prefixText: '@',
                       prefixStyle: const TextStyle(color: Colors.red)),
                   validator: (value) {
@@ -221,9 +242,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       //color: Colors.blue,
                       width: 280,
-                      child: CheckboxListTile(
+                      child:
+                      CheckboxListTile(
                         contentPadding:
-                            const EdgeInsets.only(right: 0, left: 0),
+                        const EdgeInsets.only(right: 0, left: 0),
                         title: Text(
                           AppLocalizations.of(context)!
                               .getString("terms_and_conditions"),
@@ -234,10 +256,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         checkColor: AppColors.white,
                         value: isChecked,
-                        onChanged: (bool? value) {
+                        onChanged: (bool? value) async {
                           setState(() {
                             isChecked = value!;
                           });
+                          _launchUrl();
                         },
                         controlAffinity: ListTileControlAffinity.leading,
                       ),
@@ -248,5 +271,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
             )),
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    for (final url in urls) {
+      if (await launchUrl(url)) {
+        await launchUrl(url);
+      }else{
+        throw 'No se pudo abrir la URL $url';
+      }
+
+    }
   }
 }

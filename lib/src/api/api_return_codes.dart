@@ -85,6 +85,10 @@ final Map<int, String> returnCodes = {
   40018   :    "rc_40018",
   40019   :    "rc_40019",
 
+  4200: "El parámetro 'email' debe ser único.",
+  4201: "El parámetro 'username' debe ser único.",
+
+
   /** PAGOS (5000-6999) **/
 
   5001   :    "rc_5001",

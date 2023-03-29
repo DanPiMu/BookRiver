@@ -40,6 +40,7 @@ class _BookDetailState extends State<BookDetail> {
   Future<List<Shelves>> readResponseShelvesList() async {
     try {
       _shelvesList = await RequestProvider().getShelves();
+
       setState(() {
         _isLoadingShelves = false;
       });
@@ -78,6 +79,9 @@ class _BookDetailState extends State<BookDetail> {
   Future<void> _addBookToShelves() async {
     try {
       await RequestProvider().postShelvesBook(widget.bookId, idShelves!);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Libro añadido!'),
+      ));
     } on ApiException catch (ae) {
       ae.printDetails();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -184,6 +188,7 @@ class _BookDetailState extends State<BookDetail> {
 
                     ///Icons Row
                     _rowShelvesButtons(),
+
                   ],
                 ),
               ),
@@ -206,6 +211,12 @@ class _BookDetailState extends State<BookDetail> {
                   style: const TextStyle(fontSize: 15),
                 )),
           ),
+
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 70,
+            ),
+          )
         ]),
         floatingActionButton: _cartButton());
   }
@@ -243,35 +254,6 @@ class _BookDetailState extends State<BookDetail> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        /*Column(
-          children: [
-            RawMaterialButton(
-              onPressed: () {
-                idShelves = _shelvesList[2].id;
-                _addBookToShelves();
-                setState(() {
-                  readResponseShelvesList();
-                  _inTheLibrary2();
-                });
-              },
-              elevation: 2.0,
-              fillColor: Colors.white,
-              padding: EdgeInsets.all(15.0),
-              shape: CircleBorder(
-                side: BorderSide(
-                  color: _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
-                ),
-              ),
-              child: Icon(
-                Icons.bookmark_added,
-                color: _inTheLibrary2() ? Colors.blue : Colors.cyanAccent,
-                size: 35.0,
-              ),
-            ),
-            Text(AppLocalizations.of(context)!.getString('read'))
-          ],
-        ),*/
-
         ///Icono de leido
         ShelfButton(
           icon: Icons.bookmark_added,
@@ -280,41 +262,13 @@ class _BookDetailState extends State<BookDetail> {
             idShelves = _shelvesList[2].id;
             _addBookToShelves();
             setState(() {
+
               readResponseShelvesList();
               _inTheLibrary2();
             });
           },
           isSelected: _inTheLibrary2(),
         ),
-        /* Column(
-          children: [
-            RawMaterialButton(
-              onPressed: () {
-                idShelves = _shelvesList[0].id;
-                _addBookToShelves();
-
-                setState(() {
-                  readResponseShelvesList();
-                  _inTheLibrary();
-                });
-              },
-              elevation: 2.0,
-              fillColor: Colors.white,
-              child: Icon(
-                Icons.bookmark_add,
-                color: _inTheLibrary() ? Colors.blue : Colors.cyanAccent,
-                size: 35.0,
-              ),
-              padding: EdgeInsets.all(15.0),
-              shape: CircleBorder(
-                side: BorderSide(
-                  color: _inTheLibrary() ? Colors.blue : Colors.cyanAccent,
-                ),
-              ),
-            ),
-            Text(AppLocalizations.of(context)!.getString('wanna_read'))
-          ],
-        ),*/
 
         ///Icono de quiero leer
         ShelfButton(
@@ -330,35 +284,6 @@ class _BookDetailState extends State<BookDetail> {
           },
           isSelected: _inTheLibrary(),
         ),
-        /*Column(
-          children: [
-            RawMaterialButton(
-              onPressed: () {
-                idShelves = _shelvesList[1].id;
-                _addBookToShelves();
-
-                setState(() {
-                  readResponseShelvesList();
-                  _inTheLibrary1();
-                });
-              },
-              elevation: 2.0,
-              fillColor: Colors.white,
-              child: Icon(
-                Icons.collections_bookmark,
-                color: _inTheLibrary1() ? Colors.blue : Colors.cyanAccent,
-                size: 35.0,
-              ),
-              padding: EdgeInsets.all(15.0),
-              shape: CircleBorder(
-                side: BorderSide(
-                  color: _inTheLibrary1() ? Colors.blue : Colors.cyanAccent,
-                ),
-              ),
-            ),
-            Text(AppLocalizations.of(context)!.getString('reading'))
-          ],
-        ),*/
 
         ///Icono de Leyendo
         ShelfButton(
@@ -374,25 +299,6 @@ class _BookDetailState extends State<BookDetail> {
           },
           isSelected: _inTheLibrary1(),
         ),
-        /*Column(
-          children: [
-            RawMaterialButton(
-              onPressed: () {
-                _showDialog(_shelvesList);
-              },
-              elevation: 2.0,
-              fillColor: Colors.white,
-              child: Icon(
-                Icons.read_more,
-                color: Colors.pinkAccent,
-                size: 35.0,
-              ),
-              padding: EdgeInsets.all(15.0),
-              shape: CircleBorder(),
-            ),
-            Text(AppLocalizations.of(context)!.getString('more'))
-          ],
-        )*/
 
         /// Icono de mas
         ShelfButton(

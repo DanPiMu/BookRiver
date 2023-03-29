@@ -17,9 +17,14 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   var _newPassController = TextEditingController();
   var _confirmPassController = TextEditingController();
 
+  bool _oldPassVisibility = true;
+  bool _newPassVisibility = true;
+  bool _confirmPassVisibility = true;
+
+
   Future<bool> _updatePass() async {
     try {
-      bool aux = await RequestProvider.editUser({
+      bool aux = await RequestProvider.editPassword({
         "actual_pass": _oldPassController.text,
         "password": _newPassController.text,
         "password_confirmation": _newPassController.text
@@ -37,7 +42,9 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _content(context);
+    return GestureDetector(
+      onTap:(){ FocusScope.of(context).unfocus();},
+        child: _content(context));
   }
 
   Scaffold _content(BuildContext context) {
@@ -96,14 +103,23 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   TextFormField _confirmPasswrd() {
     return TextFormField(
       controller: _confirmPassController,
-      obscureText: true,
+      obscureText: _confirmPassVisibility,
       obscuringCharacter: "*",
       decoration: InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         border: const OutlineInputBorder(),
         //en un futuro hacerlo funcional
-        suffixIcon: const Icon(Icons.visibility),
+        suffixIcon: IconButton(
+          icon: _confirmPassVisibility
+              ? const Icon(Icons.visibility_off)
+              : const Icon(Icons.visibility),
+          onPressed: () {
+            _confirmPassVisibility = !_confirmPassVisibility;
+
+            setState(() {});
+          },
+        ),
         labelText: AppLocalizations.of(context)!.getString("hint_confirm_password"),
         //alignLabelWithHint: true
       ),
@@ -123,15 +139,23 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   TextFormField _newPasswrd() {
     return TextFormField(
       controller: _newPassController,
-      obscureText: true,
+      obscureText: _newPassVisibility,
       obscuringCharacter: "*",
       decoration:  InputDecoration(
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         border: const OutlineInputBorder(),
         //en un futuro hacerlo funcional
-        suffixIcon: const Icon(Icons.visibility),
-        labelText: AppLocalizations.of(context)!.getString("hint_new_password"),
+        suffixIcon: IconButton(
+          icon: _newPassVisibility
+              ? const Icon(Icons.visibility_off)
+              : const Icon(Icons.visibility),
+          onPressed: () {
+            _newPassVisibility = !_newPassVisibility;
+
+            setState(() {});
+          },
+        ),        labelText: AppLocalizations.of(context)!.getString("hint_new_password"),
       ),
       validator: (value) {
         if (value?.isEmpty ?? true) {
@@ -149,14 +173,23 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   TextFormField _oldPasswrd() {
     return TextFormField(
       controller: _oldPassController,
-      obscureText: true,
+      obscureText: _oldPassVisibility,
       obscuringCharacter: "*",
       decoration:  InputDecoration(
         contentPadding:
              const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         border: const OutlineInputBorder(),
         //en un futuro hacerlo funcional
-        suffixIcon: const Icon(Icons.visibility),
+        suffixIcon: IconButton(
+          icon: _oldPassVisibility
+              ? const Icon(Icons.visibility_off)
+              : const Icon(Icons.visibility),
+          onPressed: () {
+            _oldPassVisibility = !_oldPassVisibility;
+
+            setState(() {});
+          },
+        ),
         labelText: AppLocalizations.of(context)!.getString("hint_old_password"),
       ),
       validator: (value) {

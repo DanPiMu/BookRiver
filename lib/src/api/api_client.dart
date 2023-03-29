@@ -414,10 +414,10 @@ class ApiClient {
   postEditPassword(Map<String, dynamic> params) async {
     Map<String, dynamic> params1 = {"data": jsonEncode(params)};
 
-    var _response = await _requestPOST(
+    var _response = await _requestPUT(
         needsAuth: true,
         path: "${routes["edit_pssword"]}",
-        formData: params1);
+        formData: params1, getParams: params1);
 
     // Obtenim ReturnCode
     var _rc = _response["rc"];
@@ -809,6 +809,59 @@ class ApiClient {
       return returnMessage;
     } else {
       return returnCodes[1];
+    }
+  }
+
+  //PUT
+
+  Future<dynamic> _requestPUT({
+    bool needsAuth = true,
+    String? path,
+    Map<String, dynamic>? formData,
+    Map<String, dynamic>? getParams,
+  }) async {
+    try {
+      // Realitzem la request
+      Response _response = await _dio.put(
+        path ?? "",
+        data: formData != null ? FormData.fromMap(formData) : null,
+        queryParameters: getParams ?? null,
+        options: Options(
+          headers: needsAuth != null
+              ? {
+            HttpHeaders.authorizationHeader:
+            "Bearer ${UserHelper.accessToken}",
+          }
+              : null,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      _printResponseDetails(_response);
+
+      // Comprovem status code de la response
+      if (_checkResponseStatusCode(_response.statusCode)) {
+        // Comprovem si data no és null
+        if (_response.data != null) {
+          return _response.data;
+        }
+
+        return null;
+      } else {
+        // Si la request ha fallat, retornem [ApiException] en funció del valor
+        // de  [_response.statusCode].
+        throw ApiException(
+            getRCMessage(_response.statusCode), _response.statusCode);
+      }
+    } on DioError catch (e) {
+      _printDioError(e);
+      throw ApiException(getRCMessage(1), 1);
+    } on FormatException catch (e) {
+      print("::.. on errorino");
+    } catch (e) {
+      print("::.. on errorinos : ${e}");
+      throw ApiException(getRCMessage(1), 1);
     }
   }
 }
