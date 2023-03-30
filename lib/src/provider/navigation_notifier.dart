@@ -67,7 +67,10 @@ class NavigationNotifier extends ChangeNotifier {
         removeFromCart(product);
       }
     }
-
+    notifyListeners();
+  }
+  void removeAllUnitsFromCart() {
+    books.clear();
     notifyListeners();
   }
 }

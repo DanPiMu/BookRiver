@@ -56,9 +56,11 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
       return _bookList;
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Esta saltando la apiExeption${ae.message!}'),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
+      );
       rethrow;
     } catch (e) {
       print('Problemillas');

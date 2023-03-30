@@ -3,6 +3,7 @@ import 'package:book_river/src/api/request_helper.dart';
 import 'package:book_river/src/model/book.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../config/app_colors.dart';
 import '../../../config/routes/navigator_routes.dart';
@@ -46,6 +47,9 @@ class _ListBookCategoryState extends State<ListBookCategory> {
       rethrow;
     }
   }
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -121,7 +125,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
   Widget _bookList() {
     if (_bookListByCategory.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.only(left:12.0, right: 12, top: 12),
         child: Center(
             child: Text(
           'No tenemos ningun libro con esta categoria',
@@ -133,17 +137,24 @@ class _ListBookCategoryState extends State<ListBookCategory> {
       );
     }
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: _bookListByCategory.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
-                  arguments: _bookListByCategory[index]);
-            },
-            child: _bookItem(index));
-      },
+    return Expanded(
+      child: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: _onRefresh,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _bookListByCategory.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
+                      arguments: _bookListByCategory[index]);
+                },
+                child: _bookItem(index));
+          },
+        ),
+      ),
     );
   }
 
@@ -220,5 +231,11 @@ class _ListBookCategoryState extends State<ListBookCategory> {
             value: _selectedOption,
           )),
     );
+  }
+
+  void _onRefresh() async {
+    print('refreshing');
+    //await updateBookListByCategory(_selectedOption);
+    _refreshController.refreshCompleted();
   }
 }

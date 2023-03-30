@@ -159,7 +159,18 @@ class _CartScreenState extends State<CartScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: ElevatedButton(
-                      onPressed: () {}, child: const Text('Comprar')),
+                      onPressed: () {
+                        Provider.of<NavigationNotifier>(
+                            context,
+                            listen: false)
+                            .removeAllUnitsFromCart();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: cartItems.isEmpty ? Text('El carrito esta vacio'): Text('Comprado!')),
+                        );
+                        setState(() {});
+
+                      }, child: const Text('Comprar')),
                 ),
               )
             ],
