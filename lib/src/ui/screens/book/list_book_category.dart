@@ -26,11 +26,13 @@ class _ListBookCategoryState extends State<ListBookCategory> {
   bool _isLoading = true;
 
   List<Book> _bookListByCategory = [];
+  int page = 1;
+  int categoryHelper = 1;
 
   Future<List<Book>> readResponseBookList(int category) async {
     try {
       _bookListByCategory = await RequestProvider()
-          .getBookListByCategory(widget.bookIdCategory, category);
+          .getBookListByCategory(widget.bookIdCategory, category, page);
       setState(() {
         _isLoading = false;
       });
@@ -73,18 +75,23 @@ class _ListBookCategoryState extends State<ListBookCategory> {
     switch (selectedOption) {
       case 'Més recents':
         _bookListByCategory = await readResponseBookList(1);
+        categoryHelper = 1;
         break;
       case 'Preu ascendent':
         _bookListByCategory = await readResponseBookList(3);
+        categoryHelper = 3;
         break;
       case 'Preu descendent':
         _bookListByCategory = await readResponseBookList(4);
+        categoryHelper = 4;
         break;
       case 'Valoració ascendent':
         _bookListByCategory = await readResponseBookList(1);
+        categoryHelper = 1;
         break;
       case 'Valoració descendent':
         _bookListByCategory = await readResponseBookList(2);
+        categoryHelper = 2;
         break;
       default:
         _bookListByCategory = [];
@@ -125,7 +132,7 @@ class _ListBookCategoryState extends State<ListBookCategory> {
   Widget _bookList() {
     if (_bookListByCategory.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.only(left:12.0, right: 12, top: 12),
+        padding: const EdgeInsets.only(left: 12.0, right: 12, top: 12),
         child: Center(
             child: Text(
           'No tenemos ningun libro con esta categoria',
@@ -234,8 +241,11 @@ class _ListBookCategoryState extends State<ListBookCategory> {
   }
 
   void _onRefresh() async {
-    print('refreshing');
-    //await updateBookListByCategory(_selectedOption);
+    page += 1;
+    _bookListByCategory.addAll(await RequestProvider()
+        .getBookListByCategory(widget.bookIdCategory, categoryHelper, page));
+    print(_bookListByCategory.length);
+    setState(() {});
     _refreshController.refreshCompleted();
   }
 }

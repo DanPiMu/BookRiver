@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
 import '../../../config/app_localizations.dart';
+import '../../../model/User.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -30,6 +31,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return false;
   }
 
+  bool _isLoading = true;
+  late User myUser;
+
+  Future<void> _myUser() async {
+    try {
+      myUser = await RequestProvider().getUser();
+
+      setState(() {
+        _isLoading = false;
+      });
+    } on ApiException catch (ae) {
+      ae.printDetails();
+      SnackBar(content: Text(ae.message!));
+      rethrow;
+    } catch (e) {
+      print('Problemillas');
+      rethrow;
+    }
+  }
+
   DateTime? _selectedDate;
 
   final _formKey = GlobalKey<FormState>();
@@ -38,7 +59,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   var _dateController = TextEditingController();
 
   @override
+  void initState() {
+    _myUser();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -68,6 +100,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   height: 20,
                 ),
                 _doB(context),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                    child: Text('*Campo obligatorio', style: TextStyle(color: Colors.red),)),
                 _saveButton(context)
               ],
             ),
@@ -81,6 +116,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: ElevatedButton(
           child: Text(AppLocalizations.of(context)!.getString("save_changes")),
           onPressed: () async {
+            if (_emailController.text == '') {
+              _emailController.text = myUser.email!;
+            }
+            if (_nameController.text == '') {
+              _nameController.text = myUser.username!;
+            }
             if (_formKey.currentState!.validate()) {
               print(_emailController.text);
               print(_dateController.text);
@@ -110,7 +151,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
           border: const OutlineInputBorder(),
           hintText: AppLocalizations.of(context)!.getString("hint_username"),
-          labelText: AppLocalizations.of(context)!.getString("username"),
+          labelText: '@${myUser.username}',
+          //AppLocalizations.of(context)!.getString("username"),
           labelStyle: const TextStyle(fontWeight: FontWeight.bold),
           prefixText: '@',
           prefixStyle: const TextStyle(color: Colors.red)),
@@ -170,7 +212,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
           border: const OutlineInputBorder(),
           hintText: AppLocalizations.of(context)!.getString("hint_email"),
-          labelText: AppLocalizations.of(context)!.getString("email"),
+          labelText: myUser.email,
+          //AppLocalizations.of(context)!.getString("email"),
           labelStyle: const TextStyle(fontWeight: FontWeight.bold)),
       validator: (value) {
         if (value?.isEmpty ?? true) {

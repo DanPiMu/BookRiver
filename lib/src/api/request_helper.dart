@@ -69,11 +69,11 @@ class RequestProvider {
     }
   }
 
-  Future getBookListByCategory(int categoryId, int orden) async {
+  Future getBookListByCategory(int categoryId, int orden, int page) async {
     List<Book> _bookListByCategory = [];
     try {
       dynamic _response =
-          await _apiClient.getBooksListByCategory(categoryId, orden);
+          await _apiClient.getBooksListByCategory(categoryId, orden, page);
       if (_response != null) {
         List<dynamic> bookListData = _response;
         _bookListByCategory =
