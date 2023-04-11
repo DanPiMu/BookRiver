@@ -49,8 +49,8 @@ class _BookDetailState extends State<BookDetail> {
     } on ApiException catch (ae) {
       ae.printDetails();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Esta saltando la apiExeption${ae.message!}'),
-      ));
+          content: Text(
+              AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -67,8 +67,8 @@ class _BookDetailState extends State<BookDetail> {
     } on ApiException catch (ae) {
       ae.printDetails();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Esta saltando la apiExeption${ae.message!}'),
-      ));
+          content: Text(
+              AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -188,7 +188,6 @@ class _BookDetailState extends State<BookDetail> {
 
                     ///Icons Row
                     _rowShelvesButtons(),
-
                   ],
                 ),
               ),
@@ -211,10 +210,9 @@ class _BookDetailState extends State<BookDetail> {
                   style: const TextStyle(fontSize: 15),
                 )),
           ),
-
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 70,
+              height: 80,
             ),
           )
         ]),
@@ -229,6 +227,18 @@ class _BookDetailState extends State<BookDetail> {
         onPressed: () {
           Provider.of<NavigationNotifier>(context, listen: false)
               .addToCart(detailedBookById);
+         /* ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: const Text('Libro añadido!'),
+            action: SnackBarAction(
+              label: 'Ir al carrito',
+              onPressed: () {
+                Navigator.pop(context);
+                navigationProvider.selectedOption = NavigationOption.Cistella;
+                //Navigator.pushNamed(context, NavigatorRoutes.cartScreen);
+              },
+            ),
+          ));*/
+
           final snackBar = SnackBar(
             content: const Text('Libro añadido!'),
             action: SnackBarAction(
@@ -262,7 +272,6 @@ class _BookDetailState extends State<BookDetail> {
             idShelves = _shelvesList[2].id;
             _addBookToShelves();
             setState(() {
-
               readResponseShelvesList();
               _inTheLibrary2();
             });

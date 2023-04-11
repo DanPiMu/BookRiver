@@ -125,6 +125,10 @@ class _AddNewShelveState extends State<AddNewShelve> {
               AppLocalizations.of(context)!.getString('shelf_warning'),
               style: TextStyle(fontSize: 10, color: AppColors.secondary),
             ),
+            Text(
+              "**Todos los campos son obligatorios",
+              style: TextStyle(fontSize: 10, color: AppColors.secondary),
+            ),
             const SizedBox(
               height: 30,
             ),

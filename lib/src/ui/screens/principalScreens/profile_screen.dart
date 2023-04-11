@@ -248,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Row(
               children: [
                 Icon(Icons.mail, color: AppColors.secondary),
-                Text(myUser.email.toString())
+                Text("myUser.email.toString() qaswdefrgthyjuikol", softWrap: true ,)
               ],
             ),
             Row(

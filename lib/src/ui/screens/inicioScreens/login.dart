@@ -208,8 +208,8 @@ class _LogInState extends State<LogIn> {
                       return 'Please enter valid Password';
                     }
 
-                    if (!RegExp(r'^\d{9,}$').hasMatch(value!)) {
-                      return 'Enter a valid password with 9 characters';
+                    if (!RegExp(r'^.{7,}$').hasMatch(value!)) {
+                      return 'Enter a valid password with 8 characters';
                     }
                     return null;
                   },

@@ -27,7 +27,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       bool aux = await RequestProvider.editPassword({
         "actual_pass": _oldPassController.text,
         "password": _newPassController.text,
-        "password_confirmation": _newPassController.text
+        "password_confirmation": _confirmPassController.text
       });
       return aux;
     } on ApiException catch (ae) {
@@ -86,7 +86,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
         child: ElevatedButton(
           child:  Text(AppLocalizations.of(context)!.getString("save_changes")),
           onPressed: () async {
-            if (_formKey.currentState!.validate()) {
+            if ( _newPassController.text == _confirmPassController.text &&_formKey.currentState!.validate()) {
               bool aux = await _updatePass();
 
               if (aux) {
@@ -127,8 +127,8 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
         if (value?.isEmpty ?? true) {
           return 'Please enter valid Password';
         }
-        if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
-          return 'Enter a valid password with 9 characters';
+        if (!RegExp(r'^.{7,}$').hasMatch(value!)) {
+          return 'Enter a valid password with 8 characters';
         }
         return null;
       },
@@ -161,8 +161,8 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
         if (value?.isEmpty ?? true) {
           return 'Please enter valid Password';
         }
-        if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
-          return 'Enter a valid password with 9 characters';
+        if (!RegExp(r'^.{7,}$').hasMatch(value!)) {
+          return 'Enter a valid password with 8 characters';
         }
         return null;
       },
@@ -196,8 +196,8 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
         if (value?.isEmpty ?? true) {
           return 'Please enter valid Password';
         }
-        if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
-          return 'Enter a valid password with 9 characters';
+        if (!RegExp(r'^.{7,}$').hasMatch(value!)) {
+          return 'Enter a valid password with 8 characters';
         }
         return null;
       },

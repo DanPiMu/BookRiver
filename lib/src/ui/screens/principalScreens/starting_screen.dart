@@ -38,9 +38,10 @@ class _StartingScreenState extends State<StartingScreen> {
       });
     } on ApiException catch (ae) {
       ae.printDetails();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Esta saltando la apiExeption${ae.message!}'),
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                  AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))));
       rethrow;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

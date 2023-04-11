@@ -230,6 +230,20 @@ class RequestProvider {
     }
     return false;
   }
+  static Future<bool> updatePrivacity(
+      Map<String, dynamic> params, int idShelves) async {
+    try {
+      dynamic _response =
+      await ApiClient().postUpdatePrivacity(params, idShelves);
+      if (_response != null) {
+        return true;
+      }
+      return false;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
 
   Future getUser() async {
     User myUser;

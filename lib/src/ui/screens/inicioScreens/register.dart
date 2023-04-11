@@ -204,8 +204,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter valid Password';
                     }
-                    if (!RegExp(r'^\d{9}$').hasMatch(value!)) {
-                      return 'Enter a valid password with 9 characters';
+                    if (!RegExp(r'^.{7,}$').hasMatch(value!)) {
+                      return 'Enter a valid password with 8 characters';
                     }
                     return null;
                   },
@@ -260,7 +260,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           setState(() {
                             isChecked = value!;
                           });
-                          _launchUrl();
+                          //_launchUrl();
                         },
                         controlAffinity: ListTileControlAffinity.leading,
                       ),

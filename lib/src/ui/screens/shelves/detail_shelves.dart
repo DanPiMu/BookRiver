@@ -22,6 +22,32 @@ class _DetailShelvesState extends State<DetailShelves> {
   late bool isPublic;
   bool _isLoading = true;
 
+  int isPublicBool =0;
+
+  publicCheck() {
+    if (isPublic == true) {
+      print('Es publica');
+      isPublicBool = 1;
+    } else {
+      print('No es publica');
+      isPublicBool = 0;
+    }
+  }
+  Future<bool> _updatePrivacity() async {
+    try {
+      bool aux = await RequestProvider.updatePrivacity({
+        "privacity": isPublic
+      },widget.shelvesId);
+      return aux;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Esta saltando la apiExeption${ae.message!}'),
+      ));
+    }
+    return false;
+  }
+
   Future<void> _shelvesById() async {
     try {
       shelvesObject = await RequestProvider().getShelvesById(widget.shelvesId);
@@ -84,27 +110,26 @@ class _DetailShelvesState extends State<DetailShelves> {
                 ))
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _statusShelves(),
-                Text(
-                  AppLocalizations.of(context)!.getString('description'),
-                  style: TextStyle(color: AppColors.tertiary, fontSize: 20),
-                ),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(shelvesObject.description!)),
-                Text(
-                  AppLocalizations.of(context)!.getString('books'),
-                  style: TextStyle(color: AppColors.tertiary, fontSize: 20),
-                ),
-                _bookList(),
-              ],
-            ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _statusShelves(),
+              Text('*Para cambiar el estado de la estanteria, tienes que editarla', style: TextStyle(color: Colors.red,fontSize: 12),),
+              Text(
+                AppLocalizations.of(context)!.getString('description'),
+                style: TextStyle(color: AppColors.tertiary, fontSize: 20),
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(shelvesObject.description!)),
+              Text(
+                AppLocalizations.of(context)!.getString('books'),
+                style: TextStyle(color: AppColors.tertiary, fontSize: 20),
+              ),
+              _bookList(),
+            ],
           ),
         ));
   }
@@ -116,6 +141,19 @@ class _DetailShelvesState extends State<DetailShelves> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(AppLocalizations.of(context)!.getString('shelf_status')),
+          /*Switch(
+            activeColor: AppColors.tertiary,
+            value: isPublic,
+            onChanged: (value) {
+              setState(() {
+                isPublic = value;
+                publicCheck();
+                print(isPublicBool);
+                //_updatePrivacity();
+              });
+            },
+          ),*/
+
           Switch(
             activeColor: AppColors.tertiary,
             value: isPublic,
@@ -126,46 +164,48 @@ class _DetailShelvesState extends State<DetailShelves> {
     );
   }
 
-  ListView _bookList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: shelvesObject.books.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
-                arguments: shelvesObject.books[index]);
-          },
-          child: ListTile(
-              leading: SizedBox(
-                width: 40,
-                child: Image.network(
-                  shelvesObject.books[index].caratula![0].img!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return Image.asset(
-                      'assets/images/portada.jpeg',
-                      fit: BoxFit.cover,
-                    );
-                  },
+  Widget _bookList() {
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: shelvesObject.books.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
+                  arguments: shelvesObject.books[index]);
+            },
+            child: ListTile(
+                leading: SizedBox(
+                  width: 40,
+                  child: Image.network(
+                    shelvesObject.books[index].caratula![0].img!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Image.asset(
+                        'assets/images/portada.jpeg',
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
                 ),
-              ),
-              title: Text(shelvesObject.books[index].title!),
-              subtitle: Text('Precio: €${shelvesObject.books[index].price}'),
-              trailing: CircularPercentIndicator(
-                radius: 20.0,
-                lineWidth: 3.0,
-                percent: shelvesObject.books[index].avgRating! / 5,
-                center: Text("${shelvesObject.books[index].avgRating}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13.0,
-                        color: AppColors.secondary)),
-                progressColor: AppColors.secondary,
-              )),
-        );
-      },
+                title: Text(shelvesObject.books[index].title!),
+                subtitle: Text('Precio: €${shelvesObject.books[index].price}'),
+                trailing: CircularPercentIndicator(
+                  radius: 20.0,
+                  lineWidth: 3.0,
+                  percent: shelvesObject.books[index].avgRating! / 5,
+                  center: Text("${shelvesObject.books[index].avgRating}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13.0,
+                          color: AppColors.secondary)),
+                  progressColor: AppColors.secondary,
+                )),
+          );
+        },
+      ),
     );
   }
 }

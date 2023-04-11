@@ -190,7 +190,7 @@ class _RatingsBookState extends State<RatingsBook> {
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace? stackTrace) {
                 return Image.asset(
-                  'assets/images/portada2.jpeg',
+                  'assets/images/userK.jpeg',
                   fit: BoxFit.cover,
                 );
               },
