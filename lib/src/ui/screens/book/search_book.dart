@@ -25,6 +25,7 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
   bool _cargandoLibros = false;
   bool _cargandoAutores = false;
 
+
   String category = 'Infantil';
 
   Future<List<Book>> readResponseSearchList(String text) async {
@@ -56,11 +57,6 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
       return _bookList;
     } on ApiException catch (ae) {
       ae.printDetails();
-     /* ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(
-                AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))),
-      );*/
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -159,35 +155,14 @@ class _SearchBookState extends State<SearchBook> with TickerProviderStateMixin {
 class SearchResultBookList extends StatelessWidget {
   final List<Book> books;
 
-  const SearchResultBookList({
+  SearchResultBookList({
     Key? key,
     required this.books,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-      /*
-      return Expanded(
-      child: SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        onRefresh: _onRefresh,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _bookListByCategory.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
-                      arguments: _bookListByCategory[index]);
-                },
-                child: _bookItem(index));
-          },
-        ),
-      ),
-    );*/
-    return
-      ListView.builder(
+    return ListView.builder(
       itemCount: books.length,
       itemBuilder: (BuildContext context, int index) {
         final book = books[index];
