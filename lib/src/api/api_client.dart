@@ -318,8 +318,36 @@ class ApiClient {
     }
   }
 
-  postUpdateShelves(
-      Map<String, dynamic> params, int idShelves, File image) async {
+  postUpdatePhotoUser(File image) async {
+    Map<String, dynamic> params1 = {};
+
+    MultipartFile aux = await MultipartFile.fromFile(
+      image.path,
+      filename: "${DateTime.now()}${image.path}.jpg",
+    );
+    params1.putIfAbsent("media", () => aux);
+
+    var _response = await _requestPOST(
+        needsAuth: true, path: "${routes["edit_user"]}", formData: params1);
+
+    // Obtenim ReturnCode
+    var _rc = _response["rc"];
+
+    // Gestionem les dades segons ReturnCode obtingut
+    switch (_rc) {
+      case 0:
+        if (_response["data"] != null) {
+          return _response["data"];
+        }
+        return null;
+      default:
+        print("here default: $_rc");
+        throw ApiException(getRCMessage(_rc), _rc);
+    }
+  }
+
+
+  postUpdateShelves(Map<String, dynamic> params, int idShelves, File image) async {
     Map<String, dynamic> params1 = {"data": jsonEncode(params)};
 
     MultipartFile aux = await MultipartFile.fromFile(

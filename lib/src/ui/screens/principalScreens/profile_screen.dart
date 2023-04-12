@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:book_river/src/config/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
@@ -35,8 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } on ApiException catch (ae) {
       ae.printDetails();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Esta saltando la apiExeption${ae.message!}'),
-      ));
+          content: Text(
+              AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))));
       rethrow;
     } catch (e) {
       print('Problemillas');
@@ -59,6 +64,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
       print('Problemillas');
       rethrow;
     }
+  }
+
+  //edit image user
+  File? image;
+
+  Future pickImage() async {
+    try {
+      var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() {
+        this.image = imageTemp;
+        print('asectado');
+        _updateUserPhoto();
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future pickImageC() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+      if (image == null) return;
+
+      final imageTemp = File(image.path);
+
+      setState(() {
+        this.image = imageTemp;
+        print('asectado');
+        _updateUserPhoto();
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
+  Future<bool> _updateUserPhoto() async {
+    try {
+      bool aux = await RequestProvider.updateUserPhoto(image!);
+      resetState();
+      return aux;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))));
+    }
+    return false;
+  }
+
+  void resetState() {
+    _myUser();
+    readResponseShelvesList();
   }
 
   @override
@@ -226,40 +289,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           //imagen perfil
-          SizedBox(
-            height: 150,
-            width: 150,
-            child: Image.network(
-              myUser.userImg.toString(),
-              fit: BoxFit.cover,
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace? stackTrace) {
-                return const CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/pepe.jpeg'),
-                );
-              },
+          GestureDetector(
+            onTap: () {
+              _showMyDialog();
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, right: 10),
+              child: SizedBox(
+                height: 150,
+                width: 150,
+                child: ClipOval(
+                  child: Image.network(
+                    myUser.userImg.toString(),
+                    fit: BoxFit.cover,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return const CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/pepe.jpeg'),
+                      );
+                    },
+                  ),
+                ),
+              ),
             ),
           ),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              "@${myUser.username}",
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            Row(
-              children: [
-                Icon(Icons.mail, color: AppColors.secondary),
-                Text("myUser.email.toString() qaswdefrgthyjuikol", softWrap: true ,)
-              ],
-            ),
-            Row(
-              children: [
-                Icon(Icons.cake, color: AppColors.secondary),
-                myUser.birthDate == null
-                    ? const Text('----')
-                    : Text(myUser.birthDate.toString())
-              ],
-            )
-          ])
+          Expanded(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "@${myUser.username}",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.mail, color: AppColors.secondary),
+                  ),
+                  Expanded(
+                      child: Text(
+                    myUser.email.toString(),
+                    softWrap: true,
+                  ))
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.cake, color: AppColors.secondary),
+                  ),
+                  myUser.birthDate == null
+                      ? const Text('----')
+                      : Text(myUser.birthDate.toString())
+                ],
+              )
+            ]),
+          )
         ],
       ),
     );
@@ -294,6 +384,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: AppColors.secondary,
             ))
       ],
+    );
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      //barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.getString('select_image')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(AppLocalizations.of(context)!.getString('choose_image')),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.getString('gallery')),
+              onPressed: () {
+                pickImage();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.getString('camera')),
+              onPressed: () {
+                pickImageC();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

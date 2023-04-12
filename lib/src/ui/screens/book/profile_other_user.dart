@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../../api/api_exception.dart';
 import '../../../api/request_helper.dart';
+import '../../../config/app_localizations.dart';
+import '../../../config/routes/navigator_routes.dart';
 import '../../../model/User.dart';
 
 class ProfileOtherUser extends StatefulWidget {
@@ -84,7 +86,28 @@ class _ProfileOtherUserState extends State<ProfileOtherUser> {
           _userShelves()
         ],
       ),
-    );
+        floatingActionButton: _ratingButton(context));
+  }
+
+  FloatingActionButton _ratingButton(BuildContext context) {
+    return FloatingActionButton.extended(
+        backgroundColor: AppColors.secondary,
+        onPressed: () {
+
+
+          Navigator.pushNamed(context, NavigatorRoutes.userRatings,
+              arguments: publicUser);
+        },
+        label: Text(
+          AppLocalizations.of(context)!.getString('ratings'),
+          style:
+          const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        icon: const Icon(
+          Icons.star,
+          color: Colors.white,
+        ),
+        elevation: 1);
   }
 
   SizedBox _userInfo() {

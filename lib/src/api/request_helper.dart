@@ -23,7 +23,6 @@ class RequestProvider {
     try {
       dynamic _response = await _apiClient.booksHome();
       if (_response != null) {
-
         List<dynamic> bookListData = _response['data']['books'];
         _booksNovetatsList =
             bookListData.map((bookData) => Book.fromJson(bookData)).toList();
@@ -34,13 +33,14 @@ class RequestProvider {
     } on ApiException catch (ae) {
       ae.printDetails();
     }
-  }Future getBooksCategory() async {
+  }
+
+  Future getBooksCategory() async {
     List<Categories> _categoriesList = [];
 
     try {
       dynamic _response = await _apiClient.booksHome();
       if (_response != null) {
-
         List<dynamic> categoryListData = _response['data']['categories'];
         _categoriesList = categoryListData
             .map((categoryData) => Categories.fromJson(categoryData))
@@ -134,7 +134,9 @@ class RequestProvider {
       rethrow;
       ae.printDetails();
     }
-  }Future getUserRatings(int userID) async {
+  }
+
+  Future getUserRatings(int userID) async {
     List<Ratings> _booksRatingsList = [];
     try {
       dynamic _response = await _apiClient.getInfoOtherUser(userID);
@@ -230,11 +232,25 @@ class RequestProvider {
     }
     return false;
   }
+
   static Future<bool> updatePrivacity(
       Map<String, dynamic> params, int idShelves) async {
     try {
       dynamic _response =
-      await ApiClient().postUpdatePrivacity(params, idShelves);
+          await ApiClient().postUpdatePrivacity(params, idShelves);
+      if (_response != null) {
+        return true;
+      }
+      return false;
+    } on ApiException catch (ae) {
+      ae.printDetails();
+    }
+    return false;
+  }
+
+  static Future<bool> updateUserPhoto(File image) async {
+    try {
+      dynamic _response = await ApiClient().postUpdatePhotoUser( image);
       if (_response != null) {
         return true;
       }

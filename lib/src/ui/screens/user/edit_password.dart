@@ -33,8 +33,8 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
     } on ApiException catch (ae) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Esta saltando la apiExeption${ae.message!}'),
-          ));
+              content: Text(
+                  AppLocalizations.of(context)!.getString(ae.message ?? "rc_1"))));
       ae.printDetails();
     }
     return false;

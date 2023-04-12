@@ -166,7 +166,28 @@ class SearchResultBookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+      /*
+      return Expanded(
+      child: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: _onRefresh,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: _bookListByCategory.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, NavigatorRoutes.bookDetails,
+                      arguments: _bookListByCategory[index]);
+                },
+                child: _bookItem(index));
+          },
+        ),
+      ),
+    );*/
+    return
+      ListView.builder(
       itemCount: books.length,
       itemBuilder: (BuildContext context, int index) {
         final book = books[index];

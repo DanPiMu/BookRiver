@@ -79,14 +79,17 @@ class _UserRatingsState extends State<UserRatings> {
           SizedBox(
             height: 50,
             width: 50,
-            child: Image.network(
-                _booksRatingsList[index].user!.userImg.toString(),
-                fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                    Object exception, StackTrace? stackTrace) {
-              return const CircleAvatar(
-                backgroundImage: AssetImage('assets/images/pepe.jpeg'),
-              );
-            }),
+            child: ClipOval(
+              child: Image.network(
+                  "https://mbookriver.apiabalit2.com/storage/${_booksRatingsList[index].user!.userImg!}",
+                  fit: BoxFit.cover, errorBuilder: (BuildContext context,
+                      Object exception, StackTrace? stackTrace) {
+                print(_booksRatingsList[index].user!.userImg!);
+                return const CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/pepe.jpeg'),
+                );
+              }),
+            ),
           ),
           Flexible(
               child: Padding(
