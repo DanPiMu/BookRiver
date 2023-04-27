@@ -374,7 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, NavigatorRoutes.userSettings)
+                Navigator.pushNamed(context, NavigatorRoutes.userSettings)
                   .then((_) => {
                         setState(() => {_myUser()})
                       });
